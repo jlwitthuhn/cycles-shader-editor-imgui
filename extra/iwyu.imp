@@ -1,0 +1,12 @@
+[
+    { include: ["<boost/none.hpp>", "private", "<boost/optional.hpp>", "public"] },
+    { include: ["<boost/optional/optional.hpp>", "private", "<boost/optional.hpp>", "public"] },
+    { include: ["<boost/optional/detail/optional_relops.hpp>", "private", "<boost/optional.hpp>", "public"] },
+    { include: ["<boost/iterator/iterator_facade.hpp>", "private", "<IGNORE_ME>", "public"] },
+    { include: ["<boost/mpl/eval_if.hpp>", "private", "<IGNORE_ME>", "public"] },
+    { include: ["<boost/token_functions.hpp>", "private", "<IGNORE_ME>", "public"] },
+    { include: ["<boost/token_iterator.hpp>", "private", "<IGNORE_ME>", "public"] },
+    { include: ["<ext/alloc_traits.h>", "private", "<IGNORE_ME>", "public"] },
+    { symbol: ["std::ceil", "private", "<cmath>", "public"] },
+    { symbol: ["std::floor", "private", "<cmath>", "public"] },
+]

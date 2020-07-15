@@ -1,0 +1,126 @@
+#pragma once
+
+/**
+ * @file
+ * @brief File used to declare enums used throughout the shader editor.
+ */
+
+namespace cse {
+
+	enum class InputEventType {
+		MOUSE_BUTTON,
+		KEY,
+		CHARACTER,
+		SCROLL,
+	};
+
+	enum class InterfaceEventType {
+		// Main window
+		QUIT,
+		SAVE_TO_MAX,
+		SAVE_TO_FILE,
+		LOAD_FROM_FILE,
+		WINDOW_SHOW_ABOUT,
+		WINDOW_CLOSE_ABOUT,
+		WINDOW_SHOW_DEMO,
+		WINDOW_CLOSE_DEMO,
+		WINDOW_SHOW_DEBUG,
+		WINDOW_CLOSE_DEBUG,
+		MODAL_ALERT_SHOW,
+		MODAL_ALERT_CLOSE,
+		MODAL_CURVE_EDITOR_SHOW,
+		MODAL_CURVE_EDITOR_COMMIT_VEC,
+		MODAL_CURVE_EDITOR_CLOSE,
+		SUBWINDOW_IS_HOVERED,
+		SET_THEME_DARK,
+		SET_THEME_CLASSIC,
+		IGNORE_INPUT_EVENTS_THIS_FRAME,
+		SET_SLOT_BOOL,
+		SET_SLOT_COLOR,
+		SET_SLOT_ENUM,
+		SET_SLOT_FLOAT,
+		SET_SLOT_VECTOR,
+		UNDO,
+		REDO,
+		RELOAD_GRAPH,
+		// Specific to graph window,
+		PAN_VIEW,
+		MOUSE_PAN_BEGIN,
+		MOUSE_PAN_END,
+		MOUSE_MOVE_BEGIN,
+		MOUSE_MOVE_END,
+		CREATE_NODE,
+		SELECT_NODE,
+		BOX_SELECT_BEGIN,
+		BOX_SELECT_END,
+		DELETE_NODE_SELECTION,
+		FOCUS_SELECTION,
+		FOCUS_OUTPUT,
+		CONNECTION_BEGIN,
+		CONNECTION_END,
+		CONNECTION_ALTER,
+		DUPLICATE_SELECTION,
+		SELECT_ALL,
+		SELECT_NONE,
+		SELECT_INVERSE,
+		// Specific to node list window
+		SELECT_NODE_CATEGORY,
+		SELECT_NODE_TYPE,
+		SELECT_NODE_TYPE_NONE,
+		// Specific to param editor window
+		PARAM_EDIT_COLOR_INIT,
+		PARAM_EDIT_COLOR_CHANGE,
+		// Specific to debug window
+		VALIDATE_SET_MESSAGE,
+		// Specific to curve editor modal window
+		CURVE_EDIT_RESET,
+		CURVE_EDIT_SET_BOUNDS,
+		CURVE_EDIT_SET_INTERP,
+		CURVE_EDIT_SET_MODE,
+		CURVE_EDIT_SET_TAB,
+		CURVE_EDIT_VIEW_CLICK,
+		CURVE_EDIT_POINT_MOVE,
+		// Multicast to several windows
+		SELECT_SLOT,
+		SELECT_SLOT_NONE,
+	};
+
+	enum class InteractionMode {
+		SELECT,
+		CREATE,
+		MOUSE_MOVE,
+		MOUSE_PAN,
+		BOX_SELECT,
+	};
+
+	enum class SubwindowId {
+		ALERT,
+		GRAPH,
+		NODE_LIST,
+		PARAM_EDITOR,
+		CURVE_EDITOR,
+		DEBUG,
+	};
+
+	enum class SelectMode {
+		EXCLUSIVE,
+		ADD,
+		REMOVE,
+		TOGGLE,
+	};
+
+	enum class CurveEditorMode {
+		SELECT,
+		MOVE,
+		CREATE,
+		DELETE,
+	};
+
+	enum class CurveEditorTab {
+		DEFAULT,
+		X,
+		Y,
+		Z,
+	};
+
+}
