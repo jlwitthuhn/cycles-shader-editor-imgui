@@ -75,26 +75,27 @@ boost::optional<csg::NodeEnumOptionInfo> csg::NodeEnumOptionInfo::from(NodeMetaE
 	return NodeEnumOptionInfo{ meta_enum, option };
 }
 
+// Tiny macro to make it easier to copy paste all these definitions
+#define CASE_PAIR(ENUM, S1, S2) case ENUM: return std::make_pair(S1, S2);
+
 static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum meta_enum, size_t option)
 {
+	using namespace csg;
+
 	switch (meta_enum) {
 
 	//////
 	// Shader
 	//////
-	case csg::NodeMetaEnum::ANISOTROPIC_DISTRIBUTION:
+	case NodeMetaEnum::ANISOTROPIC_DISTRIBUTION:
 	{
-		const auto opt_enum{ as_enum<csg::AnisotropicDistribution>(option) };
+		const auto opt_enum{ as_enum<AnisotropicDistribution>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-			case csg::AnisotropicDistribution::ASHIKHMIN_SHIRLEY:
-				return std::make_pair("Ashikhmin-Shirley", "ashikhmin_shirley");
-			case csg::AnisotropicDistribution::BECKMANN:
-				return std::make_pair("Beckmann", "beckmann");
-			case csg::AnisotropicDistribution::GGX:
-				return std::make_pair("GGX", "ggx");
-			case csg::AnisotropicDistribution::MULTISCATTER_GGX:
-				return std::make_pair("Multiscatter GGX", "multiscatter_ggx");
+				CASE_PAIR(AnisotropicDistribution::ASHIKHMIN_SHIRLEY, "Ashikhmin-Shirley", "ashikhmin_shirley");
+				CASE_PAIR(AnisotropicDistribution::BECKMANN,          "Beckmann",          "beckmann");
+				CASE_PAIR(AnisotropicDistribution::GGX,               "GGX",               "ggx");
+				CASE_PAIR(AnisotropicDistribution::MULTISCATTER_GGX,  "Multiscatter GGX",  "multiscatter_ggx");
 			default:
 				return std::make_pair("[Unknown Distribution]", "ERROR");
 			}
@@ -103,19 +104,15 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 			return std::make_pair("[Bad Distribution]", "ERROR");
 		}
 	}
-	case csg::NodeMetaEnum::GLASS_DISTRIBUTION:
+	case NodeMetaEnum::GLASS_DISTRIBUTION:
 	{
-		const auto opt_enum{ as_enum<csg::GlassDistribution>(option) };
+		const auto opt_enum{ as_enum<GlassDistribution>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-			case csg::GlassDistribution::GGX:
-				return std::make_pair("GGX", "ggx");
-			case csg::GlassDistribution::MULTISCATTER_GGX:
-				return std::make_pair("Multiscatter GGX", "multiscatter_ggx");
-			case csg::GlassDistribution::BECKMANN:
-				return std::make_pair("Beckmann", "beckmann");
-			case csg::GlassDistribution::SHARP:
-				return std::make_pair("Sharp", "sharp");
+				CASE_PAIR(GlassDistribution::GGX,              "GGX",              "ggx");
+				CASE_PAIR(GlassDistribution::MULTISCATTER_GGX, "Multiscatter GGX", "multiscatter_ggx");
+				CASE_PAIR(GlassDistribution::BECKMANN,         "Beckmann",         "beckmann");
+				CASE_PAIR(GlassDistribution::SHARP,            "Sharp",            "sharp");
 			default:
 				return std::make_pair("[Unknown Distribution]", "ERROR");
 			}
@@ -124,21 +121,16 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 			return std::make_pair("[Bad Distribution]", "ERROR");
 		}
 	}
-	case csg::NodeMetaEnum::GLOSSY_DISTRIBUTION:
+	case NodeMetaEnum::GLOSSY_DISTRIBUTION:
 	{
-		const auto opt_enum{ as_enum<csg::GlossyDistribution>(option) };
+		const auto opt_enum{ as_enum<GlossyDistribution>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-			case csg::GlossyDistribution::ASHIKHMIN_SHIRLEY:
-				return std::make_pair("Ashikhmin-Shirley", "ashikhmin_shirley");
-			case csg::GlossyDistribution::BECKMANN:
-				return std::make_pair("Beckmann", "beckmann");
-			case csg::GlossyDistribution::GGX:
-				return std::make_pair("GGX", "ggx");
-			case csg::GlossyDistribution::MULTISCATTER_GGX:
-				return std::make_pair("Multiscatter GGX", "multiscatter_ggx");
-			case csg::GlossyDistribution::SHARP:
-				return std::make_pair("Sharp", "sharp");
+				CASE_PAIR(GlossyDistribution::ASHIKHMIN_SHIRLEY, "Ashikhmin-Shirley", "ashikhmin_shirley");
+				CASE_PAIR(GlossyDistribution::BECKMANN,          "Beckmann",          "beckmann");
+				CASE_PAIR(GlossyDistribution::GGX,               "GGX",               "ggx");
+				CASE_PAIR(GlossyDistribution::MULTISCATTER_GGX,  "Multiscatter GGX",  "multiscatter_ggx");
+				CASE_PAIR(GlossyDistribution::SHARP,             "Sharp",             "sharp");
 			default:
 				return std::make_pair("[Unknown Distribution]", "ERROR");
 			}
@@ -147,15 +139,13 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 			return std::make_pair("[Bad Distribution]", "ERROR");
 		}
 	}
-	case csg::NodeMetaEnum::HAIR_COMPONENT:
+	case NodeMetaEnum::HAIR_COMPONENT:
 	{
-		const auto opt_enum{ as_enum<csg::HairComponent>(option) };
+		const auto opt_enum{ as_enum<HairComponent>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-			case csg::HairComponent::REFLECTION:
-				return std::make_pair("Reflection", "reflection");
-			case csg::HairComponent::TRANSMISSION:
-				return std::make_pair("Transmission", "transmission");
+				CASE_PAIR(HairComponent::REFLECTION,   "Reflection",   "reflection");
+				CASE_PAIR(HairComponent::TRANSMISSION, "Transmission", "transmission");
 			default:
 				return std::make_pair("[Unknown Distribution]", "ERROR");
 			}
@@ -164,15 +154,13 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 			return std::make_pair("[Bad Distribution]", "ERROR");
 		}
 	}
-	case csg::NodeMetaEnum::PRINCIPLED_BSDF_DISTRIBUTION:
+	case NodeMetaEnum::PRINCIPLED_BSDF_DISTRIBUTION:
 	{
-		const auto opt_enum{ as_enum<csg::PrincipledBSDFDistribution>(option) };
+		const auto opt_enum{ as_enum<PrincipledBSDFDistribution>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-			case csg::PrincipledBSDFDistribution::GGX:
-				return std::make_pair("GGX", "ggx");
-			case csg::PrincipledBSDFDistribution::MULTISCATTER_GGX:
-				return std::make_pair("Multiscatter GGX", "multiscatter_ggx");
+				CASE_PAIR(PrincipledBSDFDistribution::GGX,              "GGX",              "ggx");
+				CASE_PAIR(PrincipledBSDFDistribution::MULTISCATTER_GGX, "Multiscatter GGX", "multiscatter_ggx");
 			default:
 				return std::make_pair("[Unknown Distribution]", "ERROR");
 			}
@@ -181,15 +169,13 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 			return std::make_pair("[Bad Distribution]", "ERROR");
 		}
 	}
-	case csg::NodeMetaEnum::PRINCIPLED_BSDF_SSS:
+	case NodeMetaEnum::PRINCIPLED_BSDF_SSS:
 	{
-		const auto opt_enum{ as_enum<csg::PrincipledBSDFSubsurfaceMethod>(option) };
+		const auto opt_enum{ as_enum<PrincipledBSDFSubsurfaceMethod>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-			case csg::PrincipledBSDFSubsurfaceMethod::BURLEY:
-				return std::make_pair("Burley", "burley");
-			case csg::PrincipledBSDFSubsurfaceMethod::RANDOM_WALK:
-				return std::make_pair("Random Walk", "random_walk");
+				CASE_PAIR(PrincipledBSDFSubsurfaceMethod::BURLEY,      "Burley",      "burley");
+				CASE_PAIR(PrincipledBSDFSubsurfaceMethod::RANDOM_WALK, "Random Walk", "random_walk");
 			default:
 				return std::make_pair("[Unknown Method]", "ERROR");
 			}
@@ -198,17 +184,14 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 			return std::make_pair("[Bad Method]", "ERROR");
 		}
 	}
-	case csg::NodeMetaEnum::PRINCIPLED_HAIR_COLORING:
+	case NodeMetaEnum::PRINCIPLED_HAIR_COLORING:
 	{
-		const auto opt_enum{ as_enum<csg::PrincipledHairColoring>(option) };
+		const auto opt_enum{ as_enum<PrincipledHairColoring>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-			case csg::PrincipledHairColoring::ABSORPTION_COEFFICIENT:
-				return std::make_pair("Absorption coefficient", "absorption_coefficient");
-			case csg::PrincipledHairColoring::MELANIN_CONCENTRATION:
-				return std::make_pair("Melanin concentration", "melanin_concentration");
-			case csg::PrincipledHairColoring::DIRECT_COLORING:
-				return std::make_pair("Direct coloring", "direct_coloring");
+				CASE_PAIR(PrincipledHairColoring::ABSORPTION_COEFFICIENT, "Absorption coefficient", "absorption_coefficient");
+				CASE_PAIR(PrincipledHairColoring::MELANIN_CONCENTRATION,  "Melanin concentration",  "melanin_concentration");
+				CASE_PAIR(PrincipledHairColoring::DIRECT_COLORING,        "Direct coloring",        "direct_coloring");
 			default:
 				return std::make_pair("[Unknown Coloring]", "ERROR");
 			}
@@ -217,110 +200,61 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 			return std::make_pair("[Bad Coloring]", "ERROR");
 		}
 	}
-	case csg::NodeMetaEnum::REFRACTION_DISTRIBUTION:
+	case NodeMetaEnum::REFRACTION_DISTRIBUTION:
 	{
-		const auto opt_enum{ as_enum<csg::RefractionDistribution>(option) };
+		const auto opt_enum{ as_enum<RefractionDistribution>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-			case csg::RefractionDistribution::BECKMANN:
-				return std::make_pair("Beckmann", "beckmann");
-			case csg::RefractionDistribution::GGX:
-				return std::make_pair("GGX", "ggx");
-			case csg::RefractionDistribution::SHARP:
-				return std::make_pair("Sharp", "sharp");
+				CASE_PAIR(RefractionDistribution::BECKMANN, "Beckmann", "beckmann");
+				CASE_PAIR(RefractionDistribution::GGX,      "GGX",      "ggx");
+				CASE_PAIR(RefractionDistribution::SHARP,    "Sharp",    "sharp");
 			default:
-				return std::make_pair("[Unknown]", "ERROR");
+				return std::make_pair("[Unknown Distribution]", "ERROR");
 			}
 		}
 		else {
 			return std::make_pair("[Bad Distribution]", "ERROR");
 		}
 	}
-	case csg::NodeMetaEnum::SSS_FALLOFF:
+	case NodeMetaEnum::SSS_FALLOFF:
 	{
-		const auto opt_enum{ as_enum<csg::SubsurfaceScatterFalloff>(option) };
+		const auto opt_enum{ as_enum<SubsurfaceScatterFalloff>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-			case csg::SubsurfaceScatterFalloff::BURLEY:
-				return std::make_pair("Burley", "burley");
-			case csg::SubsurfaceScatterFalloff::CUBIC:
-				return std::make_pair("Cubic", "cubic");
-			case csg::SubsurfaceScatterFalloff::GAUSSIAN:
-				return std::make_pair("Gaussian", "gaussian");
-			case csg::SubsurfaceScatterFalloff::RANDOM_WALK:
-				return std::make_pair("Random Walk", "random_walk");
+				CASE_PAIR(SubsurfaceScatterFalloff::BURLEY,      "Burley",      "burley");
+				CASE_PAIR(SubsurfaceScatterFalloff::CUBIC,       "Cubic",       "cubic");
+				CASE_PAIR(SubsurfaceScatterFalloff::GAUSSIAN,    "Gaussian",    "gaussian");
+				CASE_PAIR(SubsurfaceScatterFalloff::RANDOM_WALK, "Random Walk", "random_walk");
 			default:
-				return std::make_pair("[Unknown]", "ERROR");
+				return std::make_pair("[Unknown Falloff]", "ERROR");
 			}
 		}
 		else {
 			return std::make_pair("[Bad Falloff]", "ERROR");
 		}
 	}
-	case csg::NodeMetaEnum::TOON_COMPONENT:
+	case NodeMetaEnum::TOON_COMPONENT:
 	{
-		const auto opt_enum{ as_enum<csg::ToonComponent>(option) };
+		const auto opt_enum{ as_enum<ToonComponent>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-			case csg::ToonComponent::DIFFUSE:
-				return std::make_pair("Diffuse", "diffuse");
-			case csg::ToonComponent::GLOSSY:
-				return std::make_pair("Glossy", "glossy");
+				CASE_PAIR(ToonComponent::DIFFUSE, "Diffuse", "diffuse");
+				CASE_PAIR(ToonComponent::GLOSSY,  "Glossy",  "glossy");
 			default:
-				return std::make_pair("[Unknown]", "ERROR");
+				return std::make_pair("[Unknown Component]", "ERROR");
 			}
 		}
 		else {
 			return std::make_pair("[Bad Component]", "ERROR");
 		}
 	}
-	case csg::NodeMetaEnum::DISPLACEMENT_SPACE:
+	case NodeMetaEnum::DISPLACEMENT_SPACE:
 	{
-		const auto opt_enum{ as_enum<csg::DisplacementSpace>(option) };
+		const auto opt_enum{ as_enum<DisplacementSpace>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-			case csg::DisplacementSpace::OBJECT:
-				return std::make_pair("Object Space", "object");
-			case csg::DisplacementSpace::WORLD:
-				return std::make_pair("World Space", "world");
-			default:
-				return std::make_pair("[Unknown]", "ERROR");
-			}
-		}
-		else {
-			return std::make_pair("[Bad Space]", "ERROR");
-		}
-	}
-	case csg::NodeMetaEnum::NORMAL_MAP_SPACE:
-	{
-		const auto opt_enum{ as_enum<csg::NormalMapSpace>(option) };
-		if (opt_enum) {
-			switch (*opt_enum) {
-			case csg::NormalMapSpace::TANGENT:
-				return std::make_pair("Tangent", "tangent");
-			case csg::NormalMapSpace::OBJECT:
-				return std::make_pair("Object", "object");
-			case csg::NormalMapSpace::WORLD:
-				return std::make_pair("World", "world");
-			default:
-				return std::make_pair("[Unknown]", "ERROR");
-			}
-		}
-		else {
-			return std::make_pair("[Bad Space]", "ERROR");
-		}
-	}
-	case csg::NodeMetaEnum::VECTOR_DISPLACEMENT_SPACE:
-	{
-		const auto opt_enum{ as_enum<csg::VectorDisplacementSpace>(option) };
-		if (opt_enum) {
-			switch (*opt_enum) {
-			case csg::VectorDisplacementSpace::TANGENT:
-				return std::make_pair("Tangent", "tangent");
-			case csg::VectorDisplacementSpace::OBJECT:
-				return std::make_pair("Object", "object");
-			case csg::VectorDisplacementSpace::WORLD:
-				return std::make_pair("World", "world");
+				CASE_PAIR(DisplacementSpace::OBJECT, "Object", "object");
+				CASE_PAIR(DisplacementSpace::WORLD,  "World",  "world");
 			default:
 				return std::make_pair("[Unknown Space]", "ERROR");
 			}
@@ -329,17 +263,46 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 			return std::make_pair("[Bad Space]", "ERROR");
 		}
 	}
-	case csg::NodeMetaEnum::VECTOR_TRANSFORM_TYPE:
+	case NodeMetaEnum::NORMAL_MAP_SPACE:
 	{
-		const auto opt_enum{ as_enum<csg::VectorTransformType>(option) };
+		const auto opt_enum{ as_enum<NormalMapSpace>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-			case csg::VectorTransformType::POINT:
-				return std::make_pair("Point", "point");
-			case csg::VectorTransformType::VECTOR:
-				return std::make_pair("Vector", "vector");
-			case csg::VectorTransformType::NORMAL:
-				return std::make_pair("Normal", "normal");
+				CASE_PAIR(NormalMapSpace::TANGENT, "Tangent", "tangent");
+				CASE_PAIR(NormalMapSpace::OBJECT,  "Object",  "object");
+				CASE_PAIR(NormalMapSpace::WORLD,   "World",   "world");
+			default:
+				return std::make_pair("[Unknown Space]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Space]", "ERROR");
+		}
+	}
+	case NodeMetaEnum::VECTOR_DISPLACEMENT_SPACE:
+	{
+		const auto opt_enum{ as_enum<VectorDisplacementSpace>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(VectorDisplacementSpace::TANGENT, "Tangent", "tangent");
+				CASE_PAIR(VectorDisplacementSpace::OBJECT,  "Object",  "object");
+				CASE_PAIR(VectorDisplacementSpace::WORLD,   "World",   "world");
+			default:
+				return std::make_pair("[Unknown Space]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Space]", "ERROR");
+		}
+	}
+	case NodeMetaEnum::VECTOR_TRANSFORM_TYPE:
+	{
+		const auto opt_enum{ as_enum<VectorTransformType>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(VectorTransformType::POINT, "Point", "point");
+				CASE_PAIR(VectorTransformType::VECTOR, "Vector", "vector");
+				CASE_PAIR(VectorTransformType::NORMAL, "Normal", "normal");
 			default:
 				return std::make_pair("[Unknown Type]", "ERROR");
 			}
@@ -348,17 +311,14 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 			return std::make_pair("[Bad Type]", "ERROR");
 		}
 	}
-	case csg::NodeMetaEnum::VECTOR_TRANSFORM_SPACE:
+	case NodeMetaEnum::VECTOR_TRANSFORM_SPACE:
 	{
-		const auto opt_enum{ as_enum<csg::VectorTransformSpace>(option) };
+		const auto opt_enum{ as_enum<VectorTransformSpace>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-			case csg::VectorTransformSpace::CAMERA:
-				return std::make_pair("Camera", "camera");
-			case csg::VectorTransformSpace::OBJECT:
-				return std::make_pair("Object", "object");
-			case csg::VectorTransformSpace::WORLD:
-				return std::make_pair("World", "world");
+				CASE_PAIR(VectorTransformSpace::CAMERA, "Camera", "camera");
+				CASE_PAIR(VectorTransformSpace::OBJECT, "Object", "object");
+				CASE_PAIR(VectorTransformSpace::WORLD,  "World",  "world");
 			default:
 				return std::make_pair("[Unknown Space]", "ERROR");
 			}
@@ -368,13 +328,13 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		}
 	}
 	/*
-	case csg::NodeMetaEnum::COPY_PASTE:
+	case NodeMetaEnum::COPY_PASTE:
 	{
-		const auto opt_enum{ as_enum<csg::EnumName>(option) };
+		const auto opt_enum{ as_enum<EnumName>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-			case csg::EnumName::OPTION:
-				return std::make_pair("Option", "option");
+				CASE_PAIR(Enum::OPTION1, "Option1", "option1");
+				CASE_PAIR(Enum::OPTION2, "Option2", "option2");
 			default:
 				return std::make_pair("[Unknown]", "ERROR");
 			}
