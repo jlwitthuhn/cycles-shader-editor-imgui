@@ -451,6 +451,63 @@ static boost::optional<csg::VectorCurveSlotValue> deserialize_vector_curve(const
 	return result;
 }
 
+// For deserializing the old curve format
+// This program can only read this format, not write it
+static boost::optional<csg::Curve> deserialize_legacy_curve(const std::string& curve_string)
+{
+	const boost::char_separator<char> sep{ "," };
+	const boost::tokenizer<boost::char_separator<char>> tokenizer{ curve_string, sep };
+
+	auto token_iter = tokenizer.begin();
+
+	if (iter_has_contents(token_iter, tokenizer.end(), 3) == false) {
+		return boost::none;
+	}
+
+	const std::string identifier = *token_iter++;
+	const std::string interpolation_str = *token_iter++;
+	const std::string control_point_count_str = *token_iter++;
+
+	if (identifier != "curve00") {
+		return boost::none;
+	}
+
+	const auto get_interp_type = [](const std::string& name) -> csg::CurveInterp
+	{
+		if (name == "cubic_hermite") {
+			return csg::CurveInterp::CUBIC_HERMITE;
+		}
+		else {
+			return csg::CurveInterp::LINEAR;
+		}
+	};
+	const csg::CurveInterp point_interp{ get_interp_type(interpolation_str) };
+
+	const size_t point_count{ static_cast<size_t>(my_stoi(control_point_count_str)) };
+
+	if (iter_has_contents(token_iter, tokenizer.end(), point_count * 2) == false) {
+		return boost::none;
+	}
+
+	const csc::FloatRect valid_rect{ csc::Float2{ 0.0f, 0.0f }, csc::Float2{ 1.0f, 1.0f} };
+	std::vector<csg::CurvePoint> points;
+	for (size_t i = 0; i < point_count; i++) {
+		const float x{ my_stof(*token_iter++) };
+		const float y{ my_stof(*token_iter++) };
+		const csc::Float2 pos{ x, y };
+		if (valid_rect.contains(pos)) {
+			points.push_back(csg::CurvePoint{ pos, point_interp });
+		}
+	}
+
+	// Valid curves must have at least 2 points
+	if (points.size() < 2) {
+		return boost::none;
+	}
+
+	return csg::Curve{ valid_rect.begin(), valid_rect.end(), points };
+}
+
 boost::optional<csg::Graph> csg::deserialize_graph(const std::string& graph_string)
 {
 	const boost::char_separator<char> sep{ "|" };
@@ -623,6 +680,40 @@ boost::optional<csg::Graph> csg::deserialize_graph(const std::string& graph_stri
 					default:
 						// Not a type we know how to parse from a string, do nothing
 						break;
+					}
+				}
+			}
+			else {
+				// Here we can handle old parameters that don't exist anymore and translate them if possible
+				if (opt_node_type == csg::NodeType::RGB_CURVES) {
+					const boost::optional<csg::Curve> new_curve{ deserialize_legacy_curve(input_value) };
+					if (new_curve) {
+						const boost::optional<size_t> slot_index{ node->slot_index(csg::SlotDirection::INPUT, "curves") };
+						if (slot_index) {
+							const boost::optional<csg::Slot> slot{ node->slot(*slot_index) };
+							if (slot && slot->type() == csg::SlotType::CURVE_RGB) {
+								const boost::optional<csg::RGBCurveSlotValue> opt_curve{ slot->value->as<csg::RGBCurveSlotValue>() };
+								if (opt_curve) {
+									csg::RGBCurveSlotValue rgb_curve{ *opt_curve };
+									if (input_name == "rgb_curve") {
+										rgb_curve.set_all(*new_curve);
+										result.set_curve_rgb(csg::SlotId{ node_id, *slot_index }, rgb_curve);
+									}
+									else if (input_name == "r_curve") {
+										rgb_curve.set_r(*new_curve);
+										result.set_curve_rgb(csg::SlotId{ node_id, *slot_index }, rgb_curve);
+									}
+									else if (input_name == "g_curve") {
+										rgb_curve.set_r(*new_curve);
+										result.set_curve_rgb(csg::SlotId{ node_id, *slot_index }, rgb_curve);
+									}
+									else if (input_name == "b_curve") {
+										rgb_curve.set_r(*new_curve);
+										result.set_curve_rgb(csg::SlotId{ node_id, *slot_index }, rgb_curve);
+									}
+								}
+							}
+						}
 					}
 				}
 			}
