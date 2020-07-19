@@ -22,6 +22,7 @@ namespace cse {
 		ModalCurveEditor() { clear(); }
 
 		void clear();
+		void set_vector(const csg::RGBCurveSlotValue& value);
 		void set_vector(const csg::VectorCurveSlotValue& value);
 
 		void reset_curve();
@@ -29,6 +30,7 @@ namespace cse {
 		InterfaceEventArray run() const;
 		void do_event(const InterfaceEvent& event);
 
+		boost::optional<csg::RGBCurveSlotValue> take_rgb();
 		boost::optional<csg::VectorCurveSlotValue> take_vector();
 
 	private:
@@ -50,6 +52,7 @@ namespace cse {
 
 		CurveEditorMode mode{ CurveEditorMode::SELECT };
 
+		boost::optional<csg::RGBCurveSlotValue> rgb_curve;
 		boost::optional<csg::VectorCurveSlotValue> vector_curve;
 		std::array<float, CURVE_CACHE_ARRAY_SIZE> cached_curve;
 

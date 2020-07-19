@@ -32,8 +32,10 @@ static const char* type_name_str(csg::SlotType slot_type)
 		return "Vector";
 	case csg::SlotType::ENUM:
 		return "Enumeration";
+	case csg::SlotType::CURVE_RGB:
+		return "Curves (RGB)";
 	case csg::SlotType::CURVE_VECTOR:
-		return "Vector Curves";
+		return "Curves (Vector)";
 	default:
 		return "[ERROR]";
 	}
@@ -124,8 +126,14 @@ cse::InterfaceEventArray cse::ParamEditorSubwindow::run() const
 						ImGui::Text("Error: Failed to find editable vector.");
 					}
 				}
+				else if (opt_slot->type() == csg::SlotType::CURVE_RGB) {
+					if (ImGui::Button("Open RGB Curve Editor")) {
+						const InterfaceEvent new_event{ InterfaceEventType::MODAL_CURVE_EDITOR_SHOW, SlotIdDetails{ *selected_slot  }, boost::none };
+						result.push(new_event);
+					}
+				}
 				else if (opt_slot->type() == csg::SlotType::CURVE_VECTOR) {
-					if (ImGui::Button("Open Curve Editor")) {
+					if (ImGui::Button("Open Vector Curve Editor")) {
 						const InterfaceEvent new_event{ InterfaceEventType::MODAL_CURVE_EDITOR_SHOW, SlotIdDetails{ *selected_slot  }, boost::none };
 						result.push(new_event);
 					}

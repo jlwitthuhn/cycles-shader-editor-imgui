@@ -225,6 +225,11 @@ bool csg::Graph::set_vector(const SlotId slot_id, const csc::Float3 new_value)
 	return set_graph_value<VectorSlotValue>(nodes_by_id, slot_id, new_value);
 }
 
+bool csg::Graph::set_curve_rgb(const SlotId slot_id, const RGBCurveSlotValue& new_value)
+{
+	return set_graph_value<RGBCurveSlotValue>(nodes_by_id, slot_id, new_value);
+}
+
 bool csg::Graph::set_curve_vec(const SlotId slot_id, const VectorCurveSlotValue& new_value)
 {
 	return set_graph_value<VectorCurveSlotValue>(nodes_by_id, slot_id, new_value);

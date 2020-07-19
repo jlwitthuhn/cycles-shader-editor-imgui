@@ -10,6 +10,15 @@
 #include "shader_core/config.h"
 #include "shader_core/vector.h"
 
+static bool set_curve(csg::Curve& curve, const csg::Curve& new_value)
+{
+	if (new_value.min() != curve.min() || new_value.max() != curve.max()) {
+		return false;
+	}
+	curve = new_value;
+	return true;
+}
+
 bool csg::ColorSlotValue::operator==(const ColorSlotValue& other) const
 {
 	return value.similar(other.value, FLOAT_COMPARE_DIFF);
@@ -57,6 +66,45 @@ void csg::VectorSlotValue::set(const csc::Float3 new_value)
 bool csg::VectorSlotValue::operator==(const VectorSlotValue& other) const
 {
 	return value.similar(other.value, FLOAT_COMPARE_DIFF);
+}
+
+csg::RGBCurveSlotValue::RGBCurveSlotValue() :
+	curve_all{ csc::Float2{ 0.0f, 0.0f }, csc::Float2{ 1.0f, 1.0f } },
+	curve_r{ csc::Float2{ 0.0f, 0.0f }, csc::Float2{ 1.0f, 1.0f } },
+	curve_g{ csc::Float2{ 0.0f, 0.0f }, csc::Float2{ 1.0f, 1.0f } },
+	curve_b{ csc::Float2{ 0.0f, 0.0f }, csc::Float2{ 1.0f, 1.0f } }
+{
+
+}
+
+bool csg::RGBCurveSlotValue::set_all(const Curve& value)
+{
+	return set_curve(curve_all, value);
+}
+
+bool csg::RGBCurveSlotValue::set_r(const Curve& value)
+{
+	return set_curve(curve_r, value);
+}
+
+bool csg::RGBCurveSlotValue::set_g(const Curve& value)
+{
+	return set_curve(curve_g, value);
+}
+
+bool csg::RGBCurveSlotValue::set_b(const Curve& value)
+{
+	return set_curve(curve_b, value);
+}
+
+bool csg::RGBCurveSlotValue::operator==(const RGBCurveSlotValue& other) const
+{
+	return (
+		curve_all.similar(other.curve_all , FLOAT_COMPARE_DIFF) &&
+		curve_r.similar(other.curve_r, FLOAT_COMPARE_DIFF) &&
+		curve_g.similar(other.curve_g, FLOAT_COMPARE_DIFF) &&
+		curve_b.similar(other.curve_b, FLOAT_COMPARE_DIFF)
+		);
 }
 
 csg::VectorCurveSlotValue::VectorCurveSlotValue(const csc::Float2 min, const csc::Float2 max) :
@@ -113,19 +161,17 @@ bool csg::VectorCurveSlotValue::operator==(const VectorCurveSlotValue& other) co
 	);
 }
 
-bool csg::VectorCurveSlotValue::set_curve(Curve& curve, const Curve& new_value)
-{
-	if (new_value.min() != min || new_value.max() != max) {
-		return false;
-	}
-	curve = new_value;
-	return true;
-}
-
 csg::SlotValue& csg::SlotValue::operator=(const SlotValue& other)
 {
 	_type = other._type;
 	value_union = other.value_union;
+
+	if (other.curve_rgb_value) {
+		curve_rgb_value = std::make_unique<RGBCurveSlotValue>(*other.curve_rgb_value);
+	}
+	else {
+		curve_vector_value = std::unique_ptr<VectorCurveSlotValue>();
+	}
 
 	if (other.curve_vector_value) {
 		curve_vector_value = std::make_unique<VectorCurveSlotValue>(*other.curve_vector_value);
@@ -175,6 +221,15 @@ bool csg::SlotValue::operator==(const SlotValue& other) const
 		case SlotType::VECTOR:
 		{
 			if (value_union.vector_value != other.value_union.vector_value) {
+				return false;
+			}
+			break;
+		}
+		case SlotType::CURVE_RGB:
+		{
+			assert(curve_rgb_value.get() != nullptr);
+			assert(other.curve_rgb_value.get() != nullptr);
+			if (*curve_rgb_value != *other.curve_rgb_value) {
 				return false;
 			}
 			break;

@@ -605,7 +605,18 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 				const boost::optional<std::shared_ptr<const csg::Node>> the_node{ the_graph->get(slot_id.node_id()) };
 				if (the_node) {
 					const boost::optional<csg::Slot> the_slot{ the_node.value()->slot(slot_id.index()) };
-					if (the_slot && the_slot->type() == csg::SlotType::CURVE_VECTOR) {
+					if (the_slot && the_slot->type() == csg::SlotType::CURVE_RGB) {
+						const boost::optional<csg::SlotValue> slot_value{ the_slot->value };
+						if (slot_value) {
+							const boost::optional<csg::RGBCurveSlotValue> curve_slot_value{ slot_value->as<csg::RGBCurveSlotValue>() };
+							if (curve_slot_value) {
+								// We finally did it, this is valid curve
+								modal_curve_editor.set_vector(*curve_slot_value);
+								modal_window = ModalWindow::CURVE_EDITOR;
+							}
+						}
+					}
+					else if (the_slot && the_slot->type() == csg::SlotType::CURVE_VECTOR) {
 						const boost::optional<csg::SlotValue> slot_value{ the_slot->value };
 						if (slot_value) {
 							const boost::optional<csg::VectorCurveSlotValue> curve_slot_value{ slot_value->as<csg::VectorCurveSlotValue>() };
@@ -617,6 +628,19 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 						}
 					}
 				}
+				break;
+			}
+			case InterfaceEventType::MODAL_CURVE_EDITOR_COMMIT_RGB:
+			{
+				assert(selected_slot.has_value());
+				const csg::SlotId slot_id{ *selected_slot };
+				const boost::optional<csg::RGBCurveSlotValue> rgb_curve{ modal_curve_editor.take_rgb() };
+				if (rgb_curve) {
+					the_graph->set_curve_rgb(slot_id, *rgb_curve);
+				}
+				const InterfaceEvent close_event{ InterfaceEventType::MODAL_CURVE_EDITOR_CLOSE };
+				do_event(close_event);
+				should_do_undo_push = true;
 				break;
 			}
 			case InterfaceEventType::MODAL_CURVE_EDITOR_COMMIT_VEC:

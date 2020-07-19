@@ -10,10 +10,18 @@ static const ImU32 COLOR_VIEW_VALUE  { ImGui::ColorConvertFloat4ToU32(ImVec4(1.0
 
 void cse::ModalCurveEditor::clear()
 {
+	rgb_curve = boost::none;
 	vector_curve = boost::none;
 	cached_curve.fill(0.0f);
 	selected_tab = CurveEditorTab::DEFAULT;
 	selected_point = boost::none;
+}
+
+void cse::ModalCurveEditor::set_vector(const csg::RGBCurveSlotValue& value)
+{
+	clear();
+	rgb_curve = value;
+	select_tab(CurveEditorTab::DEFAULT);
 }
 
 void cse::ModalCurveEditor::set_vector(const csg::VectorCurveSlotValue& value)
@@ -25,7 +33,13 @@ void cse::ModalCurveEditor::set_vector(const csg::VectorCurveSlotValue& value)
 
 void cse::ModalCurveEditor::reset_curve()
 {
+	if (rgb_curve) {
+		assert(vector_curve.has_value() == false);
+		rgb_curve = csg::RGBCurveSlotValue{};
+		rebuild_curve_cache();
+	}
 	if (vector_curve) {
+		assert(rgb_curve.has_value() == false);
 		vector_curve = csg::VectorCurveSlotValue{ csc::Float2{-1.0f, -1.0f}, csc::Float2{1.0f, 1.0f} };
 		rebuild_curve_cache();
 	}
@@ -37,7 +51,7 @@ cse::InterfaceEventArray cse::ModalCurveEditor::run() const
 
 	const csg::Curve current_curve{ get_current_curve() };
 
-	if (ImGui::Begin("Curve Editor - Vector Mode", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+	if (ImGui::Begin("Curve Editor", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
 		ImGui::Columns(2, "CurveEditor", false);
 		ImGui::SetColumnWidth(-1, 200.0f);
 
@@ -63,24 +77,26 @@ cse::InterfaceEventArray cse::ModalCurveEditor::run() const
 			result.push(mode_event);
 		}
 
-		ImGui::NewLine();
+		// Do not show bounds controls for RGB
+		if (rgb_curve.has_value() == false) {
+			ImGui::NewLine();
+			ImGui::Text("Bounds:");
+			const std::array<float, 2> bounds_min{ current_curve.min().x, current_curve.min().y };
+			std::array<float, 2> bounds_min_mut{ bounds_min };
+			ImGui::InputFloat2("Min", bounds_min_mut.data(), 2, ImGuiInputTextFlags_EnterReturnsTrue);
+			const std::array<float, 2> bounds_max{ current_curve.max().x, current_curve.max().y };
+			std::array<float, 2> bounds_max_mut{ bounds_max };
+			ImGui::InputFloat2("Max", bounds_max_mut.data(), 2, ImGuiInputTextFlags_EnterReturnsTrue);
 
-		ImGui::Text("Bounds:");
-		const std::array<float, 2> bounds_min{ current_curve.min().x, current_curve.min().y };
-		std::array<float, 2> bounds_min_mut{ bounds_min };
-		ImGui::InputFloat2("Min", bounds_min_mut.data(), 2, ImGuiInputTextFlags_EnterReturnsTrue);
-		const std::array<float, 2> bounds_max{ current_curve.max().x, current_curve.max().y };
-		std::array<float, 2> bounds_max_mut{ bounds_max };
-		ImGui::InputFloat2("Max", bounds_max_mut.data(), 2, ImGuiInputTextFlags_EnterReturnsTrue);
-
-		if (bounds_min != bounds_min_mut || bounds_max != bounds_max_mut) {
-			const csc::FloatRect bounds_rect{ csc::Float2{ bounds_min_mut[0], bounds_min_mut[1] }, csc::Float2{ bounds_max_mut[0], bounds_max_mut[1] } };
-			const InterfaceEvent bounds_event{
-				InterfaceEventType::CURVE_EDIT_SET_BOUNDS,
-				FloatRectDetails{ bounds_rect },
-				SubwindowId::CURVE_EDITOR
-			};
-			result.push(bounds_event);
+			if (bounds_min != bounds_min_mut || bounds_max != bounds_max_mut) {
+				const csc::FloatRect bounds_rect{ csc::Float2{ bounds_min_mut[0], bounds_min_mut[1] }, csc::Float2{ bounds_max_mut[0], bounds_max_mut[1] } };
+				const InterfaceEvent bounds_event{
+					InterfaceEventType::CURVE_EDIT_SET_BOUNDS,
+					FloatRectDetails{ bounds_rect },
+					SubwindowId::CURVE_EDITOR
+				};
+				result.push(bounds_event);
+			}
 		}
 
 		ImGui::NewLine();
@@ -122,29 +138,67 @@ cse::InterfaceEventArray cse::ModalCurveEditor::run() const
 		ImGui::SetColumnWidth(-1, 500.0f);
 
 		if (ImGui::BeginTabBar("Curve Select")) {
-			const bool selected_x{ selected_tab == CurveEditorTab::X || selected_tab == CurveEditorTab::DEFAULT };
-			if (ImGui::BeginTabItem("X")) {
-				if (selected_x == false) {
-					const InterfaceEvent tab_event{ InterfaceEventType::CURVE_EDIT_SET_TAB, CurveEditorTabDetails{ CurveEditorTab::X } };
-					result.push(tab_event);
+			if (rgb_curve) {
+				assert(vector_curve.has_value() == false);
+				const bool selected_all{ selected_tab == CurveEditorTab::ALL || selected_tab == CurveEditorTab::DEFAULT };
+				if (ImGui::BeginTabItem("All")) {
+					if (selected_all == false) {
+						const InterfaceEvent tab_event{ InterfaceEventType::CURVE_EDIT_SET_TAB, CurveEditorTabDetails{ CurveEditorTab::ALL } };
+						result.push(tab_event);
+					}
+					ImGui::EndTabItem();
 				}
-				ImGui::EndTabItem();
+				const bool selected_r{ selected_tab == CurveEditorTab::R };
+				if (ImGui::BeginTabItem("R")) {
+					if (selected_r == false) {
+						const InterfaceEvent tab_event{ InterfaceEventType::CURVE_EDIT_SET_TAB, CurveEditorTabDetails{ CurveEditorTab::R } };
+						result.push(tab_event);
+					}
+					ImGui::EndTabItem();
+				}
+				const bool selected_g{ selected_tab == CurveEditorTab::G };
+				if (ImGui::BeginTabItem("G")) {
+					if (selected_g == false) {
+						const InterfaceEvent tab_event{ InterfaceEventType::CURVE_EDIT_SET_TAB, CurveEditorTabDetails{ CurveEditorTab::G } };
+						result.push(tab_event);
+					}
+					ImGui::EndTabItem();
+				}
+				const bool selected_b{ selected_tab == CurveEditorTab::B };
+				if (ImGui::BeginTabItem("B")) {
+					if (selected_b == false) {
+						const InterfaceEvent tab_event{ InterfaceEventType::CURVE_EDIT_SET_TAB, CurveEditorTabDetails{ CurveEditorTab::B } };
+						result.push(tab_event);
+					}
+					ImGui::EndTabItem();
+				}
 			}
-			const bool selected_y{ selected_tab == CurveEditorTab::Y };
-			if (ImGui::BeginTabItem("Y")) {
-				if (selected_y == false) {
-					const InterfaceEvent tab_event{ InterfaceEventType::CURVE_EDIT_SET_TAB, CurveEditorTabDetails{ CurveEditorTab::Y } };
-					result.push(tab_event);
+			if (vector_curve) {
+				assert(rgb_curve.has_value() == false);
+				const bool selected_x{ selected_tab == CurveEditorTab::X || selected_tab == CurveEditorTab::DEFAULT };
+				if (ImGui::BeginTabItem("X")) {
+					if (selected_x == false) {
+						const InterfaceEvent tab_event{ InterfaceEventType::CURVE_EDIT_SET_TAB, CurveEditorTabDetails{ CurveEditorTab::X } };
+						result.push(tab_event);
+					}
+					ImGui::EndTabItem();
 				}
-				ImGui::EndTabItem();
-			}
-			const bool selected_z{ selected_tab == CurveEditorTab::Z };
-			if (ImGui::BeginTabItem("Z")) {
-				if (selected_z == false) {
-					const InterfaceEvent tab_event{ InterfaceEventType::CURVE_EDIT_SET_TAB, CurveEditorTabDetails{ CurveEditorTab::Z } };
-					result.push(tab_event);
+				const bool selected_y{ selected_tab == CurveEditorTab::Y };
+				if (ImGui::BeginTabItem("Y")) {
+					if (selected_y == false) {
+						const InterfaceEvent tab_event{ InterfaceEventType::CURVE_EDIT_SET_TAB, CurveEditorTabDetails{ CurveEditorTab::Y } };
+						result.push(tab_event);
+					}
+					ImGui::EndTabItem();
 				}
-				ImGui::EndTabItem();
+				const bool selected_z{ selected_tab == CurveEditorTab::Z };
+				if (ImGui::BeginTabItem("Z")) {
+					if (selected_z == false) {
+						const InterfaceEvent tab_event{ InterfaceEventType::CURVE_EDIT_SET_TAB, CurveEditorTabDetails{ CurveEditorTab::Z } };
+						result.push(tab_event);
+					}
+					ImGui::EndTabItem();
+				}
 			}
 			ImGui::EndTabBar();
 		}
@@ -167,8 +221,14 @@ cse::InterfaceEventArray cse::ModalCurveEditor::run() const
 		// Columns are weird about width, we need another dummy here
 		ImGui::Dummy(ImVec2{ 700.0f, 1.0f });
 		if (ImGui::Button("Save")) {
-			InterfaceEvent save_event{ InterfaceEventType::MODAL_CURVE_EDITOR_COMMIT_VEC };
-			result.push(save_event);
+			if (rgb_curve) {
+				InterfaceEvent save_event{ InterfaceEventType::MODAL_CURVE_EDITOR_COMMIT_RGB };
+				result.push(save_event);
+			}
+			if (vector_curve) {
+				InterfaceEvent save_event{ InterfaceEventType::MODAL_CURVE_EDITOR_COMMIT_VEC };
+				result.push(save_event);
+			}
 		}
 		ImGui::SameLine();
 		ImGui::Dummy(ImVec2{ 10.0f, 1.0f });
@@ -271,9 +331,22 @@ void cse::ModalCurveEditor::do_event(const InterfaceEvent& event)
 	}
 }
 
+boost::optional<csg::RGBCurveSlotValue> cse::ModalCurveEditor::take_rgb()
+{
+	if (rgb_curve) {
+		assert(vector_curve.has_value() == false);
+		const boost::optional<csg::RGBCurveSlotValue> result{ *rgb_curve };
+		clear();
+		return result;
+	}
+
+	return boost::none;
+}
+
 boost::optional<csg::VectorCurveSlotValue> cse::ModalCurveEditor::take_vector()
 {
 	if (vector_curve) {
+		assert(rgb_curve.has_value() == false);
 		const boost::optional<csg::VectorCurveSlotValue> result{ *vector_curve };
 		clear();
 		return result;
@@ -366,7 +439,13 @@ void cse::ModalCurveEditor::select_tab(const CurveEditorTab tab)
 
 void cse::ModalCurveEditor::rebuild_curve_cache()
 {
+	if (rgb_curve) {
+		assert(vector_curve.has_value() == false);
+		cached_curve = get_current_curve().eval_curve<CURVE_CACHE_ARRAY_SIZE>();
+		// Output is already in the range [0, 1] for RGB values
+	}
 	if (vector_curve) {
+		assert(rgb_curve.has_value() == false);
 		cached_curve = get_current_curve().eval_curve<CURVE_CACHE_ARRAY_SIZE>();
 		// Scale output to the range [0, 1] for display
 		const csc::Float2 min{ vector_curve->get_min() };
@@ -465,7 +544,25 @@ boost::optional<size_t> cse::ModalCurveEditor::view_get_point(const csc::Float2 
 
 csg::Curve cse::ModalCurveEditor::get_current_curve() const
 {
+	if (rgb_curve) {
+		assert(vector_curve.has_value() == false);
+		switch (selected_tab) {
+		case CurveEditorTab::DEFAULT:
+		case CurveEditorTab::ALL:
+			return rgb_curve->get_all();
+		case CurveEditorTab::R:
+			return rgb_curve->get_r();
+		case CurveEditorTab::G:
+			return rgb_curve->get_g();
+		case CurveEditorTab::B:
+			return rgb_curve->get_b();
+		default:
+			// A non-vector tab is selected when a vector curve is set
+			assert(false);
+		}
+	}
 	if (vector_curve) {
+		assert(rgb_curve.has_value() == false);
 		switch (selected_tab) {
 		case CurveEditorTab::DEFAULT:
 		case CurveEditorTab::X:
@@ -486,7 +583,25 @@ csg::Curve cse::ModalCurveEditor::get_current_curve() const
 
 bool cse::ModalCurveEditor::commit_curve(const csg::Curve& curve)
 {
+	if (rgb_curve) {
+		assert(vector_curve.has_value() == false);
+		switch (selected_tab) {
+		case CurveEditorTab::DEFAULT:
+		case CurveEditorTab::ALL:
+			return rgb_curve->set_all(curve);
+		case CurveEditorTab::R:
+			return rgb_curve->set_r(curve);
+		case CurveEditorTab::G:
+			return rgb_curve->set_g(curve);
+		case CurveEditorTab::B:
+			return rgb_curve->set_b(curve);
+		default:
+			// A non-rgb tab is selected when a rgb curve is set
+			assert(false);
+		}
+	}
 	if (vector_curve) {
+		assert(rgb_curve.has_value() == false);
 		switch (selected_tab) {
 		case CurveEditorTab::DEFAULT:
 		case CurveEditorTab::X:
@@ -500,6 +615,6 @@ bool cse::ModalCurveEditor::commit_curve(const csg::Curve& curve)
 			assert(false);
 		}
 	}
-
+	// Unreachable return to avoid compiler warning
 	return false;
 }

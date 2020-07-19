@@ -26,6 +26,15 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Displacement", "displacement", SlotDirection::INPUT, SlotType::VECTOR });
 		break;
 		//////
+		// Color
+		//////
+	case NodeType::RGB_CURVES:
+		_slots.push_back(Slot{ "Color",  "color",  SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Curves", "curves", RGBCurveSlotValue{} });
+		_slots.push_back(Slot{ "Fac",    "fac",    FloatSlotValue{ 1.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Color",  "color",  ColorSlotValue{ csc::Float3{ 0.0f, 0.0f, 0.0f} } });
+		break;
+		//////
 		// Shader
 		//////
 	case NodeType::ADD_SHADER:

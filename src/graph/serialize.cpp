@@ -125,6 +125,20 @@ static std::string serialize_slot_value(const csg::SlotValue& slot_value)
 			return sstream.str();
 		}
 		break;
+	case csg::SlotType::CURVE_RGB:
+		if (slot_value.as<csg::RGBCurveSlotValue>().has_value()) {
+			constexpr char CURVE_SEPARATOR{ '/' };
+			const csg::RGBCurveSlotValue rgb_slot_value{ slot_value.as<csg::RGBCurveSlotValue>().value() };
+			std::stringstream sstream;
+			sstream << std::fixed << std::setprecision(SERIALIZED_GRAPH_PRECISION);
+			sstream << "curve_rgb_00" << CURVE_SEPARATOR << "00" << CURVE_SEPARATOR;
+			sstream << serialize_curve(rgb_slot_value.get_all()) << CURVE_SEPARATOR;
+			sstream << serialize_curve(rgb_slot_value.get_r()) << CURVE_SEPARATOR;
+			sstream << serialize_curve(rgb_slot_value.get_g()) << CURVE_SEPARATOR;
+			sstream << serialize_curve(rgb_slot_value.get_b());
+			return sstream.str();
+		}
+		break;
 	case csg::SlotType::CURVE_VECTOR:
 		if (slot_value.as<csg::VectorCurveSlotValue>().has_value()) {
 			constexpr char CURVE_SEPARATOR{ '/' };
@@ -359,6 +373,45 @@ static boost::optional<csg::Curve> deserialize_curve(const std::string& curve, c
 	}
 }
 
+static boost::optional<csg::RGBCurveSlotValue> deserialize_rgb_curve(const std::string& rgb_curve)
+{
+	const boost::char_separator<char> sep{ "/" };
+	const boost::tokenizer<boost::char_separator<char>> tokenizer{ rgb_curve, sep };
+
+	auto token_iter = tokenizer.begin();
+
+	if (iter_has_contents(token_iter, tokenizer.end(), 6) == false) {
+		return boost::none;
+	}
+
+	const std::string curve_type{ *token_iter++ };
+	const std::string curve_version{ *token_iter++ };
+
+	const csc::Float2 min{ 0.0f, 0.0f };
+	const csc::Float2 max{ 1.0f, 1.0f };
+
+	const boost::optional<csg::Curve> opt_all{ deserialize_curve(*token_iter++, min, max) };
+	const boost::optional<csg::Curve> opt_r{ deserialize_curve(*token_iter++, min, max) };
+	const boost::optional<csg::Curve> opt_g{ deserialize_curve(*token_iter++, min, max) };
+	const boost::optional<csg::Curve> opt_b{ deserialize_curve(*token_iter++, min, max) };
+
+	csg::RGBCurveSlotValue result{};
+	if (opt_all) {
+		result.set_all(*opt_all);
+	}
+	if (opt_r) {
+		result.set_r(*opt_r);
+	}
+	if (opt_g) {
+		result.set_g(*opt_g);
+	}
+	if (opt_b) {
+		result.set_b(*opt_b);
+	}
+
+	return result;
+}
+
 static boost::optional<csg::VectorCurveSlotValue> deserialize_vector_curve(const std::string& vector_curve)
 {
 	const boost::char_separator<char> sep{ "/" };
@@ -549,6 +602,14 @@ boost::optional<csg::Graph> csg::deserialize_graph(const std::string& graph_stri
 					{
 						const csc::Float3 float3_value{ my_stof3(input_value) };
 						result.set_vector(slot_id, float3_value);
+						break;
+					}
+					case SlotType::CURVE_RGB:
+					{
+						const boost::optional<csg::RGBCurveSlotValue> opt_curve_value{ deserialize_rgb_curve(input_value) };
+						if (opt_curve_value) {
+							result.set_curve_rgb(slot_id, *opt_curve_value);
+						}
 						break;
 					}
 					case SlotType::CURVE_VECTOR:

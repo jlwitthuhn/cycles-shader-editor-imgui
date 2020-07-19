@@ -25,6 +25,7 @@ namespace csg {
 		FLOAT,
 		VECTOR,
 		ENUM,
+		CURVE_RGB,
 		CURVE_VECTOR,
 	};
 
@@ -144,6 +145,31 @@ namespace csg {
 		size_t _precision;
 	};
 
+	class RGBCurveSlotValue {
+	public:
+		RGBCurveSlotValue();
+
+		Curve get_all() const { return curve_all; }
+		Curve get_r() const { return curve_r; }
+		Curve get_g() const { return curve_g; }
+		Curve get_b() const { return curve_b; }
+
+		void set(const RGBCurveSlotValue& value) { *this = RGBCurveSlotValue{ value }; }
+		bool set_all (const Curve& value);
+		bool set_r(const Curve& value);
+		bool set_g(const Curve& value);
+		bool set_b(const Curve& value);
+
+		bool operator==(const RGBCurveSlotValue& other) const;
+		bool operator!=(const RGBCurveSlotValue& other) const { return operator==(other) == false; }
+
+	private:
+		Curve curve_all;
+		Curve curve_r;
+		Curve curve_g;
+		Curve curve_b;
+	};
+
 	class VectorCurveSlotValue {
 	public:
 		VectorCurveSlotValue(csc::Float2 min, csc::Float2 max);
@@ -165,8 +191,6 @@ namespace csg {
 		bool operator!=(const VectorCurveSlotValue& other) const { return operator==(other) == false; }
 
 	private:
-		bool set_curve(Curve& curve, const Curve& new_value);
-
 		Curve curve_x;
 		Curve curve_y;
 		Curve curve_z;
@@ -182,6 +206,7 @@ namespace csg {
 		SlotValue(FloatSlotValue float_value) :   _type{ SlotType::FLOAT },  value_union{ float_value } {}
 		SlotValue(VectorSlotValue vector_value) : _type{ SlotType::VECTOR }, value_union{ vector_value } {}
 
+		SlotValue(const RGBCurveSlotValue& curve_value) : _type{ SlotType::CURVE_RGB }, curve_rgb_value{ std::make_unique<RGBCurveSlotValue>(curve_value) } {}
 		SlotValue(const VectorCurveSlotValue& curve_value) : _type{ SlotType::CURVE_VECTOR }, curve_vector_value{ std::make_unique<VectorCurveSlotValue>(curve_value) } {}
 
 		// Copy constructor and copy assignment operator, constructor defers to assignment
@@ -207,6 +232,9 @@ namespace csg {
 		}
 		template <> boost::optional<VectorSlotValue> as<VectorSlotValue>() const {
 			return (type() != SlotType::VECTOR) ? boost::none : boost::optional<VectorSlotValue>{ value_union.vector_value };
+		};
+		template <> boost::optional<RGBCurveSlotValue> as<RGBCurveSlotValue>() const {
+			return (type() != SlotType::CURVE_RGB && curve_rgb_value) ? boost::none : boost::optional<RGBCurveSlotValue>{ *curve_rgb_value };
 		};
 		template <> boost::optional<VectorCurveSlotValue> as<VectorCurveSlotValue>() const {
 			return (type() != SlotType::CURVE_VECTOR && curve_vector_value) ? boost::none : boost::optional<VectorCurveSlotValue>{ *curve_vector_value };
@@ -238,6 +266,8 @@ namespace csg {
 
 		// Pointers to non-union types here
 		// Be sure to update copy assignment operator when a new pointer is added
+		// These types are not part of the union because they contain heap-allocated resources that must be freed
+		std::unique_ptr<RGBCurveSlotValue> curve_rgb_value;
 		std::unique_ptr<VectorCurveSlotValue> curve_vector_value;
 	};
 
@@ -263,6 +293,9 @@ namespace csg {
 		{}
 		Slot(const char* disp_name, const char* name, VectorSlotValue vector_value, bool has_pin = true) :
 			value{ vector_value }, _disp_name{ disp_name }, _name{ name }, _dir{ SlotDirection::INPUT }, _type{ SlotType::VECTOR }, _has_pin{ has_pin }
+		{}
+		Slot(const char* disp_name, const char* name, RGBCurveSlotValue rgb_value, bool has_pin = false) :
+			value{ rgb_value }, _disp_name{ disp_name }, _name{ name }, _dir{ SlotDirection::INPUT }, _type{ SlotType::CURVE_RGB }, _has_pin{ has_pin }
 		{}
 		Slot(const char* disp_name, const char* name, VectorCurveSlotValue vector_value, bool has_pin = false) :
 			value{ vector_value }, _disp_name{ disp_name }, _name{ name }, _dir{ SlotDirection::INPUT }, _type{ SlotType::CURVE_VECTOR }, _has_pin{ has_pin }
