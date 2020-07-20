@@ -253,13 +253,13 @@ namespace csg {
 			return (type() != SlotType::VECTOR) ? boost::none : boost::optional<VectorSlotValue>{ value_union.vector_value };
 		};
 		template <> boost::optional<RGBCurveSlotValue> as<RGBCurveSlotValue>() const {
-			return (type() != SlotType::CURVE_RGB && curve_rgb_value) ? boost::none : boost::optional<RGBCurveSlotValue>{ *curve_rgb_value };
+			return (type() != SlotType::CURVE_RGB || curve_rgb_value == false) ? boost::none : boost::optional<RGBCurveSlotValue>{ *curve_rgb_value };
 		};
 		template <> boost::optional<VectorCurveSlotValue> as<VectorCurveSlotValue>() const {
-			return (type() != SlotType::CURVE_VECTOR && curve_vector_value) ? boost::none : boost::optional<VectorCurveSlotValue>{ *curve_vector_value };
+			return (type() != SlotType::CURVE_VECTOR || curve_vector_value == false) ? boost::none : boost::optional<VectorCurveSlotValue>{ *curve_vector_value };
 		};
 		template <> boost::optional<ColorRampSlotValue> as<ColorRampSlotValue>() const {
-			return (type() != SlotType::COLOR_RAMP && color_ramp_value) ? boost::none : boost::optional<ColorRampSlotValue>{ *color_ramp_value };
+			return (type() != SlotType::COLOR_RAMP || color_ramp_value == false) ? boost::none : boost::optional<ColorRampSlotValue>{ *color_ramp_value };
 		};
 
 		bool operator==(const SlotValue& other) const;

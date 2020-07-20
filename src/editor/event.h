@@ -119,8 +119,7 @@ namespace cse {
 	typedef SimpleDetails<csg::SlotId,
 		InterfaceEventType::CONNECTION_BEGIN,
 		InterfaceEventType::CONNECTION_ALTER,
-		InterfaceEventType::SELECT_SLOT,
-		InterfaceEventType::MODAL_CURVE_EDITOR_SHOW
+		InterfaceEventType::SELECT_SLOT
 		> SlotIdDetails;
 	typedef SimpleDetails<csc::Float3,
 		InterfaceEventType::PARAM_EDIT_COLOR_INIT,
@@ -265,7 +264,6 @@ namespace cse {
 		boost::optional<SlotIdDetails> details_connection_begin() const;
 		boost::optional<SlotIdDetails> details_connection_alter() const;
 		boost::optional<SlotIdDetails> details_select_slot() const;
-		boost::optional<SlotIdDetails> details_modal_show_curve_editor() const;
 		boost::optional<Float3Details> details_param_edit_color_init() const;
 		boost::optional<Float3Details> details_param_edit_color_change() const;
 		boost::optional<FloatRectDetails> details_curve_edit_set_bounds() const;

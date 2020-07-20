@@ -131,13 +131,13 @@ cse::InterfaceEventArray cse::ParamEditorSubwindow::run() const
 				}
 				else if (opt_slot->type() == csg::SlotType::CURVE_RGB) {
 					if (ImGui::Button("Open RGB Curve Editor")) {
-						const InterfaceEvent new_event{ InterfaceEventType::MODAL_CURVE_EDITOR_SHOW, SlotIdDetails{ *selected_slot  }, boost::none };
+						const InterfaceEvent new_event{ InterfaceEventType::MODAL_CURVE_EDITOR_SHOW  };
 						result.push(new_event);
 					}
 				}
 				else if (opt_slot->type() == csg::SlotType::CURVE_VECTOR) {
 					if (ImGui::Button("Open Vector Curve Editor")) {
-						const InterfaceEvent new_event{ InterfaceEventType::MODAL_CURVE_EDITOR_SHOW, SlotIdDetails{ *selected_slot  }, boost::none };
+						const InterfaceEvent new_event{ InterfaceEventType::MODAL_CURVE_EDITOR_SHOW };
 						result.push(new_event);
 					}
 				}

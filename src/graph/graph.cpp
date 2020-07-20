@@ -109,11 +109,12 @@ boost::optional<csg::SlotValue> csg::Graph::get_slot_value(SlotId slot_id) const
 {
 	const auto opt_node{ get(slot_id.node_id()) };
 	if (opt_node) {
-		return (*opt_node)->slot(slot_id.index())->value;
+		const boost::optional<Slot> opt_slot{ (*opt_node)->slot(slot_id.index()) };
+		if (opt_slot) {
+			return opt_slot->value;
+		}
 	}
-	else {
-		return boost::none;
-	}
+	return boost::none;
 }
 
 csg::NodeId csg::Graph::add(const NodeType type, const csc::Int2 pos)

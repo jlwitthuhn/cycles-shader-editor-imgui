@@ -68,9 +68,9 @@ namespace csg {
 		boost::optional<SlotValue> get_slot_value(SlotId slot_id) const;
 		template <typename T> boost::optional<T> get_slot_value_as(SlotId slot_id) const
 		{
-			const boost::optional<SlotValue> value{ get_slot_value(slot_id) };
-			if (value) {
-				return value->as<T>();
+			const boost::optional<SlotValue> opt_value{ get_slot_value(slot_id) };
+			if (opt_value) {
+				return opt_value->as<T>();
 			}
 			else {
 				return boost::none;

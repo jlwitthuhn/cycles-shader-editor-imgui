@@ -599,33 +599,17 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 			case InterfaceEventType::MODAL_CURVE_EDITOR_SHOW:
 			{
 				// Fetch the curve from the graph
-				const boost::optional<SlotIdDetails> details{ event.details_modal_show_curve_editor() };
-				assert(details.has_value());
-				const csg::SlotId slot_id{ details->value };
-				const boost::optional<std::shared_ptr<const csg::Node>> the_node{ the_graph->get(slot_id.node_id()) };
-				if (the_node) {
-					const boost::optional<csg::Slot> the_slot{ the_node.value()->slot(slot_id.index()) };
-					if (the_slot && the_slot->type() == csg::SlotType::CURVE_RGB) {
-						const boost::optional<csg::SlotValue> slot_value{ the_slot->value };
-						if (slot_value) {
-							const boost::optional<csg::RGBCurveSlotValue> curve_slot_value{ slot_value->as<csg::RGBCurveSlotValue>() };
-							if (curve_slot_value) {
-								// We finally did it, this is valid curve
-								modal_curve_editor.set_vector(*curve_slot_value);
-								modal_window = ModalWindow::CURVE_EDITOR;
-							}
-						}
+				if (selected_slot) {
+					const csg::SlotId slot_id{ *selected_slot };
+					const auto this_slot_rgb{ the_graph->get_slot_value_as<csg::RGBCurveSlotValue>(slot_id) };
+					const auto this_slot_vec{ the_graph->get_slot_value_as<csg::VectorCurveSlotValue>(slot_id) };
+					if (this_slot_rgb) {
+						modal_curve_editor.set_vector(*this_slot_rgb);
+						modal_window = ModalWindow::CURVE_EDITOR;
 					}
-					else if (the_slot && the_slot->type() == csg::SlotType::CURVE_VECTOR) {
-						const boost::optional<csg::SlotValue> slot_value{ the_slot->value };
-						if (slot_value) {
-							const boost::optional<csg::VectorCurveSlotValue> curve_slot_value{ slot_value->as<csg::VectorCurveSlotValue>() };
-							if (curve_slot_value) {
-								// We finally did it, this is valid curve
-								modal_curve_editor.set_vector(*curve_slot_value);
-								modal_window = ModalWindow::CURVE_EDITOR;
-							}
-						}
+					else if (this_slot_vec) {
+						modal_curve_editor.set_vector(*this_slot_vec);
+						modal_window = ModalWindow::CURVE_EDITOR;
 					}
 				}
 				break;

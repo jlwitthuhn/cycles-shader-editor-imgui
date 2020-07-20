@@ -349,16 +349,6 @@ boost::optional<cse::SlotIdDetails> cse::InterfaceEvent::details_select_slot() c
 	}
 }
 
-boost::optional<cse::SlotIdDetails> cse::InterfaceEvent::details_modal_show_curve_editor() const
-{
-	if (_type == InterfaceEventType::MODAL_CURVE_EDITOR_SHOW && details) {
-		return details->slot_id;
-	}
-	else {
-		return boost::none;
-	}
-}
-
 boost::optional<cse::Float3Details> cse::InterfaceEvent::details_param_edit_color_init() const
 {
 	if (_type == InterfaceEventType::PARAM_EDIT_COLOR_INIT && details) {
