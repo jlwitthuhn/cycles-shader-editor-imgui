@@ -16,6 +16,7 @@
 
 #include "enum.h"
 #include "event.h"
+#include "wrapper_imgui_func.h"
 
 static const char* type_name_str(csg::SlotType slot_type)
 {
@@ -36,6 +37,8 @@ static const char* type_name_str(csg::SlotType slot_type)
 		return "Curves (RGB)";
 	case csg::SlotType::CURVE_VECTOR:
 		return "Curves (Vector)";
+	case csg::SlotType::COLOR_RAMP:
+		return "Color Ramp";
 	default:
 		return "[ERROR]";
 	}
@@ -136,6 +139,16 @@ cse::InterfaceEventArray cse::ParamEditorSubwindow::run() const
 					if (ImGui::Button("Open Vector Curve Editor")) {
 						const InterfaceEvent new_event{ InterfaceEventType::MODAL_CURVE_EDITOR_SHOW, SlotIdDetails{ *selected_slot  }, boost::none };
 						result.push(new_event);
+					}
+				}
+				else if (opt_slot->type() == csg::SlotType::COLOR_RAMP) {
+					const auto opt_ramp_val{ opt_slot->value.value().as<csg::ColorRampSlotValue>() };
+					if (opt_ramp_val) {
+						const InterfaceEventArray enum_events{ run_color_ramp(*selected_slot, *opt_ramp_val) };
+						result.push(enum_events);
+					}
+					else {
+						ImGui::Text("Error: Failed to find editable ramp.");
 					}
 				}
 				else {
@@ -287,6 +300,44 @@ cse::InterfaceEventArray cse::ParamEditorSubwindow::run_vector(const csg::SlotId
 		const InterfaceEvent event{ details };
 		result.push(event);
 	}
+
+	return result;
+}
+
+cse::InterfaceEventArray cse::ParamEditorSubwindow::run_color_ramp(csg::SlotId slot_id, csg::ColorRampSlotValue slot_value) const
+{
+	InterfaceEventArray result;
+
+	const char* const float_format{ "%.2f" };
+
+	const csg::ColorRamp points{ slot_value.get() };
+	for (size_t i = 0; i < points.size(); i++) {
+		const csg::ColorRampPoint this_point{ points.get(i) };
+
+		// Each UI item needs a unique ID string
+		std::array<char, 16> name_pos;
+		name_pos.fill('\0');
+		snprintf(name_pos.data(), name_pos.size(), "##Pos%3zu", i);
+		std::array<char, 16> name_color;
+		name_color.fill('\0');
+		snprintf(name_color.data(), name_color.size(), "##Color%3zu", i);
+
+		float mut_pos{ this_point.pos };
+		ImGui::SetNextItemWidth(140.0f);
+		ImGui::InputFloat(name_pos.data(), &mut_pos, 0.05f, 0.1f, float_format, ImGuiInputTextFlags_EnterReturnsTrue);
+		ImGui::SameLine();
+
+		csc::Float4 col{ this_point.color, this_point.alpha };
+		if (ImGui::ColorButton(name_color.data(), col)) {
+			// TODO
+		}
+		else if (mut_pos != this_point.pos) {
+			InterfaceEvent ramp_event{ SetSlotRampPosDetails{ slot_id, i, mut_pos } };
+			result.push(ramp_event);
+		}
+	}
+
+	ImGui::Button("Add Control Point");
 
 	return result;
 }

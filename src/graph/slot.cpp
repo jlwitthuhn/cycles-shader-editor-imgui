@@ -161,6 +161,11 @@ bool csg::VectorCurveSlotValue::operator==(const VectorCurveSlotValue& other) co
 	);
 }
 
+bool csg::ColorRampSlotValue::operator==(const ColorRampSlotValue& other) const
+{
+	return ramp.similar(other.ramp, FLOAT_COMPARE_DIFF);
+}
+
 csg::SlotValue& csg::SlotValue::operator=(const SlotValue& other)
 {
 	_type = other._type;
@@ -178,6 +183,13 @@ csg::SlotValue& csg::SlotValue::operator=(const SlotValue& other)
 	}
 	else {
 		curve_vector_value = std::unique_ptr<VectorCurveSlotValue>();
+	}
+
+	if (other.color_ramp_value) {
+		color_ramp_value = std::make_unique<ColorRampSlotValue>(*other.color_ramp_value);
+	}
+	else {
+		color_ramp_value = std::unique_ptr<ColorRampSlotValue>();
 	}
 
 	return *this;
@@ -239,6 +251,15 @@ bool csg::SlotValue::operator==(const SlotValue& other) const
 			assert(curve_vector_value.get() != nullptr);
 			assert(other.curve_vector_value.get() != nullptr);
 			if (*curve_vector_value != *other.curve_vector_value) {
+				return false;
+			}
+			break;
+		}
+		case SlotType::COLOR_RAMP:
+		{
+			assert(color_ramp_value.get() != nullptr);
+			assert(other.color_ramp_value.get() != nullptr);
+			if (*color_ramp_value != *other.color_ramp_value) {
 				return false;
 			}
 			break;

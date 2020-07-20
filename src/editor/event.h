@@ -173,6 +173,22 @@ namespace cse {
 		float new_value;
 	};
 
+	struct SetSlotRampColorDetails {
+		SetSlotRampColorDetails(csg::SlotId slot_id, size_t point_index, csc::Float4 new_value) : slot_id{ slot_id }, point_index{ point_index }, new_value{ new_value } {}
+
+		csg::SlotId slot_id;
+		size_t point_index;
+		csc::Float4 new_value;
+	};
+
+	struct SetSlotRampPosDetails {
+		SetSlotRampPosDetails(csg::SlotId slot_id, size_t point_index, float new_value) : slot_id{ slot_id }, point_index{ point_index }, new_value{ new_value } {}
+
+		csg::SlotId slot_id;
+		size_t point_index;
+		float new_value;
+	};
+
 	struct SetSlotVectorDetails {
 		SetSlotVectorDetails(csg::SlotId slot_id, csc::Float3 new_value) : slot_id{ slot_id }, new_value{ new_value } {}
 
@@ -229,6 +245,8 @@ namespace cse {
 		InterfaceEvent(const SetSlotColorDetails& set_slot_color_details);
 		InterfaceEvent(const SetSlotEnumDetails& set_slot_enum_details);
 		InterfaceEvent(const SetSlotFloatDetails& set_slot_float_details);
+		InterfaceEvent(const SetSlotRampColorDetails& set_slot_ramp_color_details);
+		InterfaceEvent(const SetSlotRampPosDetails& set_slot_ramp_pos_details);
 		InterfaceEvent(const SetSlotVectorDetails& set_slot_float_details);
 		InterfaceEvent(const CurveEditorViewClickDetails& curve_edit_view_details);
 		InterfaceEvent(const CurveEditorPointMoveDetails& curve_edit_point_move_details);
@@ -258,6 +276,8 @@ namespace cse {
 		boost::optional<SetSlotColorDetails> details_set_slot_color() const;
 		boost::optional<SetSlotEnumDetails> details_set_slot_enum() const;
 		boost::optional<SetSlotFloatDetails> details_set_slot_float() const;
+		boost::optional<SetSlotRampColorDetails> details_set_slot_ramp_color() const;
+		boost::optional<SetSlotRampPosDetails> details_set_slot_ramp_pos() const;
 		boost::optional<SetSlotVectorDetails> details_set_slot_vector() const;
 		boost::optional<CurveEditorViewClickDetails> details_curve_edit_view_click() const;
 		boost::optional<CurveEditorPointMoveDetails> details_curve_edit_point_move() const;
@@ -283,6 +303,8 @@ namespace cse {
 			InterfaceEventDetails(const SetSlotColorDetails& details) : set_slot_color{ details } {}
 			InterfaceEventDetails(const SetSlotEnumDetails& details) : set_slot_enum{ details } {}
 			InterfaceEventDetails(const SetSlotFloatDetails& details) : set_slot_float{ details } {}
+			InterfaceEventDetails(const SetSlotRampColorDetails& details) : set_slot_ramp_color{ details } {}
+			InterfaceEventDetails(const SetSlotRampPosDetails& details) : set_slot_ramp_pos{ details } {}
 			InterfaceEventDetails(const SetSlotVectorDetails& details) : set_slot_vector{ details } {}
 			InterfaceEventDetails(const CurveEditorViewClickDetails& details) : curve_edit_view_click{ details } {}
 			InterfaceEventDetails(const CurveEditorPointMoveDetails& details) : curve_edit_point_move{ details } {}
@@ -306,6 +328,8 @@ namespace cse {
 			SetSlotColorDetails set_slot_color;
 			SetSlotEnumDetails set_slot_enum;
 			SetSlotFloatDetails set_slot_float;
+			SetSlotRampColorDetails set_slot_ramp_color;
+			SetSlotRampPosDetails set_slot_ramp_pos;
 			SetSlotVectorDetails set_slot_vector;
 			CurveEditorViewClickDetails curve_edit_view_click;
 			CurveEditorPointMoveDetails curve_edit_point_move;

@@ -35,6 +35,15 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Color",  "color",  ColorSlotValue{ csc::Float3{ 0.0f, 0.0f, 0.0f} } });
 		break;
 		//////
+		// Converter
+		//////
+	case NodeType::COLOR_RAMP:
+		_slots.push_back(Slot{ "Color",  "color",  SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Alpha",  "alpha",  SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Ramp",   "ramp",   ColorRampSlotValue{} });
+		_slots.push_back(Slot{ "Fac",    "fac",    FloatSlotValue{ 0.5f, 0.0f, 1.0f } });
+		break;
+		//////
 		// Shader
 		//////
 	case NodeType::ADD_SHADER:

@@ -15,6 +15,11 @@ inline ImVec2 as_imvec(const csc::Float2& float2)
 	return ImVec2{ float2.x, float2.y };
 }
 
+inline ImVec4 as_imvec(const csc::Float4& float4)
+{
+	return ImVec4{ float4.x, float4.y, float4.z, float4.w };
+}
+
 namespace ImGui {
 	inline void SetNextWindowPos(const csc::Float2 pos, ImGuiCond cond = 0, const csc::Float2 pivot = csc::Float2(0.0f, 0.0f))
 	{
@@ -24,6 +29,11 @@ namespace ImGui {
 	inline void SetNextWindowSize(const csc::Float2 size, ImGuiCond cond = 0)
 	{
 		SetNextWindowSize(as_imvec(size), cond);
+	}
+
+	inline bool ColorButton(const char* desc_id, const csc::Float4& col, ImGuiColorEditFlags flags = 0, csc::Float2 size = csc::Float2{ 0, 0 })
+	{
+		return ImGui::ColorButton(desc_id, as_imvec(col), flags, as_imvec(size));
 	}
 
 	namespace DrawList {

@@ -709,6 +709,24 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 				should_do_undo_push = true;
 				break;
 			}
+			case InterfaceEventType::SET_SLOT_RAMP_POS:
+			{
+				const boost::optional<SetSlotRampPosDetails> details{ event.details_set_slot_ramp_pos() };
+				assert(details.has_value());
+				const boost::optional<csg::ColorRampSlotValue> opt_ramp{ the_graph->get_slot_value_as<csg::ColorRampSlotValue>(details->slot_id) };
+				if (opt_ramp) {
+					const boost::optional<csg::ColorRampPoint> opt_point{ opt_ramp->get().get(details->point_index) };
+					if (opt_point) {
+						csg::ColorRampPoint mut_point{ *opt_point };
+						mut_point.pos = details->new_value;
+						csg::ColorRamp mut_ramp{ opt_ramp->get() };
+						mut_ramp.set(details->point_index, mut_point);
+						the_graph->set_color_ramp(details->slot_id, mut_ramp);
+						should_do_undo_push = true;
+					}
+				}
+				break;
+			}
 			case InterfaceEventType::SET_SLOT_VECTOR:
 			{
 				const boost::optional<SetSlotVectorDetails> details{ event.details_set_slot_vector() };

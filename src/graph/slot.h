@@ -10,6 +10,7 @@
 
 #include "curves.h"
 #include "node_enums.h"
+#include "ramp.h"
 
 namespace csg {
 
@@ -27,6 +28,7 @@ namespace csg {
 		ENUM,
 		CURVE_RGB,
 		CURVE_VECTOR,
+		COLOR_RAMP,
 	};
 
 	class BoolSlotValue {
@@ -198,6 +200,22 @@ namespace csg {
 		csc::Float2 max;
 	};
 
+	class ColorRampSlotValue {
+	public:
+		ColorRampSlotValue() {}
+		ColorRampSlotValue(ColorRamp ramp) : ramp{ ramp } {}
+
+		ColorRamp get() const { return ramp; }
+		void set(ColorRamp new_ramp) { ramp = new_ramp; }
+		void set(ColorRampSlotValue new_ramp) { *this = new_ramp; }
+
+		bool operator==(const ColorRampSlotValue& other) const;
+		bool operator!=(const ColorRampSlotValue& other) const { return operator==(other) == false; }
+
+	private:
+		ColorRamp ramp;
+	};
+
 	class SlotValue {
 	public:
 		SlotValue(BoolSlotValue bool_value) :     _type{ SlotType::BOOL },   value_union{ bool_value } {}
@@ -208,6 +226,7 @@ namespace csg {
 
 		SlotValue(const RGBCurveSlotValue& curve_value) : _type{ SlotType::CURVE_RGB }, curve_rgb_value{ std::make_unique<RGBCurveSlotValue>(curve_value) } {}
 		SlotValue(const VectorCurveSlotValue& curve_value) : _type{ SlotType::CURVE_VECTOR }, curve_vector_value{ std::make_unique<VectorCurveSlotValue>(curve_value) } {}
+		SlotValue(const ColorRampSlotValue& ramp_value) : _type{ SlotType::COLOR_RAMP }, color_ramp_value{ std::make_unique<ColorRampSlotValue>(ramp_value) } {}
 
 		// Copy constructor and copy assignment operator, constructor defers to assignment
 		SlotValue(const SlotValue& other) : value_union{ FloatSlotValue{ 0.0f, 0.0f, 0.0f } } { this->operator=(other); }
@@ -239,6 +258,9 @@ namespace csg {
 		template <> boost::optional<VectorCurveSlotValue> as<VectorCurveSlotValue>() const {
 			return (type() != SlotType::CURVE_VECTOR && curve_vector_value) ? boost::none : boost::optional<VectorCurveSlotValue>{ *curve_vector_value };
 		};
+		template <> boost::optional<ColorRampSlotValue> as<ColorRampSlotValue>() const {
+			return (type() != SlotType::COLOR_RAMP && color_ramp_value) ? boost::none : boost::optional<ColorRampSlotValue>{ *color_ramp_value };
+		};
 
 		bool operator==(const SlotValue& other) const;
 		bool operator!=(const SlotValue& other) const { return operator==(other) == false; }
@@ -269,6 +291,7 @@ namespace csg {
 		// These types are not part of the union because they contain heap-allocated resources that must be freed
 		std::unique_ptr<RGBCurveSlotValue> curve_rgb_value;
 		std::unique_ptr<VectorCurveSlotValue> curve_vector_value;
+		std::unique_ptr<ColorRampSlotValue> color_ramp_value;
 	};
 
 	class Slot {
@@ -299,6 +322,9 @@ namespace csg {
 		{}
 		Slot(const char* disp_name, const char* name, VectorCurveSlotValue vector_value, bool has_pin = false) :
 			value{ vector_value }, _disp_name{ disp_name }, _name{ name }, _dir{ SlotDirection::INPUT }, _type{ SlotType::CURVE_VECTOR }, _has_pin{ has_pin }
+		{}
+		Slot(const char* disp_name, const char* name, ColorRampSlotValue ramp_value, bool has_pin = false) :
+			value{ ramp_value }, _disp_name{ disp_name }, _name{ name }, _dir{ SlotDirection::INPUT }, _type{ SlotType::COLOR_RAMP }, _has_pin{ has_pin }
 		{}
 
 		SlotDirection dir() const { return _dir; }

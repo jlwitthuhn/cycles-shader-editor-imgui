@@ -58,12 +58,32 @@ namespace csc {
 
 		bool similar(const Float3& other, const float margin) const;
 
+		bool operator<(const Float3& other) const;
+
 		bool operator==(const Float3& other) const { return x == other.x && y == other.y && z == other.z; }
 		bool operator!=(const Float3& other) const { return operator==(other) == false; }
 
 		float x;
 		float y;
 		float z;
+	};
+
+	/**
+	 * @brief Used to represent a float vector of size 4.
+	 */
+	class Float4 {
+	public:
+		Float4() : x{ 0.0f }, y{ 0.0f }, z{ 0.0f }, w{ 0.0f } {}
+		Float4(float x, float y, float z, float w) : x{ x }, y{ y }, z{ z }, w{ w } {}
+		Float4(Float3 xyz, float w) : x{ xyz.x }, y{ xyz.y }, z{ xyz.z }, w{ w } {}
+
+		bool operator==(const Float4& other) const { return x == other.x && y == other.y && z == other.z && w == other.w; }
+		bool operator!=(const Float4& other) const { return operator==(other) == false; }
+
+		float x;
+		float y;
+		float z;
+		float w;
 	};
 
 	/**

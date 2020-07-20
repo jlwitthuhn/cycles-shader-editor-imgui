@@ -666,6 +666,9 @@ void cse::GraphSubwindow::draw_nodes(ImDrawList* const draw_list) const
 						else if (slot.type() == csg::SlotType::CURVE_VECTOR) {
 							snprintf(label_text.data(), label_text.size() - 1, "%s: [Curves]", slot.disp_name());
 						}
+						else if (slot.type() == csg::SlotType::COLOR_RAMP) {
+							snprintf(label_text.data(), label_text.size() - 1, "%s: [Ramp]", slot.disp_name());
+						}
 						else {
 							snprintf(label_text.data(), label_text.size() - 1, "%s: ?", slot.disp_name());
 						}

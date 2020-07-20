@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include <boost/optional.hpp>
 
@@ -12,6 +13,7 @@ namespace csc {
 
 namespace csg {
 	class BoolSlotValue;
+	class ColorRampSlotValue;
 	class ColorSlotValue;
 	class EnumSlotValue;
 	class FloatSlotValue;
@@ -31,6 +33,7 @@ namespace cse {
 		InterfaceEventArray run_enum(csg::SlotId slot_id, csg::EnumSlotValue slot_value) const;
 		InterfaceEventArray run_float(csg::SlotId slot_id, csg::FloatSlotValue slot_value) const;
 		InterfaceEventArray run_vector(csg::SlotId slot_id, csg::VectorSlotValue slot_value) const;
+		InterfaceEventArray run_color_ramp(csg::SlotId slot_id, csg::ColorRampSlotValue slot_value) const;
 
 		void do_event(const InterfaceEvent& event);
 

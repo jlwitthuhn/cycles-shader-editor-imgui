@@ -65,6 +65,17 @@ namespace csg {
 		Graph& operator=(const Graph& other);
 
 		boost::optional<std::shared_ptr<const Node>> get(NodeId id) const;
+		boost::optional<SlotValue> get_slot_value(SlotId slot_id) const;
+		template <typename T> boost::optional<T> get_slot_value_as(SlotId slot_id) const
+		{
+			const boost::optional<SlotValue> value{ get_slot_value(slot_id) };
+			if (value) {
+				return value->as<T>();
+			}
+			else {
+				return boost::none;
+			}
+		}
 
 		NodeId add(NodeType type, csc::Int2 pos);
 		bool add(NodeType type, csc::Int2 pos, NodeId id);
@@ -79,6 +90,7 @@ namespace csg {
 		bool set_enum(SlotId slot_id, size_t new_value);
 		bool set_float(SlotId slot_id, float new_value);
 		bool set_vector(SlotId slot_id, csc::Float3 new_value);
+		bool set_color_ramp(SlotId slot_id, const ColorRampSlotValue& new_value);
 		bool set_curve_rgb(SlotId slot_id, const RGBCurveSlotValue& new_value);
 		bool set_curve_vec(SlotId slot_id, const VectorCurveSlotValue& new_value);
 

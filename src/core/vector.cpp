@@ -64,6 +64,20 @@ csc::Float3 csc::Float3::operator-(const Float3& other) const
 	return Float3{ x - other.x, y - other.y, z - other.z };
 }
 
+bool csc::Float3::operator<(const Float3& other) const
+{
+	if (x < other.x) return true;
+	else if (other.x < x) return false;
+
+	if (y < other.y) return true;
+	else if (other.y < y) return false;
+
+	if (z < other.z) return true;
+	else if (other.z < z) return false;
+
+	return false;
+}
+
 bool csc::Float3::similar(const Float3& other, const float margin) const
 {
 	const float diff_x{ fabs(x - other.x) };

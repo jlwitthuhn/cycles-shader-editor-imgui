@@ -105,6 +105,17 @@ boost::optional<std::shared_ptr<const csg::Node>> csg::Graph::get(const NodeId i
 	}
 }
 
+boost::optional<csg::SlotValue> csg::Graph::get_slot_value(SlotId slot_id) const
+{
+	const auto opt_node{ get(slot_id.node_id()) };
+	if (opt_node) {
+		return (*opt_node)->slot(slot_id.index())->value;
+	}
+	else {
+		return boost::none;
+	}
+}
+
 csg::NodeId csg::Graph::add(const NodeType type, const csc::Int2 pos)
 {
 	while (true) {
@@ -223,6 +234,11 @@ bool csg::Graph::set_float(const SlotId slot_id, const float new_value)
 bool csg::Graph::set_vector(const SlotId slot_id, const csc::Float3 new_value)
 {
 	return set_graph_value<VectorSlotValue>(nodes_by_id, slot_id, new_value);
+}
+
+bool csg::Graph::set_color_ramp(const SlotId slot_id, const ColorRampSlotValue& new_value)
+{
+	return set_graph_value<ColorRampSlotValue>(nodes_by_id, slot_id, new_value);
 }
 
 bool csg::Graph::set_curve_rgb(const SlotId slot_id, const RGBCurveSlotValue& new_value)

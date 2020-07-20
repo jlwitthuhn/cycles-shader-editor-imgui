@@ -704,11 +704,11 @@ boost::optional<csg::Graph> csg::deserialize_graph(const std::string& graph_stri
 										result.set_curve_rgb(csg::SlotId{ node_id, *slot_index }, rgb_curve);
 									}
 									else if (input_name == "g_curve") {
-										rgb_curve.set_r(*new_curve);
+										rgb_curve.set_g(*new_curve);
 										result.set_curve_rgb(csg::SlotId{ node_id, *slot_index }, rgb_curve);
 									}
 									else if (input_name == "b_curve") {
-										rgb_curve.set_r(*new_curve);
+										rgb_curve.set_b(*new_curve);
 										result.set_curve_rgb(csg::SlotId{ node_id, *slot_index }, rgb_curve);
 									}
 								}

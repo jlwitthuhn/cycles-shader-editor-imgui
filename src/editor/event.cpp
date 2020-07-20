@@ -219,6 +219,14 @@ cse::InterfaceEvent::InterfaceEvent(const SetSlotFloatDetails& set_slot_float_de
 
 }
 
+cse::InterfaceEvent::InterfaceEvent(const SetSlotRampPosDetails& set_slot_ramp_pos_details) :
+	_type{ InterfaceEventType::SET_SLOT_RAMP_POS },
+	_target_subwindow{ boost::none },
+	details{ set_slot_ramp_pos_details }
+{
+
+}
+
 cse::InterfaceEvent::InterfaceEvent(const SetSlotVectorDetails& set_slot_vector_details) :
 	_type{ InterfaceEventType::SET_SLOT_VECTOR },
 	_target_subwindow{ boost::none },
@@ -445,6 +453,16 @@ boost::optional<cse::SetSlotFloatDetails> cse::InterfaceEvent::details_set_slot_
 {
 	if (_type == InterfaceEventType::SET_SLOT_FLOAT && details) {
 		return details->set_slot_float;
+	}
+	else {
+		return boost::none;
+	}
+}
+
+boost::optional<cse::SetSlotRampPosDetails> cse::InterfaceEvent::details_set_slot_ramp_pos() const
+{
+	if (_type == InterfaceEventType::SET_SLOT_RAMP_POS && details) {
+		return details->set_slot_ramp_pos;
 	}
 	else {
 		return boost::none;
