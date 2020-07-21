@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cassert>
 #include <cstddef>
 #include <memory>
 
@@ -236,31 +237,7 @@ namespace csg {
 
 		// Base template function to get this object's value
 		// Needs to be specialized for each type
-		template <typename T> boost::optional<T> as() const { static_assert(false, "No existing template specialization supports this type"); }
-		template <> boost::optional<BoolSlotValue> as<BoolSlotValue>() const {
-			return (type() != SlotType::BOOL) ? boost::none : boost::optional<BoolSlotValue>{ value_union.bool_value };
-		}
-		template <> boost::optional<ColorSlotValue> as<ColorSlotValue>() const {
-			return (type() != SlotType::COLOR) ? boost::none : boost::optional<ColorSlotValue>{ value_union.color_value };
-		}
-		template <> boost::optional<EnumSlotValue> as<EnumSlotValue>() const {
-			return (type() != SlotType::ENUM) ? boost::none : boost::optional<EnumSlotValue>{ value_union.enum_value };
-		}
-		template <> boost::optional<FloatSlotValue> as<FloatSlotValue>() const {
-			return (type() != SlotType::FLOAT) ? boost::none : boost::optional<FloatSlotValue>{ value_union.float_value };
-		}
-		template <> boost::optional<VectorSlotValue> as<VectorSlotValue>() const {
-			return (type() != SlotType::VECTOR) ? boost::none : boost::optional<VectorSlotValue>{ value_union.vector_value };
-		};
-		template <> boost::optional<RGBCurveSlotValue> as<RGBCurveSlotValue>() const {
-			return (type() != SlotType::CURVE_RGB || curve_rgb_value == false) ? boost::none : boost::optional<RGBCurveSlotValue>{ *curve_rgb_value };
-		};
-		template <> boost::optional<VectorCurveSlotValue> as<VectorCurveSlotValue>() const {
-			return (type() != SlotType::CURVE_VECTOR || curve_vector_value == false) ? boost::none : boost::optional<VectorCurveSlotValue>{ *curve_vector_value };
-		};
-		template <> boost::optional<ColorRampSlotValue> as<ColorRampSlotValue>() const {
-			return (type() != SlotType::COLOR_RAMP || color_ramp_value == false) ? boost::none : boost::optional<ColorRampSlotValue>{ *color_ramp_value };
-		};
+		template <typename T> boost::optional<T> as() const { assert(false); }
 
 		bool operator==(const SlotValue& other) const;
 		bool operator!=(const SlotValue& other) const { return operator==(other) == false; }
@@ -293,6 +270,15 @@ namespace csg {
 		std::unique_ptr<VectorCurveSlotValue> curve_vector_value;
 		std::unique_ptr<ColorRampSlotValue> color_ramp_value;
 	};
+
+	template <> boost::optional<BoolSlotValue> SlotValue::as<BoolSlotValue>() const;
+	template <> boost::optional<ColorSlotValue> SlotValue::as<ColorSlotValue>() const;
+	template <> boost::optional<EnumSlotValue> SlotValue::as<EnumSlotValue>() const;
+	template <> boost::optional<FloatSlotValue> SlotValue::as<FloatSlotValue>() const;
+	template <> boost::optional<VectorSlotValue> SlotValue::as<VectorSlotValue>() const;
+	template <> boost::optional<RGBCurveSlotValue> SlotValue::as<RGBCurveSlotValue>() const;
+	template <> boost::optional<VectorCurveSlotValue> SlotValue::as<VectorCurveSlotValue>() const;
+	template <> boost::optional<ColorRampSlotValue> SlotValue::as<ColorRampSlotValue>() const;
 
 	class Slot {
 	public:

@@ -1,6 +1,7 @@
 #include "node.h"
 
 #include <algorithm>
+#include <cfloat>
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
@@ -12,7 +13,7 @@
 static std::mutex node_id_rng_mutex;
 static std::mt19937 node_id_rng;
 
-static const float M_PI{ acos(-1.0f) };
+static const float MY_PI{ static_cast<float>(acos(-1.0)) };
 
 csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ position }, _type{ type }
 {
@@ -147,7 +148,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Radial Roughness",       "radial_roughness",       FloatSlotValue{ 0.3f, 0.0f, 1.0f } });
 		_slots.push_back(Slot{ "Coat",                   "coat",                   FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
 		_slots.push_back(Slot{ "IOR",                    "ior",                    FloatSlotValue{ 1.55f, 0.0f, 1000.0f } });
-		_slots.push_back(Slot{ "Offset (rad)",           "offset",                 FloatSlotValue{ 2 * M_PI / 180.0f, M_PI / -2.0f , M_PI / 2.0f } });
+		_slots.push_back(Slot{ "Offset (rad)",           "offset",                 FloatSlotValue{ 2 * MY_PI / 180.0f, MY_PI / -2.0f , MY_PI / 2.0f } });
 		_slots.push_back(Slot{ "Random Roughness",       "random_roughness",       FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
 		_slots.push_back(Slot{ "Random Color",           "random_color",           FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
 		_slots.push_back(Slot{ "Random",                 "random",                 FloatSlotValue{ 0.0f, 0.0f, FLT_MAX } });

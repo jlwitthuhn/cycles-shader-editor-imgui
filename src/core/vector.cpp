@@ -18,9 +18,9 @@ float csc::Float2::distance(const Float2& other) const
 
 bool csc::Float2::similar(const Float2& other, const float margin) const
 {
-	const float diff_x{ fabs(x - other.x) };
-	const float diff_y{ fabs(y - other.y) };
-	return diff_x < margin && diff_y < margin;
+	const float diff_x{ x - other.x };
+	const float diff_y{ y - other.y };
+	return fabs(diff_x) < fabs(margin) && fabs(diff_y) < fabs(margin);
 }
 
 csc::Float2 csc::Float2::operator+(const Float2& other) const
@@ -80,10 +80,10 @@ bool csc::Float3::operator<(const Float3& other) const
 
 bool csc::Float3::similar(const Float3& other, const float margin) const
 {
-	const float diff_x{ fabs(x - other.x) };
-	const float diff_y{ fabs(y - other.y) };
-	const float diff_z{ fabs(z - other.z) };
-	return diff_x < margin && diff_y < margin && diff_z < margin;
+	const float diff_x{ x - other.x };
+	const float diff_y{ y - other.y };
+	const float diff_z{ z - other.z };
+	return fabs(diff_x) < fabs(margin) && fabs(diff_y) < fabs(margin) && fabs(diff_z) < fabs(margin);
 }
 
 csc::Int2::Int2(const csc::Float2 float2) :

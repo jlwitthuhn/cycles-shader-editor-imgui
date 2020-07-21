@@ -32,7 +32,7 @@ CPP_GR_FILES := $(notdir ${CPP_GR_PATHS})
 OBJ_GR_PATHS := $(CPP_GR_FILES:%=$(OBJ_GR_DIR)/%.o)
 GCC_GR_MAKEFILES := $(OBJ_GR_PATHS:.o=.d)
 INC_GR_DIR := $(INC_DIR)/shader_graph
-INC_GR_FILES := graph.h node.h node_enums.h node_id.h node_type.h slot.h slot_id.h
+INC_GR_FILES := curves.h graph.h node.h node_enums.h node_id.h node_type.h ramp.h slot.h slot_id.h
 INC_GR_PATHS := $(addprefix $(INC_GR_DIR)/,$(INC_GR_FILES))
 
 SRC_CO_DIR = ./src/core
@@ -42,7 +42,7 @@ CPP_CO_FILES := $(notdir ${CPP_CO_PATHS})
 OBJ_CO_PATHS := $(CPP_CO_FILES:%=$(OBJ_CO_DIR)/%.o)
 GCC_CO_MAKEFILES := $(OBJ_CO_PATHS:.o=.d)
 INC_CO_DIR := $(INC_DIR)/shader_core
-INC_CO_FILES := rect.h util_enum.h vector.h
+INC_CO_FILES := config.h lerp.h rect.h util_enum.h vector.h
 INC_CO_PATHS := $(addprefix $(INC_CO_DIR)/,$(INC_CO_FILES))
 
 SRC_IM_DIR = ./third_party/imgui
@@ -106,7 +106,7 @@ $(OBJ_IM_DIR)/%.cpp.o: $(SRC_IM_DIR)/%.cpp
 
 iwyu: CXX := /opt/iwyu-0.13/bin/include-what-you-use
 iwyu: CXXFLAGS += -Xiwyu --mapping_file=./extra/iwyu.imp
-iwyu: copy_headers $(OBJ_MA_PATHS) $(OBJ_GR_PATHS) $(OBJ_ED_PATHS)
+iwyu: copy_headers $(OBJ_CO_PATHS) $(OBJ_GR_PATHS) $(OBJ_ED_PATHS)
 
 clean:
 	rm -rf ./$(OBJ_DIR)

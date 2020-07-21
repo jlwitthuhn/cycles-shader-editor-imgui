@@ -133,11 +133,8 @@ float csg::Curve::eval_point(const float input) const
 	const csg::CurveInterp p2_interp{ points[*p2_index].interp };
 
 	const float delta_x{ p2.x - p1.x };
-	const float delta_y{ p2.y - p1.y };
-
 	const float fade{ (input - p1.x) / delta_x };
 
-	//const float linear_result{ p1.y + fade * delta_y };
 	const float linear_result{ csc::lerp(p1.y, p2.y, fade) };
 	if (p1_interp == csg::CurveInterp::LINEAR && p2_interp == csg::CurveInterp::LINEAR) {
 		// End early if possible to avoid doing unnecessary spline math

@@ -32,8 +32,8 @@ bool csg::ColorRamp::similar(const ColorRamp& other, const float margin) const
 	for (size_t i = 0; i < points.size(); i++) {
 		const ColorRampPoint p1{ points[i] };
 		const ColorRampPoint p2{ other.points[i] };
-		const float diff_pos{ fabs(p1.pos - p2.pos) };
-		const float diff_alpha{ fabs(p1.alpha - p2.alpha) };
+		const float diff_pos{ static_cast<float>(fabs(p1.pos - p2.pos)) };
+		const float diff_alpha{ static_cast<float>(fabs(p1.alpha - p2.alpha)) };
 		if (diff_pos > margin) {
 			return false;
 		}

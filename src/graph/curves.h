@@ -31,7 +31,7 @@ namespace csg {
 		Curve(csc::Float2 min, csc::Float2 max, boost::optional<std::vector<CurvePoint>> points = boost::none);
 
 		const std::vector<CurvePoint>& control_points() const { return points; }
-		const size_t control_points_size() const { return points.size(); }
+		size_t control_points_size() const { return points.size(); }
 		csc::Float2 min() const { return _min; }
 		csc::Float2 max() const { return _max; }
 
