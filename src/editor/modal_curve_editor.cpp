@@ -1,6 +1,14 @@
 #include "modal_curve_editor.h"
 
 #include <array>
+#include <cassert>
+#include <memory>
+#include <vector>
+
+#include <imgui.h>
+
+#include "shader_core/rect.h"
+#include "shader_core/vector.h"
 
 #include "wrapper_imgui_func.h"
 

@@ -1,17 +1,20 @@
 #pragma once
 
 #include <array>
-#include <vector>
+#include <cstddef>
 
 #include <boost/optional.hpp>
 
-#include "shader_core/rect.h"
 #include "shader_graph/curves.h"
 #include "shader_graph/slot.h"
-#include "shader_graph/slot_id.h"
 
 #include "enum.h"
 #include "event.h"
+
+namespace csc {
+	class Float2;
+	class FloatRect;
+}
 
 namespace cse {
 
@@ -32,6 +35,10 @@ namespace cse {
 
 		boost::optional<csg::RGBCurveSlotValue> take_rgb();
 		boost::optional<csg::VectorCurveSlotValue> take_vector();
+
+		// Without this IWYU insists that slot.h shouldn't be included here, but I disagree
+		// This dummy variable uses a definition from slot.h to appease IWYU
+		csg::SlotDirection _dummy_iwyu{ csg::SlotDirection::INPUT };
 
 	private:
 		void draw_view(csc::FloatRect area) const;

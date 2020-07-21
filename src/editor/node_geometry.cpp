@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "shader_graph/node.h"
+#include "shader_graph/node_type.h"
 
 #include "graph_display.h"
 

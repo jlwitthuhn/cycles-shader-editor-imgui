@@ -11,6 +11,7 @@
 #include "shader_graph/node.h"
 #include "shader_graph/node_enums.h"
 #include "shader_graph/node_type.h"
+#include "shader_graph/ramp.h"
 #include "shader_graph/slot.h"
 #include "shader_graph/slot_id.h"
 

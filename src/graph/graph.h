@@ -14,7 +14,6 @@
 
 #include <boost/optional.hpp>
 
-#include "curves.h"
 #include "node_id.h"
 #include "node_type.h"
 #include "slot.h"

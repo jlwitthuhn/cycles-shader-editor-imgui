@@ -1,7 +1,6 @@
 #include "node_enums.h"
 
 #include <utility>
-#include <vector>
 
 #include <boost/optional.hpp>
 

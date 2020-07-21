@@ -1,6 +1,5 @@
 #include "slot.h"
 
-#include <algorithm>
 #include <cassert>
 #include <cmath>
 
@@ -8,6 +7,7 @@
 #include <boost/optional.hpp>
 
 #include "shader_core/config.h"
+#include "shader_core/rect.h"
 #include "shader_core/vector.h"
 
 static bool set_curve(csg::Curve& curve, const csg::Curve& new_value)

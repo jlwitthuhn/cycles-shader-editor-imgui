@@ -6,12 +6,15 @@
 
 #include <boost/optional.hpp>
 
-#include "shader_core/rect.h"
 #include "shader_core/vector.h"
 
 #include "curves.h"
 #include "node_enums.h"
 #include "ramp.h"
+
+namespace csc {
+	class FloatRect;
+}
 
 namespace csg {
 

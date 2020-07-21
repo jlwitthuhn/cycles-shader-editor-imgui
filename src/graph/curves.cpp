@@ -4,10 +4,11 @@
 #include <array>
 #include <cassert>
 #include <cstddef>
+#include <cstdint>
+#include <memory>
 
 #include <boost/optional.hpp>
 
-#include "shader_core/config.h"
 #include "shader_core/lerp.h"
 #include "shader_core/rect.h"
 

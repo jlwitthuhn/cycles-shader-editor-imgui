@@ -16,8 +16,10 @@
 #include <boost/tokenizer.hpp>
 
 #include "shader_core/config.h"
+#include "shader_core/rect.h"
 #include "shader_core/vector.h"
 
+#include "curves.h"
 #include "ext_base64.h"
 #include "graph.h"
 #include "node.h"

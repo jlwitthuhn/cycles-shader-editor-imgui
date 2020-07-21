@@ -12,7 +12,9 @@
 
 #include "shader_core/vector.h"
 #include "shader_graph/graph.h"
-#include "shader_graph/node.h"
+#include "shader_graph/ramp.h"
+#include "shader_graph/slot.h"
+#include "shader_graph/slot_id.h"
 
 #include "enum.h"
 #include "glfw_callbacks.h"
