@@ -101,7 +101,7 @@ cse::InterfaceEventArray cse::ModalCurveEditor::run() const
 				const InterfaceEvent bounds_event{
 					InterfaceEventType::CURVE_EDIT_SET_BOUNDS,
 					FloatRectDetails{ bounds_rect },
-					SubwindowId::CURVE_EDITOR
+					SubwindowId::MODAL_CURVE_EDITOR
 				};
 				result.push(bounds_event);
 			}
@@ -249,7 +249,7 @@ cse::InterfaceEventArray cse::ModalCurveEditor::run() const
 		ImGui::Dummy(ImVec2{ 10.0f, 1.0f });
 		ImGui::SameLine();
 		if (ImGui::Button("Reset to Default")) {
-			InterfaceEvent reset_event{ InterfaceEventType::CURVE_EDIT_RESET, SubwindowId::CURVE_EDITOR };
+			InterfaceEvent reset_event{ InterfaceEventType::CURVE_EDIT_RESET, SubwindowId::MODAL_CURVE_EDITOR };
 			result.push(reset_event);
 		}
 		draw_view(view_area);
@@ -261,7 +261,7 @@ cse::InterfaceEventArray cse::ModalCurveEditor::run() const
 
 void cse::ModalCurveEditor::do_event(const InterfaceEvent& event)
 {
-	if (event.target_subwindow() && event.target_subwindow() == SubwindowId::CURVE_EDITOR) {
+	if (event.target_subwindow() && event.target_subwindow() == SubwindowId::MODAL_CURVE_EDITOR) {
 		switch (event.type()) {
 		case InterfaceEventType::CURVE_EDIT_RESET:
 			reset_curve();

@@ -119,12 +119,16 @@ namespace cse {
 	typedef SimpleDetails<csg::SlotId,
 		InterfaceEventType::CONNECTION_BEGIN,
 		InterfaceEventType::CONNECTION_ALTER,
-		InterfaceEventType::SELECT_SLOT
+		InterfaceEventType::SELECT_SLOT,
+		InterfaceEventType::SET_SLOT_RAMP_NEW
 		> SlotIdDetails;
 	typedef SimpleDetails<csc::Float3,
 		InterfaceEventType::PARAM_EDIT_COLOR_INIT,
 		InterfaceEventType::PARAM_EDIT_COLOR_CHANGE
 	> Float3Details;
+	typedef SimpleDetails<csc::Float4,
+		InterfaceEventType::RAMP_COLOR_PICK_UPDATE
+	> Float4Details;
 	typedef SimpleDetails<csc::FloatRect,
 		InterfaceEventType::CURVE_EDIT_SET_BOUNDS
 	> FloatRectDetails;
@@ -216,6 +220,13 @@ namespace cse {
 		csg::CurveInterp interp;
 	};
 
+	struct ModalRampColorPickShowDetails {
+		ModalRampColorPickShowDetails(csg::SlotId slot_id, size_t index) : slot_id{ slot_id }, index{ index } {}
+
+		csg::SlotId slot_id;
+		size_t index;
+	};
+
 	/**
 	 * @brief A class representing some action that has been taken in the interface. An instance of this class reprensents a clear logical action within the program.
 	 */
@@ -236,6 +247,7 @@ namespace cse {
 		InterfaceEvent(InterfaceEventType type, const NodeTypeDetails& node_type_details);
 		InterfaceEvent(InterfaceEventType type, const SlotIdDetails& slot_id_details, boost::optional<SubwindowId> target);
 		InterfaceEvent(InterfaceEventType type, const Float3Details& float3_details, boost::optional<SubwindowId> target);
+		InterfaceEvent(InterfaceEventType type, const Float4Details& float4_details, boost::optional<SubwindowId> target);
 		InterfaceEvent(InterfaceEventType type, const FloatRectDetails& float_rect_details, boost::optional<SubwindowId> target);
 		InterfaceEvent(InterfaceEventType type, const Int2Details& int2_details);
 		InterfaceEvent(const CreateNodeDetails& create_node_details);
@@ -250,11 +262,14 @@ namespace cse {
 		InterfaceEvent(const CurveEditorViewClickDetails& curve_edit_view_details);
 		InterfaceEvent(const CurveEditorPointMoveDetails& curve_edit_point_move_details);
 		InterfaceEvent(const CurveEditorSetInterpDetails& curve_edit_set_interp_details);
+		InterfaceEvent(const ModalRampColorPickShowDetails& modal_ramp_color_pick_show_details);
 
 		inline InterfaceEventType type() const { return _type; }
 		inline boost::optional<SubwindowId> target_subwindow() const { return _target_subwindow; }
 		inline boost::optional<std::string> message() const { return _message; }
 
+		// These function names match the InterfaceEventType enum
+		// Functions that do not match this event type will always return none
 		boost::optional<CurveEditorModeDetails> details_curve_editor_set_mode() const;
 		boost::optional<CurveEditorTabDetails> details_curve_editor_set_tab() const;
 		boost::optional<SelectModeDetails> details_box_select_end() const;
@@ -264,8 +279,10 @@ namespace cse {
 		boost::optional<SlotIdDetails> details_connection_begin() const;
 		boost::optional<SlotIdDetails> details_connection_alter() const;
 		boost::optional<SlotIdDetails> details_select_slot() const;
+		boost::optional<SlotIdDetails> details_set_slot_ramp_new() const;
 		boost::optional<Float3Details> details_param_edit_color_init() const;
 		boost::optional<Float3Details> details_param_edit_color_change() const;
+		boost::optional<Float4Details> details_modal_ramp_color_pick_update() const;
 		boost::optional<FloatRectDetails> details_curve_edit_set_bounds() const;
 		boost::optional<Int2Details> details_pan_view() const;
 		boost::optional<CreateNodeDetails> details_create_node() const;
@@ -280,6 +297,7 @@ namespace cse {
 		boost::optional<CurveEditorViewClickDetails> details_curve_edit_view_click() const;
 		boost::optional<CurveEditorPointMoveDetails> details_curve_edit_point_move() const;
 		boost::optional<CurveEditorSetInterpDetails> details_curve_edit_set_interp() const;
+		boost::optional<ModalRampColorPickShowDetails> details_modal_ramp_color_pick_show() const;
 
 	private:
 		union InterfaceEventDetails {
@@ -292,6 +310,7 @@ namespace cse {
 			InterfaceEventDetails(const SlotIdDetails& details) : slot_id{ details } {}
 
 			InterfaceEventDetails(const Float3Details& details) : float3{ details } {}
+			InterfaceEventDetails(const Float4Details& details) : float4{ details } {}
 			InterfaceEventDetails(const FloatRectDetails& details) : float_rect{ details } {}
 			InterfaceEventDetails(const Int2Details& details) : int2{ details } {}
 
@@ -307,6 +326,7 @@ namespace cse {
 			InterfaceEventDetails(const CurveEditorViewClickDetails& details) : curve_edit_view_click{ details } {}
 			InterfaceEventDetails(const CurveEditorPointMoveDetails& details) : curve_edit_point_move{ details } {}
 			InterfaceEventDetails(const CurveEditorSetInterpDetails& details) : curve_edit_set_interp{ details } {}
+			InterfaceEventDetails(const ModalRampColorPickShowDetails& details) : modal_ramp_color_pick_show{ details } {}
 
 			CurveEditorModeDetails curve_editor_mode;
 			CurveEditorTabDetails curve_editor_tab;
@@ -317,6 +337,7 @@ namespace cse {
 			SlotIdDetails slot_id;
 
 			Float3Details float3;
+			Float4Details float4;
 			FloatRectDetails float_rect;
 			Int2Details int2;
 
@@ -332,6 +353,7 @@ namespace cse {
 			CurveEditorViewClickDetails curve_edit_view_click;
 			CurveEditorPointMoveDetails curve_edit_point_move;
 			CurveEditorSetInterpDetails curve_edit_set_interp;
+			ModalRampColorPickShowDetails modal_ramp_color_pick_show;
 		};
 
 		InterfaceEventType _type;

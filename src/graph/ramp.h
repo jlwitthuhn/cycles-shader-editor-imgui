@@ -19,6 +19,7 @@ namespace csg {
 	class ColorRamp {
 	public:
 		ColorRamp();
+		ColorRamp(const std::vector<ColorRampPoint>& points);
 
 		size_t size() const { return points.size(); }
 
@@ -26,6 +27,7 @@ namespace csg {
 			assert(index < points.size());
 			return points[index];
 		}
+		std::vector<ColorRampPoint> get() const { return points; }
 
 		void set(size_t index, ColorRampPoint new_point);
 

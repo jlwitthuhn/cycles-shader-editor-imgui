@@ -15,6 +15,7 @@
 #include "enum.h"
 #include "event.h"
 #include "modal_curve_editor.h"
+#include "modal_ramp_color_pick.h"
 #include "subwindow_alert.h"
 #include "subwindow_debug.h"
 #include "subwindow_graph.h"
@@ -84,6 +85,7 @@ namespace cse {
 		ParamEditorSubwindow window_param_editor;
 
 		ModalCurveEditor modal_curve_editor;
+		ModalRampColorPicker modal_ramp_color_pick;
 
 		boost::optional<csg::SlotId> selected_slot;
 
@@ -103,6 +105,7 @@ namespace cse {
 		enum class ModalWindow {
 			ALERT,
 			CURVE_EDITOR,
+			RAMP_COLOR_PICKER,
 		};
 
 		// If this were a stack, there could be multiple layers of modal windows

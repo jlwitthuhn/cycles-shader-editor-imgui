@@ -32,9 +32,8 @@ namespace cse {
 		MODAL_CURVE_EDITOR_COMMIT_RGB,
 		MODAL_CURVE_EDITOR_COMMIT_VEC,
 		MODAL_CURVE_EDITOR_CLOSE,
-		MODAL_RAMP_COLOR_EDITOR_SHOW,
-		MODAL_RAMP_COLOR_EDITOR_COMMIT,
-		MODAL_RAMP_COLOR_EDITOR_CLOSE,
+		MODAL_RAMP_COLOR_PICK_SHOW,
+		MODAL_RAMP_COLOR_PICK_CLOSE,
 		SUBWINDOW_IS_HOVERED,
 		SET_THEME_DARK,
 		SET_THEME_CLASSIC,
@@ -46,10 +45,12 @@ namespace cse {
 		SET_SLOT_VECTOR,
 		SET_SLOT_RAMP_POS,
 		SET_SLOT_RAMP_COLOR,
+		SET_SLOT_RAMP_NEW,
+		SET_SLOT_RAMP_DELETE,
 		UNDO,
 		REDO,
 		RELOAD_GRAPH,
-		// Specific to graph window,
+		// Graph window,
 		PAN_VIEW,
 		MOUSE_PAN_BEGIN,
 		MOUSE_PAN_END,
@@ -69,16 +70,16 @@ namespace cse {
 		SELECT_ALL,
 		SELECT_NONE,
 		SELECT_INVERSE,
-		// Specific to node list window
+		// Node list window
 		SELECT_NODE_CATEGORY,
 		SELECT_NODE_TYPE,
 		SELECT_NODE_TYPE_NONE,
-		// Specific to param editor window
+		// Param editor window
 		PARAM_EDIT_COLOR_INIT,
 		PARAM_EDIT_COLOR_CHANGE,
-		// Specific to debug window
+		// Debug window
 		VALIDATE_SET_MESSAGE,
-		// Specific to curve editor modal window
+		// Modal curve editor
 		CURVE_EDIT_RESET,
 		CURVE_EDIT_SET_BOUNDS,
 		CURVE_EDIT_SET_INTERP,
@@ -86,6 +87,8 @@ namespace cse {
 		CURVE_EDIT_SET_TAB,
 		CURVE_EDIT_VIEW_CLICK,
 		CURVE_EDIT_POINT_MOVE,
+		// Modal ramp color picker
+		RAMP_COLOR_PICK_UPDATE,
 		// Multicast to several windows
 		SELECT_SLOT,
 		SELECT_SLOT_NONE,
@@ -104,7 +107,8 @@ namespace cse {
 		GRAPH,
 		NODE_LIST,
 		PARAM_EDITOR,
-		CURVE_EDITOR,
+		MODAL_CURVE_EDITOR,
+		MODAL_RAMP_COLOR_PICK,
 		DEBUG,
 	};
 

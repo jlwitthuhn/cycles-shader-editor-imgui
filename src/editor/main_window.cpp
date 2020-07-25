@@ -180,9 +180,13 @@ cse::InterfaceEventArray cse::MainWindow::run_gui() const
 			const auto alert_events{ window_alert.run() };
 			events.push(alert_events);
 		}
-		if (modal_window == ModalWindow::CURVE_EDITOR) {
+		else if (modal_window == ModalWindow::CURVE_EDITOR) {
 			const auto curve_events{ modal_curve_editor.run() };
 			events.push(curve_events);
+		}
+		else if (modal_window == ModalWindow::RAMP_COLOR_PICKER) {
+			const auto ramp_events{ modal_ramp_color_pick.run() };
+			events.push(ramp_events);
 		}
 		else {
 			assert(false);
@@ -531,8 +535,11 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 			case SubwindowId::PARAM_EDITOR:
 				window_param_editor.do_event(event);
 				break;
-			case SubwindowId::CURVE_EDITOR:
+			case SubwindowId::MODAL_CURVE_EDITOR:
 				modal_curve_editor.do_event(event);
+				break;
+			case SubwindowId::MODAL_RAMP_COLOR_PICK:
+				modal_ramp_color_pick.do_event(event);
 				break;
 			default:
 				assert(false);
@@ -646,6 +653,29 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 				modal_curve_editor.clear();
 				modal_window = boost::none;
 				break;
+			case InterfaceEventType::MODAL_RAMP_COLOR_PICK_SHOW:
+			{
+				assert(event.details_modal_ramp_color_pick_show().has_value());
+				const ModalRampColorPickShowDetails details{ event.details_modal_ramp_color_pick_show().get() };
+				// Get the current RGB value from the attached slot and index
+				const auto opt_value{ the_graph->get_slot_value_as<csg::ColorRampSlotValue>(details.slot_id) };
+				if (opt_value) {
+					const csg::ColorRamp ramp{ opt_value->get() };
+					if (details.index < ramp.size()) {
+						const csg::ColorRampPoint point{ ramp.get(details.index) };
+						const csc::Float4 rgba{ point.color, point.alpha };
+						modal_ramp_color_pick.attach(details.slot_id, details.index, rgba);
+						modal_window = ModalWindow::RAMP_COLOR_PICKER;
+					}
+				}
+				break;
+			}
+			case InterfaceEventType::MODAL_RAMP_COLOR_PICK_CLOSE:
+			{
+				assert(modal_window == ModalWindow::RAMP_COLOR_PICKER);
+				modal_window = boost::none;
+				break;
+			}
 			case InterfaceEventType::SUBWINDOW_IS_HOVERED:
 			{
 				const auto details{ event.details_subwindow_is_hovered() };
@@ -693,6 +723,26 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 				assert(details.has_value());
 				the_graph->set_float(details->slot_id, details->new_value);
 				should_do_undo_push = true;
+				break;
+			}
+			case InterfaceEventType::SET_SLOT_RAMP_COLOR:
+			{
+				const boost::optional<SetSlotRampColorDetails> details{ event.details_set_slot_ramp_color() };
+				assert(details.has_value());
+				const boost::optional<csg::ColorRampSlotValue> opt_ramp{ the_graph->get_slot_value_as<csg::ColorRampSlotValue>(details->slot_id) };
+				if (opt_ramp) {
+					const boost::optional<csg::ColorRampPoint> opt_point{ opt_ramp->get().get(details->point_index) };
+					if (opt_point) {
+						csg::ColorRampPoint mut_point{ *opt_point };
+						const csc::Float3 rgb{ details->new_value.x, details->new_value.y, details->new_value.z };
+						mut_point.color = rgb;
+						mut_point.alpha = details->new_value.w;
+						csg::ColorRamp mut_ramp{ opt_ramp->get() };
+						mut_ramp.set(details->point_index, mut_point);
+						the_graph->set_color_ramp(details->slot_id, mut_ramp);
+						should_do_undo_push = true;
+					}
+				}
 				break;
 			}
 			case InterfaceEventType::SET_SLOT_RAMP_POS:
@@ -743,8 +793,10 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 				assert(opt_graph.has_value());
 				if (*opt_graph != *the_graph) {
 					std::cout << "Assert failed" << std::endl;
-					std::cout << opt_graph->serialize() << std::endl;
+					std::cout << "original:" << std::endl;
 					std::cout << the_graph->serialize() << std::endl;
+					std::cout << "reloaded:" << std::endl;
+					std::cout << opt_graph->serialize() << std::endl;
 					assert(false);
 				}
 				break;

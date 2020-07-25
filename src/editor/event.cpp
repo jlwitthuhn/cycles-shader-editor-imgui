@@ -93,7 +93,7 @@ cse::InterfaceEvent::InterfaceEvent(
 
 cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const CurveEditorModeDetails& curve_mode_details) :
 	_type{ type },
-	_target_subwindow{ SubwindowId::CURVE_EDITOR },
+	_target_subwindow{ SubwindowId::MODAL_CURVE_EDITOR },
 	details{ curve_mode_details }
 {
 	assert(curve_mode_details.matches_event(type));
@@ -101,7 +101,7 @@ cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const CurveEd
 
 cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const CurveEditorTabDetails& curve_tab_details) :
 	_type{ type },
-	_target_subwindow{ SubwindowId::CURVE_EDITOR },
+	_target_subwindow{ SubwindowId::MODAL_CURVE_EDITOR },
 	details{ curve_tab_details }
 {
 	assert(curve_tab_details.matches_event(type));
@@ -153,6 +153,14 @@ cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const Float3D
 	details{ float3_details }
 {
 	assert(float3_details.matches_event(type));
+}
+
+cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const Float4Details& float4_details, const boost::optional<SubwindowId> target) :
+	_type{ type },
+	_target_subwindow{ target },
+	details{ float4_details }
+{
+	assert(float4_details.matches_event(type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const FloatRectDetails& float_rect_details, const boost::optional<SubwindowId> target) :
@@ -219,6 +227,14 @@ cse::InterfaceEvent::InterfaceEvent(const SetSlotFloatDetails& set_slot_float_de
 
 }
 
+cse::InterfaceEvent::InterfaceEvent(const SetSlotRampColorDetails& set_slot_ramp_color_details) :
+	_type{ InterfaceEventType::SET_SLOT_RAMP_COLOR },
+	_target_subwindow{ boost::none },
+	details{ set_slot_ramp_color_details }
+{
+
+}
+
 cse::InterfaceEvent::InterfaceEvent(const SetSlotRampPosDetails& set_slot_ramp_pos_details) :
 	_type{ InterfaceEventType::SET_SLOT_RAMP_POS },
 	_target_subwindow{ boost::none },
@@ -237,7 +253,7 @@ cse::InterfaceEvent::InterfaceEvent(const SetSlotVectorDetails& set_slot_vector_
 
 cse::InterfaceEvent::InterfaceEvent(const CurveEditorViewClickDetails& curve_edit_view_details) :
 	_type{ InterfaceEventType::CURVE_EDIT_VIEW_CLICK },
-	_target_subwindow{ SubwindowId::CURVE_EDITOR },
+	_target_subwindow{ SubwindowId::MODAL_CURVE_EDITOR },
 	details{ curve_edit_view_details }
 {
 
@@ -245,7 +261,7 @@ cse::InterfaceEvent::InterfaceEvent(const CurveEditorViewClickDetails& curve_edi
 
 cse::InterfaceEvent::InterfaceEvent(const CurveEditorPointMoveDetails& curve_edit_point_move_details) :
 	_type{ InterfaceEventType::CURVE_EDIT_POINT_MOVE },
-	_target_subwindow{ SubwindowId::CURVE_EDITOR },
+	_target_subwindow{ SubwindowId::MODAL_CURVE_EDITOR },
 	details{ curve_edit_point_move_details }
 {
 
@@ -253,8 +269,16 @@ cse::InterfaceEvent::InterfaceEvent(const CurveEditorPointMoveDetails& curve_edi
 
 cse::InterfaceEvent::InterfaceEvent(const CurveEditorSetInterpDetails& curve_edit_set_interp_details) :
 	_type{ InterfaceEventType::CURVE_EDIT_SET_INTERP },
-	_target_subwindow{ SubwindowId::CURVE_EDITOR },
+	_target_subwindow{ SubwindowId::MODAL_CURVE_EDITOR },
 	details{ curve_edit_set_interp_details }
+{
+
+}
+
+cse::InterfaceEvent::InterfaceEvent(const ModalRampColorPickShowDetails& modal_ramp_color_pick_show_details) :
+	_type{ InterfaceEventType::MODAL_RAMP_COLOR_PICK_SHOW },
+	_target_subwindow{ boost::none },
+	details{ modal_ramp_color_pick_show_details }
 {
 
 }
@@ -349,6 +373,16 @@ boost::optional<cse::SlotIdDetails> cse::InterfaceEvent::details_select_slot() c
 	}
 }
 
+boost::optional<cse::SlotIdDetails> cse::InterfaceEvent::details_set_slot_ramp_new() const
+{
+	if (_type == InterfaceEventType::SET_SLOT_RAMP_NEW && details) {
+		return details->slot_id;
+	}
+	else {
+		return boost::none;
+	}
+}
+
 boost::optional<cse::Float3Details> cse::InterfaceEvent::details_param_edit_color_init() const
 {
 	if (_type == InterfaceEventType::PARAM_EDIT_COLOR_INIT && details) {
@@ -363,6 +397,16 @@ boost::optional<cse::Float3Details> cse::InterfaceEvent::details_param_edit_colo
 {
 	if (_type == InterfaceEventType::PARAM_EDIT_COLOR_CHANGE && details) {
 		return details->float3;
+	}
+	else {
+		return boost::none;
+	}
+}
+
+boost::optional<cse::Float4Details> cse::InterfaceEvent::details_modal_ramp_color_pick_update() const
+{
+	if (_type == InterfaceEventType::RAMP_COLOR_PICK_UPDATE && details) {
+		return details->float4;
 	}
 	else {
 		return boost::none;
@@ -449,6 +493,16 @@ boost::optional<cse::SetSlotFloatDetails> cse::InterfaceEvent::details_set_slot_
 	}
 }
 
+boost::optional<cse::SetSlotRampColorDetails> cse::InterfaceEvent::details_set_slot_ramp_color() const
+{
+	if (_type == InterfaceEventType::SET_SLOT_RAMP_COLOR && details) {
+		return details->set_slot_ramp_color;
+	}
+	else {
+		return boost::none;
+	}
+}
+
 boost::optional<cse::SetSlotRampPosDetails> cse::InterfaceEvent::details_set_slot_ramp_pos() const
 {
 	if (_type == InterfaceEventType::SET_SLOT_RAMP_POS && details) {
@@ -493,6 +547,16 @@ boost::optional<cse::CurveEditorSetInterpDetails> cse::InterfaceEvent::details_c
 {
 	if (_type == InterfaceEventType::CURVE_EDIT_SET_INTERP && details) {
 		return details->curve_edit_set_interp;
+	}
+	else {
+		return boost::none;
+	}
+}
+
+boost::optional<cse::ModalRampColorPickShowDetails> cse::InterfaceEvent::details_modal_ramp_color_pick_show() const
+{
+	if (_type == InterfaceEventType::MODAL_RAMP_COLOR_PICK_SHOW && details) {
+		return details->modal_ramp_color_pick_show;
 	}
 	else {
 		return boost::none;

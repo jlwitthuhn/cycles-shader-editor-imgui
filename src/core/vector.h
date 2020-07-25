@@ -77,6 +77,8 @@ namespace csc {
 		Float4(float x, float y, float z, float w) : x{ x }, y{ y }, z{ z }, w{ w } {}
 		Float4(Float3 xyz, float w) : x{ xyz.x }, y{ xyz.y }, z{ xyz.z }, w{ w } {}
 
+		std::array<float, 4> as_array() const { return std::array<float, 4>{ x, y, z, w }; }
+
 		bool operator==(const Float4& other) const { return x == other.x && y == other.y && z == other.z && w == other.w; }
 		bool operator!=(const Float4& other) const { return operator==(other) == false; }
 

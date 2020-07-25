@@ -330,7 +330,8 @@ cse::InterfaceEventArray cse::ParamEditorSubwindow::run_color_ramp(csg::SlotId s
 
 		csc::Float4 col{ this_point.color, this_point.alpha };
 		if (ImGui::ColorButton(name_color.data(), col)) {
-			// TODO
+			InterfaceEvent ramp_event{ ModalRampColorPickShowDetails{ slot_id, i } };
+			result.push(ramp_event);
 		}
 		else if (mut_pos != this_point.pos) {
 			InterfaceEvent ramp_event{ SetSlotRampPosDetails{ slot_id, i, mut_pos } };

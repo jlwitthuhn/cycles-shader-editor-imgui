@@ -1,6 +1,7 @@
 #include "ramp.h"
 
 #include <algorithm>
+#include <cassert>
 #include <cmath>
 #include <cstddef>
 
@@ -11,6 +12,12 @@ csg::ColorRamp::ColorRamp()
 	// Set a default value mapping from black to white
 	points.push_back(ColorRampPoint{ 0.0f, csc::Float3{ 0.0f, 0.0f, 0.0f }, 1.0f });
 	points.push_back(ColorRampPoint{ 1.0f, csc::Float3{ 1.0f, 1.0f, 1.0f }, 1.0f });
+	sort_points();
+}
+
+csg::ColorRamp::ColorRamp(const std::vector<ColorRampPoint>& points) : points{ points }
+{
+	assert(points.size() >= 2);
 	sort_points();
 }
 

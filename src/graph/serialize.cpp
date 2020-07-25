@@ -26,6 +26,7 @@
 #include "node_enums.h"
 #include "node_id.h"
 #include "node_type.h"
+#include "ramp.h"
 #include "slot.h"
 #include "slot_id.h"
 
@@ -153,6 +154,24 @@ static std::string serialize_slot_value(const csg::SlotValue& slot_value)
 			sstream << serialize_curve(curve_slot_value.get_x()) << CURVE_SEPARATOR;
 			sstream << serialize_curve(curve_slot_value.get_y()) << CURVE_SEPARATOR;
 			sstream << serialize_curve(curve_slot_value.get_z());
+			return sstream.str();
+		}
+		break;
+	case csg::SlotType::COLOR_RAMP:
+		if (slot_value.as<csg::ColorRampSlotValue>().has_value()) {
+			constexpr char RAMP_SEPARATOR{ ',' };
+			const csg::ColorRampSlotValue ramp_slot_value{ slot_value.as<csg::ColorRampSlotValue>().value() };
+			std::stringstream sstream;
+			sstream << std::fixed << std::setprecision(SERIALIZED_GRAPH_PRECISION);
+			sstream << "ramp00";
+			for (const auto& this_point : ramp_slot_value.get().get()) {
+				const float a = this_point.pos;
+				const float b = this_point.color.x;
+				const float c = this_point.color.y;
+				const float d = this_point.color.z;
+				const float e = this_point.alpha;
+				sstream << RAMP_SEPARATOR << a << RAMP_SEPARATOR << b << RAMP_SEPARATOR << c << RAMP_SEPARATOR << d << RAMP_SEPARATOR << e;
+			}
 			return sstream.str();
 		}
 		break;
@@ -460,7 +479,7 @@ static boost::optional<csg::Curve> deserialize_legacy_curve(const std::string& c
 	const boost::char_separator<char> sep{ "," };
 	const boost::tokenizer<boost::char_separator<char>> tokenizer{ curve_string, sep };
 
-	auto token_iter = tokenizer.begin();
+	auto token_iter{ tokenizer.begin() };
 
 	if (iter_has_contents(token_iter, tokenizer.end(), 3) == false) {
 		return boost::none;
@@ -508,6 +527,42 @@ static boost::optional<csg::Curve> deserialize_legacy_curve(const std::string& c
 	}
 
 	return csg::Curve{ valid_rect.begin(), valid_rect.end(), points };
+}
+
+static boost::optional<csg::ColorRamp> deserialize_ramp(const std::string& ramp_string)
+{
+	using namespace csg;
+
+	const boost::char_separator<char> sep{ "," };
+	const boost::tokenizer<boost::char_separator<char>> tokenizer{ ramp_string, sep };
+
+	auto token_iter{ tokenizer.begin() };
+
+	if (iter_has_contents(token_iter, tokenizer.end(), 1) == false) {
+		return boost::none;
+	}
+
+	const std::string identifier = *token_iter++;
+	if (identifier != "ramp00") {
+		return boost::none;
+	}
+
+	std::vector<ColorRampPoint> ramp_points;
+	while (iter_has_contents(token_iter, tokenizer.end(), 5)) {
+		const float pos{ my_stof(*token_iter++) };
+		const float r{ my_stof(*token_iter++) };
+		const float g{ my_stof(*token_iter++) };
+		const float b{ my_stof(*token_iter++) };
+		const float a{ my_stof(*token_iter++) };
+		const ColorRampPoint this_point{ pos, csc::Float3{ r, g, b }, a };
+		ramp_points.push_back(this_point);
+	}
+
+	if (ramp_points.size() < 2) {
+		return boost::none;
+	}
+
+	return ColorRamp{ ramp_points };
 }
 
 boost::optional<csg::Graph> csg::deserialize_graph(const std::string& graph_string)
@@ -676,6 +731,14 @@ boost::optional<csg::Graph> csg::deserialize_graph(const std::string& graph_stri
 						const boost::optional<csg::VectorCurveSlotValue> opt_curve_value{ deserialize_vector_curve(input_value) };
 						if (opt_curve_value) {
 							result.set_curve_vec(slot_id, *opt_curve_value);
+						}
+						break;
+					}
+					case SlotType::COLOR_RAMP:
+					{
+						const boost::optional<csg::ColorRamp> opt_ramp_value{ deserialize_ramp(input_value) };
+						if (opt_ramp_value) {
+							result.set_color_ramp(slot_id, *opt_ramp_value);
 						}
 						break;
 					}
