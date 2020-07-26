@@ -6,6 +6,8 @@
 
 namespace csg {
 	enum class NodeMetaEnum {
+		// Color
+		MIX_RGB_TYPE,
 		// Shader
 		ANISOTROPIC_DISTRIBUTION,
 		GLASS_DISTRIBUTION,
@@ -24,6 +26,28 @@ namespace csg {
 		VECTOR_TRANSFORM_TYPE,
 		VECTOR_TRANSFORM_SPACE,
 		// Bookkeeping
+		COUNT
+	};
+
+	enum class MixRGBType {
+		MIX,
+		DARKEN,
+		MULTIPLY,
+		BURN,
+		LIGHTEN,
+		SCREEN,
+		DODGE,
+		ADD,
+		OVERLAY,
+		SOFT_LIGHT,
+		LINEAR_LIGHT,
+		DIFFERENCE,
+		SUBTRACT,
+		DIVIDE,
+		HUE,
+		SATURATION,
+		COLOR,
+		VALUE,
 		COUNT
 	};
 

@@ -24,6 +24,9 @@ boost::optional<csg::NodeEnumInfo> csg::NodeEnumInfo::from(const NodeMetaEnum me
 	}
 
 	switch (meta_enum) {
+		// Color
+	case NodeMetaEnum::MIX_RGB_TYPE:
+		return NodeEnumInfo{ meta_enum, get_count<MixRGBType>() };
 	// Shader
 	case NodeMetaEnum::ANISOTROPIC_DISTRIBUTION:
 		return NodeEnumInfo{ meta_enum, get_count<AnisotropicDistribution>() };
@@ -83,6 +86,40 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 
 	switch (meta_enum) {
 
+	//////
+	// Color
+	//////
+	case NodeMetaEnum::MIX_RGB_TYPE:
+	{
+		const auto opt_enum{ as_enum<MixRGBType>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(MixRGBType::MIX,          "Mix",          "mix");
+				CASE_PAIR(MixRGBType::DARKEN,       "Darken",       "darken");
+				CASE_PAIR(MixRGBType::MULTIPLY,     "Multiply",     "multiply");
+				CASE_PAIR(MixRGBType::BURN,         "Burn",         "burn");
+				CASE_PAIR(MixRGBType::LIGHTEN,      "Lighten",      "lighten");
+				CASE_PAIR(MixRGBType::SCREEN,       "Screen",       "screen");
+				CASE_PAIR(MixRGBType::DODGE,        "Dodge",        "dodge");
+				CASE_PAIR(MixRGBType::ADD,          "Add",          "add");
+				CASE_PAIR(MixRGBType::OVERLAY,      "Overlay",      "overlay");
+				CASE_PAIR(MixRGBType::SOFT_LIGHT,   "Soft Light",   "soft_light");
+				CASE_PAIR(MixRGBType::LINEAR_LIGHT, "Linear Light", "linear_light");
+				CASE_PAIR(MixRGBType::DIFFERENCE,   "Difference",   "difference");
+				CASE_PAIR(MixRGBType::SUBTRACT,     "Subtract",     "subtract");
+				CASE_PAIR(MixRGBType::DIVIDE,       "Divide",       "divide");
+				CASE_PAIR(MixRGBType::HUE,          "Hue",          "hue");
+				CASE_PAIR(MixRGBType::SATURATION,   "Saturation",   "saturation");
+				CASE_PAIR(MixRGBType::COLOR,        "Color",        "color");
+				CASE_PAIR(MixRGBType::VALUE,        "Value",        "value");
+			default:
+				return std::make_pair("[Unknown Type]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Type]", "ERROR");
+		}
+	}
 	//////
 	// Shader
 	//////

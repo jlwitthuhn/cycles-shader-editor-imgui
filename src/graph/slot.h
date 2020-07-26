@@ -66,6 +66,8 @@ namespace csg {
 	class EnumSlotValue {
 	public:
 		// Use an explicit constructor for each available enum
+		// Color
+		EnumSlotValue(MixRGBType initial) :                     EnumSlotValue(NodeMetaEnum::MIX_RGB_TYPE, initial) {}
 		// Shader
 		EnumSlotValue(AnisotropicDistribution initial) :        EnumSlotValue(NodeMetaEnum::ANISOTROPIC_DISTRIBUTION, initial) {}
 		EnumSlotValue(GlassDistribution initial) :              EnumSlotValue(NodeMetaEnum::GLASS_DISTRIBUTION, initial) {}

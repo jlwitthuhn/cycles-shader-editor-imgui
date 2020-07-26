@@ -29,6 +29,45 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		//////
 		// Color
 		//////
+	case NodeType::BRIGHTNESS_CONTRAST:
+		_slots.push_back(Slot{ "Color",    "color",    SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Color",    "color",    ColorSlotValue{ csc::Float3{ 1.0f, 1.0f, 1.0f} } });
+		_slots.push_back(Slot{ "Bright",   "bright",   FloatSlotValue{ 0.0f, -100.0f, 100.0f } });
+		_slots.push_back(Slot{ "Contrast", "contrast", FloatSlotValue{ 0.0f, -100.0f, 100.0f } });
+		break;
+	case NodeType::GAMMA:
+		_slots.push_back(Slot{ "Color", "color", SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Color", "color", ColorSlotValue{ csc::Float3{ 1.0f, 1.0f, 1.0f} } });
+		_slots.push_back(Slot{ "Gamma", "gamma", FloatSlotValue{ 1.0f, 0.01f, 10.0f } });
+		break;
+	case NodeType::HSV:
+		_slots.push_back(Slot{ "Color",      "color",      SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Hue",        "hue",        FloatSlotValue{ 0.5f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Saturation", "saturation", FloatSlotValue{ 1.0f, 0.0f, 2.0f } });
+		_slots.push_back(Slot{ "Value",      "value",      FloatSlotValue{ 1.0f, 0.0f, 2.0f } });
+		_slots.push_back(Slot{ "Fac",        "fac",        FloatSlotValue{ 1.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Color",      "color",      ColorSlotValue{ csc::Float3{ 1.0f, 1.0f, 1.0f} } });
+		break;
+	case NodeType::INVERT:
+		_slots.push_back(Slot{ "Color", "color", SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Fac",   "fac",   FloatSlotValue{ 1.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Color", "color", ColorSlotValue{ csc::Float3{ 1.0f, 1.0f, 1.0f} } });
+		break;
+	case NodeType::LIGHT_FALLOFF:
+		_slots.push_back(Slot{ "Quadratic", "quadratic", SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Linear",    "linear",    SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Constant",  "constant",  SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Strength",  "strength",  FloatSlotValue{ 100.0f, 0.0f, FLT_MAX } });
+		_slots.push_back(Slot{ "Smooth",    "smooth",    FloatSlotValue{ 0.0f, 0.0f, FLT_MAX } });
+		break;
+	case NodeType::MIX_RGB:
+		_slots.push_back(Slot{ "Color",  "color",     SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Type",   "type",      EnumSlotValue{ MixRGBType::MIX } });
+		_slots.push_back(Slot{ "Clamp",  "use_clamp", BoolSlotValue{ false } });
+		_slots.push_back(Slot{ "Fac",    "fac",       FloatSlotValue{ 0.5f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Color1", "color1",    ColorSlotValue{ csc::Float3{ 0.9f, 0.9f, 0.9f} } });
+		_slots.push_back(Slot{ "Color2", "color2",    ColorSlotValue{ csc::Float3{ 0.9f, 0.9f, 0.9f} } });
+		break;
 	case NodeType::RGB_CURVES:
 		_slots.push_back(Slot{ "Color",  "color",  SlotDirection::OUTPUT, SlotType::COLOR });
 		_slots.push_back(Slot{ "Curves", "curves", RGBCurveSlotValue{} });
