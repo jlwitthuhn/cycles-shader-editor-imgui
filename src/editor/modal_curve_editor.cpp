@@ -268,7 +268,7 @@ void cse::ModalCurveEditor::do_event(const InterfaceEvent& event)
 			break;
 		case InterfaceEventType::CURVE_EDIT_SET_BOUNDS:
 		{
-			const boost::optional<FloatRectDetails> details{ event.details_curve_edit_set_bounds() };
+			const boost::optional<FloatRectDetails> details{ event.details_as<FloatRectDetails>() };
 			assert(details.has_value());
 			if (vector_curve) {
 				vector_curve->set_bounds(details->value);
@@ -278,7 +278,7 @@ void cse::ModalCurveEditor::do_event(const InterfaceEvent& event)
 		}
 		case InterfaceEventType::CURVE_EDIT_SET_INTERP:
 		{
-			const boost::optional<CurveEditorSetInterpDetails> details{ event.details_curve_edit_set_interp() };
+			const boost::optional<CurveEditorSetInterpDetails> details{ event.details_as<CurveEditorSetInterpDetails>() };
 			assert(details.has_value());
 			csg::Curve this_curve{ get_current_curve() };
 			this_curve.set_interp(details->index, details->interp);
@@ -288,21 +288,21 @@ void cse::ModalCurveEditor::do_event(const InterfaceEvent& event)
 		}
 		case InterfaceEventType::CURVE_EDIT_SET_MODE:
 		{
-			const boost::optional<CurveEditorModeDetails> details{ event.details_curve_editor_set_mode() };
+			const boost::optional<CurveEditorModeDetails> details{ event.details_as<CurveEditorModeDetails>() };
 			assert(details.has_value());
 			mode = details->value;
 			break;
 		}
 		case InterfaceEventType::CURVE_EDIT_SET_TAB:
 		{
-			const boost::optional<CurveEditorTabDetails> details{ event.details_curve_editor_set_tab() };
+			const boost::optional<CurveEditorTabDetails> details{ event.details_as<CurveEditorTabDetails>() };
 			assert(details.has_value());
 			select_tab(details->value);
 			break;
 		}
 		case InterfaceEventType::CURVE_EDIT_VIEW_CLICK:
 		{
-			const boost::optional<CurveEditorViewClickDetails> details{ event.details_curve_edit_view_click() };
+			const boost::optional<CurveEditorViewClickDetails> details{ event.details_as<CurveEditorViewClickDetails>() };
 			assert(details.has_value());
 			switch (details->mode) {
 			case CurveEditorMode::SELECT:
@@ -324,7 +324,7 @@ void cse::ModalCurveEditor::do_event(const InterfaceEvent& event)
 		}
 		case InterfaceEventType::CURVE_EDIT_POINT_MOVE:
 		{
-			const boost::optional<CurveEditorPointMoveDetails> details{ event.details_curve_edit_point_move() };
+			const boost::optional<CurveEditorPointMoveDetails> details{ event.details_as<CurveEditorPointMoveDetails>() };
 			assert(details.has_value());
 			csg::Curve mutable_curve{ get_current_curve() };
 			selected_point = mutable_curve.move_point(details->index, details->new_pos);

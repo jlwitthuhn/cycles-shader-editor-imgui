@@ -51,7 +51,7 @@ void cse::ModalRampColorPicker::do_event(const InterfaceEvent& event)
 	switch (event.type()) {
 	case InterfaceEventType::RAMP_COLOR_PICK_UPDATE:
 	{
-		const auto opt_details{ event.details_modal_ramp_color_pick_update() };
+		const boost::optional<Float4Details> opt_details{ event.details_as<Float4Details>() };
 		assert(opt_details.has_value());
 		rgba[0] = opt_details->value.x;
 		rgba[1] = opt_details->value.y;

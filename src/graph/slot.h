@@ -274,14 +274,14 @@ namespace csg {
 		std::unique_ptr<ColorRampSlotValue> color_ramp_value;
 	};
 
-	template <> boost::optional<BoolSlotValue> SlotValue::as<BoolSlotValue>() const;
-	template <> boost::optional<ColorSlotValue> SlotValue::as<ColorSlotValue>() const;
-	template <> boost::optional<EnumSlotValue> SlotValue::as<EnumSlotValue>() const;
-	template <> boost::optional<FloatSlotValue> SlotValue::as<FloatSlotValue>() const;
-	template <> boost::optional<VectorSlotValue> SlotValue::as<VectorSlotValue>() const;
-	template <> boost::optional<RGBCurveSlotValue> SlotValue::as<RGBCurveSlotValue>() const;
-	template <> boost::optional<VectorCurveSlotValue> SlotValue::as<VectorCurveSlotValue>() const;
-	template <> boost::optional<ColorRampSlotValue> SlotValue::as<ColorRampSlotValue>() const;
+	template <> boost::optional<BoolSlotValue> SlotValue::as() const;
+	template <> boost::optional<ColorSlotValue> SlotValue::as() const;
+	template <> boost::optional<EnumSlotValue> SlotValue::as() const;
+	template <> boost::optional<FloatSlotValue> SlotValue::as() const;
+	template <> boost::optional<VectorSlotValue> SlotValue::as() const;
+	template <> boost::optional<RGBCurveSlotValue> SlotValue::as() const;
+	template <> boost::optional<VectorCurveSlotValue> SlotValue::as() const;
+	template <> boost::optional<ColorRampSlotValue> SlotValue::as() const;
 
 	class Slot {
 	public:

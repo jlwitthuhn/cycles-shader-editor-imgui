@@ -7,6 +7,7 @@
 
 #include <array>
 #include <atomic>
+#include <cassert>
 #include <cstddef>
 #include <string>
 
@@ -102,12 +103,11 @@ namespace cse {
 	struct SimpleDetails {
 		SimpleDetails(T value) : value{ value } {}
 
-		bool matches_event(InterfaceEventType type) const { return matcher.matches(type); }
+		static bool matches(InterfaceEventType type) {
+			return csc::EnumMatcher<InterfaceEventType, types...>{}.matches(type);
+		}
 
 		T value;
-
-	private:
-		csc::EnumMatcher<InterfaceEventType, types...> matcher;
 	};
 
 	typedef SimpleDetails<CurveEditorMode,   InterfaceEventType::CURVE_EDIT_SET_MODE>     CurveEditorModeDetails;
@@ -137,12 +137,20 @@ namespace cse {
 	struct CreateNodeDetails {
 		CreateNodeDetails(csg::NodeType type, csc::Float2 screen_pos) : type{ type }, screen_pos{ screen_pos } {}
 
+		static bool matches(InterfaceEventType type) {
+			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::CREATE_NODE>{}.matches(type);
+		}
+
 		csg::NodeType type;
 		csc::Float2 screen_pos;
 	};
 
 	struct SelectNodeDetails {
 		SelectNodeDetails(SelectMode mode, csg::NodeId id) : mode{ mode }, id{ id } {}
+
+		static bool matches(InterfaceEventType type) {
+			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::SELECT_NODE>{}.matches(type);
+		}
 
 		SelectMode mode;
 		csg::NodeId id;
@@ -151,12 +159,20 @@ namespace cse {
 	struct SetSlotBoolDetails {
 		SetSlotBoolDetails(csg::SlotId slot_id, bool new_value) : slot_id{ slot_id }, new_value{ new_value } {}
 
+		static bool matches(InterfaceEventType type) {
+			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::SET_SLOT_BOOL>{}.matches(type);
+		}
+
 		csg::SlotId slot_id;
 		bool new_value;
 	};
 
 	struct SetSlotColorDetails {
 		SetSlotColorDetails(csg::SlotId slot_id, csc::Float3 new_value) : slot_id{ slot_id }, new_value{ new_value } {}
+
+		static bool matches(InterfaceEventType type) {
+			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::SET_SLOT_COLOR>{}.matches(type);
+		}
 
 		csg::SlotId slot_id;
 		csc::Float3 new_value;
@@ -165,6 +181,10 @@ namespace cse {
 	struct SetSlotEnumDetails {
 		SetSlotEnumDetails(csg::SlotId slot_id, size_t new_value) : slot_id{ slot_id }, new_value{ new_value } {}
 
+		static bool matches(InterfaceEventType type) {
+			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::SET_SLOT_ENUM>{}.matches(type);
+		}
+
 		csg::SlotId slot_id;
 		size_t new_value;
 	};
@@ -172,12 +192,20 @@ namespace cse {
 	struct SetSlotFloatDetails {
 		SetSlotFloatDetails(csg::SlotId slot_id, float new_value) : slot_id{ slot_id }, new_value{ new_value } {}
 
+		static bool matches(InterfaceEventType type) {
+			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::SET_SLOT_FLOAT>{}.matches(type);
+		}
+
 		csg::SlotId slot_id;
 		float new_value;
 	};
 
 	struct SetSlotRampColorDetails {
 		SetSlotRampColorDetails(csg::SlotId slot_id, size_t point_index, csc::Float4 new_value) : slot_id{ slot_id }, point_index{ point_index }, new_value{ new_value } {}
+
+		static bool matches(InterfaceEventType type) {
+			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::SET_SLOT_RAMP_COLOR>{}.matches(type);
+		}
 
 		csg::SlotId slot_id;
 		size_t point_index;
@@ -187,6 +215,10 @@ namespace cse {
 	struct SetSlotRampPosDetails {
 		SetSlotRampPosDetails(csg::SlotId slot_id, size_t point_index, float new_value) : slot_id{ slot_id }, point_index{ point_index }, new_value{ new_value } {}
 
+		static bool matches(InterfaceEventType type) {
+			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::SET_SLOT_RAMP_POS>{}.matches(type);
+		}
+
 		csg::SlotId slot_id;
 		size_t point_index;
 		float new_value;
@@ -195,12 +227,20 @@ namespace cse {
 	struct SetSlotVectorDetails {
 		SetSlotVectorDetails(csg::SlotId slot_id, csc::Float3 new_value) : slot_id{ slot_id }, new_value{ new_value } {}
 
+		static bool matches(InterfaceEventType type) {
+			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::SET_SLOT_VECTOR>{}.matches(type);
+		}
+
 		csg::SlotId slot_id;
 		csc::Float3 new_value;
 	};
 
 	struct CurveEditorViewClickDetails {
 		CurveEditorViewClickDetails(csc::Float2 pos, CurveEditorMode mode) : pos{ pos }, mode{ mode } {}
+
+		static bool matches(InterfaceEventType type) {
+			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::CURVE_EDIT_VIEW_CLICK>{}.matches(type);
+		}
 
 		csc::Float2 pos;
 		CurveEditorMode mode;
@@ -209,6 +249,10 @@ namespace cse {
 	struct CurveEditorPointMoveDetails {
 		CurveEditorPointMoveDetails(size_t index, csc::Float2 new_pos) : index{ index }, new_pos{ new_pos } {}
 
+		static bool matches(InterfaceEventType type) {
+			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::CURVE_EDIT_POINT_MOVE>{}.matches(type);
+		}
+
 		size_t index;
 		csc::Float2 new_pos;
 	};
@@ -216,12 +260,20 @@ namespace cse {
 	struct CurveEditorSetInterpDetails {
 		CurveEditorSetInterpDetails(size_t index, csg::CurveInterp interp) : index{ index }, interp{ interp } {}
 
+		static bool matches(InterfaceEventType type) {
+			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::CURVE_EDIT_SET_INTERP>{}.matches(type);
+		}
+
 		size_t index;
 		csg::CurveInterp interp;
 	};
 
 	struct ModalRampColorPickShowDetails {
 		ModalRampColorPickShowDetails(csg::SlotId slot_id, size_t index) : slot_id{ slot_id }, index{ index } {}
+
+		static bool matches(InterfaceEventType type) {
+			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::MODAL_RAMP_COLOR_PICK_SHOW>{}.matches(type);
+		}
 
 		csg::SlotId slot_id;
 		size_t index;
@@ -268,38 +320,18 @@ namespace cse {
 		inline boost::optional<SubwindowId> target_subwindow() const { return _target_subwindow; }
 		inline boost::optional<std::string> message() const { return _message; }
 
-		// These function names match the InterfaceEventType enum
-		// Functions that do not match this event type will always return none
-		boost::optional<CurveEditorModeDetails> details_curve_editor_set_mode() const;
-		boost::optional<CurveEditorTabDetails> details_curve_editor_set_tab() const;
-		boost::optional<SelectModeDetails> details_box_select_end() const;
-		boost::optional<SubwindowIdDetails> details_subwindow_is_hovered() const;
-		boost::optional<NodeCategoryDetails> details_select_node_category() const;
-		boost::optional<NodeTypeDetails> details_select_node_type() const;
-		boost::optional<SlotIdDetails> details_connection_begin() const;
-		boost::optional<SlotIdDetails> details_connection_alter() const;
-		boost::optional<SlotIdDetails> details_select_slot() const;
-		boost::optional<SlotIdDetails> details_set_slot_ramp_new() const;
-		boost::optional<Float3Details> details_param_edit_color_init() const;
-		boost::optional<Float3Details> details_param_edit_color_change() const;
-		boost::optional<Float4Details> details_modal_ramp_color_pick_update() const;
-		boost::optional<FloatRectDetails> details_curve_edit_set_bounds() const;
-		boost::optional<Int2Details> details_pan_view() const;
-		boost::optional<CreateNodeDetails> details_create_node() const;
-		boost::optional<SelectNodeDetails> details_select_node() const;
-		boost::optional<SetSlotBoolDetails> details_set_slot_bool() const;
-		boost::optional<SetSlotColorDetails> details_set_slot_color() const;
-		boost::optional<SetSlotEnumDetails> details_set_slot_enum() const;
-		boost::optional<SetSlotFloatDetails> details_set_slot_float() const;
-		boost::optional<SetSlotRampColorDetails> details_set_slot_ramp_color() const;
-		boost::optional<SetSlotRampPosDetails> details_set_slot_ramp_pos() const;
-		boost::optional<SetSlotVectorDetails> details_set_slot_vector() const;
-		boost::optional<CurveEditorViewClickDetails> details_curve_edit_view_click() const;
-		boost::optional<CurveEditorPointMoveDetails> details_curve_edit_point_move() const;
-		boost::optional<CurveEditorSetInterpDetails> details_curve_edit_set_interp() const;
-		boost::optional<ModalRampColorPickShowDetails> details_modal_ramp_color_pick_show() const;
+		template <typename T> boost::optional<T> details_as() const
+		{
+			if (T::matches(_type)) {
+				return details->as<T>();
+			}
+			else {
+				return boost::none;
+			}
+		}
 
 	private:
+
 		union InterfaceEventDetails {
 			InterfaceEventDetails(const CurveEditorModeDetails& details) : curve_editor_mode{ details } {}
 			InterfaceEventDetails(const CurveEditorTabDetails& details) : curve_editor_tab{ details } {}
@@ -328,6 +360,9 @@ namespace cse {
 			InterfaceEventDetails(const CurveEditorSetInterpDetails& details) : curve_edit_set_interp{ details } {}
 			InterfaceEventDetails(const ModalRampColorPickShowDetails& details) : modal_ramp_color_pick_show{ details } {}
 
+			template <typename T> T as() const { static_assert(false, "This function must be specialized"); }
+
+		private:
 			CurveEditorModeDetails curve_editor_mode;
 			CurveEditorTabDetails curve_editor_tab;
 			SelectModeDetails select_mode;
@@ -361,6 +396,34 @@ namespace cse {
 		boost::optional<std::string> _message;
 		boost::optional<InterfaceEventDetails> details;
 	};
+
+	// Template specializations for the above union
+	template <> CurveEditorModeDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> CurveEditorTabDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> SelectModeDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> SubwindowIdDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> NodeCategoryDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> NodeTypeDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> SlotIdDetails InterfaceEvent::InterfaceEventDetails::as() const;
+
+	template <> Float3Details InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> Float4Details InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> FloatRectDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> Int2Details InterfaceEvent::InterfaceEventDetails::as() const;
+
+	template <> CreateNodeDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> SelectNodeDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> SetSlotBoolDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> SetSlotColorDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> SetSlotEnumDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> SetSlotFloatDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> SetSlotRampColorDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> SetSlotRampPosDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> SetSlotVectorDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> CurveEditorViewClickDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> CurveEditorPointMoveDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> CurveEditorSetInterpDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> ModalRampColorPickShowDetails InterfaceEvent::InterfaceEventDetails::as() const;
 
 	/**
 	 * @brief Iterator used by InterfaceEventArray. 

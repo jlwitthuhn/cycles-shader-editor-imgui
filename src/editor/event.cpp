@@ -96,7 +96,7 @@ cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const CurveEd
 	_target_subwindow{ SubwindowId::MODAL_CURVE_EDITOR },
 	details{ curve_mode_details }
 {
-	assert(curve_mode_details.matches_event(type));
+	assert(CurveEditorModeDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const CurveEditorTabDetails& curve_tab_details) :
@@ -104,7 +104,7 @@ cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const CurveEd
 	_target_subwindow{ SubwindowId::MODAL_CURVE_EDITOR },
 	details{ curve_tab_details }
 {
-	assert(curve_tab_details.matches_event(type));
+	assert(CurveEditorTabDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const SelectModeDetails& select_mode_details, const boost::optional<SubwindowId> target) :
@@ -112,7 +112,7 @@ cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const SelectM
 	_target_subwindow{ target },
 	details{ select_mode_details }
 {
-	assert(select_mode_details.matches_event(type));
+	assert(SelectModeDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const SubwindowIdDetails& subwindow_id_details, const boost::optional<SubwindowId> target) :
@@ -120,7 +120,7 @@ cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const Subwind
 	_target_subwindow{ target },
 	details{ subwindow_id_details }
 {
-	assert(subwindow_id_details.matches_event(type));
+	assert(SubwindowIdDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const NodeCategoryDetails& node_category_details) :
@@ -128,7 +128,7 @@ cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const NodeCat
 	_target_subwindow{ SubwindowId::NODE_LIST },
 	details{ node_category_details }
 {
-	assert(node_category_details.matches_event(type));
+	assert(NodeCategoryDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const NodeTypeDetails& node_type_details) :
@@ -136,7 +136,7 @@ cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const NodeTyp
 	_target_subwindow{ SubwindowId::NODE_LIST },
 	details{ node_type_details }
 {
-	assert(node_type_details.matches_event(type));
+	assert(NodeTypeDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const SlotIdDetails& slot_id_details, const boost::optional<SubwindowId> target) :
@@ -144,7 +144,7 @@ cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const SlotIdD
 	_target_subwindow{ target },
 	details{ slot_id_details }
 {
-	assert(slot_id_details.matches_event(type));
+	assert(SlotIdDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const Float3Details& float3_details, const boost::optional<SubwindowId> target) :
@@ -152,7 +152,7 @@ cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const Float3D
 	_target_subwindow{ target },
 	details{ float3_details }
 {
-	assert(float3_details.matches_event(type));
+	assert(Float3Details::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const Float4Details& float4_details, const boost::optional<SubwindowId> target) :
@@ -160,7 +160,7 @@ cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const Float4D
 	_target_subwindow{ target },
 	details{ float4_details }
 {
-	assert(float4_details.matches_event(type));
+	assert(Float4Details::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const FloatRectDetails& float_rect_details, const boost::optional<SubwindowId> target) :
@@ -168,7 +168,7 @@ cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const FloatRe
 	_target_subwindow{ target },
 	details{ float_rect_details }
 {
-	assert(float_rect_details.matches_event(type));
+	assert(FloatRectDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const Int2Details& int2_details) :
@@ -176,7 +176,7 @@ cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const Int2Det
 	_target_subwindow{ SubwindowId::GRAPH },
 	details{ int2_details }
 {
-	assert(int2_details.matches_event(type));
+	assert(Int2Details::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const CreateNodeDetails& create_node_details) :
@@ -184,7 +184,7 @@ cse::InterfaceEvent::InterfaceEvent(const CreateNodeDetails& create_node_details
 	_target_subwindow{ SubwindowId::GRAPH },
 	details{ create_node_details }
 {
-
+	assert(CreateNodeDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const SelectNodeDetails& select_node_details) :
@@ -192,7 +192,7 @@ cse::InterfaceEvent::InterfaceEvent(const SelectNodeDetails& select_node_details
 	_target_subwindow{ SubwindowId::GRAPH },
 	details{ select_node_details }
 {
-
+	assert(SelectNodeDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const SetSlotBoolDetails& set_slot_bool_details) :
@@ -200,7 +200,7 @@ cse::InterfaceEvent::InterfaceEvent(const SetSlotBoolDetails& set_slot_bool_deta
 	_target_subwindow{ boost::none },
 	details{ set_slot_bool_details }
 {
-
+	assert(SetSlotBoolDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const SetSlotColorDetails& set_slot_color_details) :
@@ -208,7 +208,7 @@ cse::InterfaceEvent::InterfaceEvent(const SetSlotColorDetails& set_slot_color_de
 	_target_subwindow{ boost::none },
 	details{ set_slot_color_details }
 {
-
+	assert(SetSlotColorDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const SetSlotEnumDetails& set_slot_enum_details) :
@@ -216,7 +216,7 @@ cse::InterfaceEvent::InterfaceEvent(const SetSlotEnumDetails& set_slot_enum_deta
 	_target_subwindow{ boost::none },
 	details{ set_slot_enum_details }
 {
-
+	assert(SetSlotEnumDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const SetSlotFloatDetails& set_slot_float_details) :
@@ -224,7 +224,7 @@ cse::InterfaceEvent::InterfaceEvent(const SetSlotFloatDetails& set_slot_float_de
 	_target_subwindow{ boost::none },
 	details{ set_slot_float_details }
 {
-
+	assert(SetSlotFloatDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const SetSlotRampColorDetails& set_slot_ramp_color_details) :
@@ -232,7 +232,7 @@ cse::InterfaceEvent::InterfaceEvent(const SetSlotRampColorDetails& set_slot_ramp
 	_target_subwindow{ boost::none },
 	details{ set_slot_ramp_color_details }
 {
-
+	assert(SetSlotRampColorDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const SetSlotRampPosDetails& set_slot_ramp_pos_details) :
@@ -240,7 +240,7 @@ cse::InterfaceEvent::InterfaceEvent(const SetSlotRampPosDetails& set_slot_ramp_p
 	_target_subwindow{ boost::none },
 	details{ set_slot_ramp_pos_details }
 {
-
+	assert(SetSlotRampPosDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const SetSlotVectorDetails& set_slot_vector_details) :
@@ -248,7 +248,7 @@ cse::InterfaceEvent::InterfaceEvent(const SetSlotVectorDetails& set_slot_vector_
 	_target_subwindow{ boost::none },
 	details{ set_slot_vector_details }
 {
-
+	assert(SetSlotVectorDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const CurveEditorViewClickDetails& curve_edit_view_details) :
@@ -256,7 +256,7 @@ cse::InterfaceEvent::InterfaceEvent(const CurveEditorViewClickDetails& curve_edi
 	_target_subwindow{ SubwindowId::MODAL_CURVE_EDITOR },
 	details{ curve_edit_view_details }
 {
-
+	assert(CurveEditorViewClickDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const CurveEditorPointMoveDetails& curve_edit_point_move_details) :
@@ -264,7 +264,7 @@ cse::InterfaceEvent::InterfaceEvent(const CurveEditorPointMoveDetails& curve_edi
 	_target_subwindow{ SubwindowId::MODAL_CURVE_EDITOR },
 	details{ curve_edit_point_move_details }
 {
-
+	assert(CurveEditorPointMoveDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const CurveEditorSetInterpDetails& curve_edit_set_interp_details) :
@@ -272,7 +272,7 @@ cse::InterfaceEvent::InterfaceEvent(const CurveEditorSetInterpDetails& curve_edi
 	_target_subwindow{ SubwindowId::MODAL_CURVE_EDITOR },
 	details{ curve_edit_set_interp_details }
 {
-
+	assert(CurveEditorSetInterpDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const ModalRampColorPickShowDetails& modal_ramp_color_pick_show_details) :
@@ -280,287 +280,127 @@ cse::InterfaceEvent::InterfaceEvent(const ModalRampColorPickShowDetails& modal_r
 	_target_subwindow{ boost::none },
 	details{ modal_ramp_color_pick_show_details }
 {
-
+	assert(ModalRampColorPickShowDetails::matches(_type));
 }
 
-boost::optional<cse::CurveEditorModeDetails> cse::InterfaceEvent::details_curve_editor_set_mode() const
+template <> cse::CurveEditorModeDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::CURVE_EDIT_SET_MODE && details) {
-		return details->curve_editor_mode;
-	}
-	else {
-		return boost::none;
-	}
+	return curve_editor_mode;
 }
 
-boost::optional<cse::CurveEditorTabDetails> cse::InterfaceEvent::details_curve_editor_set_tab() const
+template <> cse::CurveEditorTabDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::CURVE_EDIT_SET_TAB && details) {
-		return details->curve_editor_tab;
-	}
-	else {
-		return boost::none;
-	}
+	return curve_editor_tab;
 }
 
-boost::optional<cse::SelectModeDetails> cse::InterfaceEvent::details_box_select_end() const
+template <> cse::SelectModeDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::BOX_SELECT_END && details) {
-		return details->select_mode;
-	}
-	else {
-		return boost::none;
-	}
+	return select_mode;
 }
 
-boost::optional<cse::SubwindowIdDetails> cse::InterfaceEvent::details_subwindow_is_hovered() const
+template <> cse::SubwindowIdDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::SUBWINDOW_IS_HOVERED && details) {
-		return details->subwindow_id;
-	}
-	else {
-		return boost::none;
-	}
+	return subwindow_id;
 }
 
-boost::optional<cse::NodeCategoryDetails> cse::InterfaceEvent::details_select_node_category() const
+template <> cse::NodeCategoryDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::SELECT_NODE_CATEGORY && details) {
-		return details->node_category;
-	}
-	else {
-		return boost::none;
-	}
+	return node_category;
 }
 
-boost::optional<cse::NodeTypeDetails> cse::InterfaceEvent::details_select_node_type() const
+template <> cse::NodeTypeDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::SELECT_NODE_TYPE && details) {
-		return details->node_type;
-	}
-	else {
-		return boost::none;
-	}
+	return node_type;
 }
 
-boost::optional<cse::SlotIdDetails> cse::InterfaceEvent::details_connection_begin() const
+template <> cse::SlotIdDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::CONNECTION_BEGIN && details) {
-		return details->slot_id;
-	}
-	else {
-		return boost::none;
-	}
+	return slot_id;
 }
 
-boost::optional<cse::SlotIdDetails> cse::InterfaceEvent::details_connection_alter() const
+template <> cse::Float3Details cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::CONNECTION_ALTER && details) {
-		return details->slot_id;
-	}
-	else {
-		return boost::none;
-	}
+	return float3;
 }
 
-boost::optional<cse::SlotIdDetails> cse::InterfaceEvent::details_select_slot() const
+template <> cse::Float4Details cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::SELECT_SLOT && details) {
-		return details->slot_id;
-	}
-	else {
-		return boost::none;
-	}
+	return float4;
 }
 
-boost::optional<cse::SlotIdDetails> cse::InterfaceEvent::details_set_slot_ramp_new() const
+template <> cse::FloatRectDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::SET_SLOT_RAMP_NEW && details) {
-		return details->slot_id;
-	}
-	else {
-		return boost::none;
-	}
+	return float_rect;
 }
 
-boost::optional<cse::Float3Details> cse::InterfaceEvent::details_param_edit_color_init() const
+template <> cse::Int2Details cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::PARAM_EDIT_COLOR_INIT && details) {
-		return details->float3;
-	}
-	else {
-		return boost::none;
-	}
+	return int2;
 }
 
-boost::optional<cse::Float3Details> cse::InterfaceEvent::details_param_edit_color_change() const
+template <> cse::CreateNodeDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::PARAM_EDIT_COLOR_CHANGE && details) {
-		return details->float3;
-	}
-	else {
-		return boost::none;
-	}
+	return create_node;
 }
 
-boost::optional<cse::Float4Details> cse::InterfaceEvent::details_modal_ramp_color_pick_update() const
+template <> cse::SelectNodeDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::RAMP_COLOR_PICK_UPDATE && details) {
-		return details->float4;
-	}
-	else {
-		return boost::none;
-	}
+	return select_node;
 }
 
-boost::optional<cse::FloatRectDetails> cse::InterfaceEvent::details_curve_edit_set_bounds() const
+template <> cse::SetSlotBoolDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::CURVE_EDIT_SET_BOUNDS && details) {
-		return details->float_rect;
-	}
-	else {
-		return boost::none;
-	}
+	return set_slot_bool;
 }
 
-boost::optional<cse::Int2Details> cse::InterfaceEvent::details_pan_view() const
+template <> cse::SetSlotColorDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::PAN_VIEW && details) {
-		return details->int2;
-	}
-	else {
-		return boost::none;
-	}
+	return set_slot_color;
 }
 
-boost::optional<cse::CreateNodeDetails> cse::InterfaceEvent::details_create_node() const
+template <> cse::SetSlotEnumDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::CREATE_NODE && details) {
-		return details->create_node;
-	}
-	else {
-		return boost::none;
-	}
+	return set_slot_enum;
 }
 
-boost::optional<cse::SelectNodeDetails> cse::InterfaceEvent::details_select_node() const
+template <> cse::SetSlotFloatDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::SELECT_NODE && details) {
-		return details->select_node;
-	}
-	else {
-		return boost::none;
-	}
+	return set_slot_float;
 }
 
-boost::optional<cse::SetSlotBoolDetails> cse::InterfaceEvent::details_set_slot_bool() const
+template <> cse::SetSlotRampColorDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::SET_SLOT_BOOL && details) {
-		return details->set_slot_bool;
-	}
-	else {
-		return boost::none;
-	}
+	return set_slot_ramp_color;
 }
 
-boost::optional<cse::SetSlotColorDetails> cse::InterfaceEvent::details_set_slot_color() const
+template <> cse::SetSlotRampPosDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::SET_SLOT_COLOR && details) {
-		return details->set_slot_color;
-	}
-	else {
-		return boost::none;
-	}
+	return set_slot_ramp_pos;
 }
 
-boost::optional<cse::SetSlotEnumDetails> cse::InterfaceEvent::details_set_slot_enum() const
+template <> cse::SetSlotVectorDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::SET_SLOT_ENUM && details) {
-		return details->set_slot_enum;
-	}
-	else {
-		return boost::none;
-	}
+	return set_slot_vector;
 }
 
-boost::optional<cse::SetSlotFloatDetails> cse::InterfaceEvent::details_set_slot_float() const
+template <> cse::CurveEditorViewClickDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::SET_SLOT_FLOAT && details) {
-		return details->set_slot_float;
-	}
-	else {
-		return boost::none;
-	}
+	return curve_edit_view_click;
 }
 
-boost::optional<cse::SetSlotRampColorDetails> cse::InterfaceEvent::details_set_slot_ramp_color() const
+template <> cse::CurveEditorPointMoveDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::SET_SLOT_RAMP_COLOR && details) {
-		return details->set_slot_ramp_color;
-	}
-	else {
-		return boost::none;
-	}
+	return curve_edit_point_move;
 }
 
-boost::optional<cse::SetSlotRampPosDetails> cse::InterfaceEvent::details_set_slot_ramp_pos() const
+template <> cse::CurveEditorSetInterpDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::SET_SLOT_RAMP_POS && details) {
-		return details->set_slot_ramp_pos;
-	}
-	else {
-		return boost::none;
-	}
+	return curve_edit_set_interp;
 }
 
-boost::optional<cse::SetSlotVectorDetails> cse::InterfaceEvent::details_set_slot_vector() const
+template <> cse::ModalRampColorPickShowDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	if (_type == InterfaceEventType::SET_SLOT_VECTOR && details) {
-		return details->set_slot_vector;
-	}
-	else {
-		return boost::none;
-	}
-}
-
-boost::optional<cse::CurveEditorViewClickDetails> cse::InterfaceEvent::details_curve_edit_view_click() const
-{
-	if (_type == InterfaceEventType::CURVE_EDIT_VIEW_CLICK && details) {
-		return details->curve_edit_view_click;
-	}
-	else {
-		return boost::none;
-	}
-}
-
-boost::optional<cse::CurveEditorPointMoveDetails> cse::InterfaceEvent::details_curve_edit_point_move() const
-{
-	if (_type == InterfaceEventType::CURVE_EDIT_POINT_MOVE && details) {
-		return details->curve_edit_point_move;
-	}
-	else {
-		return boost::none;
-	}
-}
-
-boost::optional<cse::CurveEditorSetInterpDetails> cse::InterfaceEvent::details_curve_edit_set_interp() const
-{
-	if (_type == InterfaceEventType::CURVE_EDIT_SET_INTERP && details) {
-		return details->curve_edit_set_interp;
-	}
-	else {
-		return boost::none;
-	}
-}
-
-boost::optional<cse::ModalRampColorPickShowDetails> cse::InterfaceEvent::details_modal_ramp_color_pick_show() const
-{
-	if (_type == InterfaceEventType::MODAL_RAMP_COLOR_PICK_SHOW && details) {
-		return details->modal_ramp_color_pick_show;
-	}
-	else {
-		return boost::none;
-	}
+	return modal_ramp_color_pick_show;
 }
 
 void cse::InterfaceEventArray::push(const InterfaceEvent event)

@@ -494,12 +494,12 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 {
 	// Special events that get duplicated to multiple windows are handled here
 	if (event.type() == InterfaceEventType::SELECT_SLOT) {
-		assert(event.details_select_slot().has_value());
-		InterfaceEvent graph_event{ InterfaceEventType::SELECT_SLOT, SlotIdDetails{ event.details_select_slot()->value }, SubwindowId::GRAPH };
+		assert(event.details_as<SlotIdDetails>().has_value());
+		InterfaceEvent graph_event{ InterfaceEventType::SELECT_SLOT, SlotIdDetails{ event.details_as<SlotIdDetails>()->value }, SubwindowId::GRAPH };
 		window_graph.do_event(graph_event);
-		InterfaceEvent param_event{ InterfaceEventType::SELECT_SLOT, SlotIdDetails{ event.details_select_slot()->value }, SubwindowId::PARAM_EDITOR };
+		InterfaceEvent param_event{ InterfaceEventType::SELECT_SLOT, SlotIdDetails{ event.details_as<SlotIdDetails>()->value }, SubwindowId::PARAM_EDITOR };
 		window_param_editor.do_event(param_event);
-		selected_slot = event.details_select_slot()->value;
+		selected_slot = event.details_as<SlotIdDetails>()->value;
 		return;
 	}
 	else if (event.type() == InterfaceEventType::SELECT_SLOT_NONE) {
@@ -655,8 +655,8 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 				break;
 			case InterfaceEventType::MODAL_RAMP_COLOR_PICK_SHOW:
 			{
-				assert(event.details_modal_ramp_color_pick_show().has_value());
-				const ModalRampColorPickShowDetails details{ event.details_modal_ramp_color_pick_show().get() };
+				assert(event.details_as<ModalRampColorPickShowDetails>().has_value());
+				const ModalRampColorPickShowDetails details{ event.details_as<ModalRampColorPickShowDetails>().get() };
 				// Get the current RGB value from the attached slot and index
 				const auto opt_value{ the_graph->get_slot_value_as<csg::ColorRampSlotValue>(details.slot_id) };
 				if (opt_value) {
@@ -678,7 +678,7 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 			}
 			case InterfaceEventType::SUBWINDOW_IS_HOVERED:
 			{
-				const auto details{ event.details_subwindow_is_hovered() };
+				const boost::optional<SubwindowIdDetails> details{ event.details_as<SubwindowIdDetails>() };
 				if (details) {
 					hovered_subwindow = details->value;
 				}
@@ -695,7 +695,7 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 				break;
 			case InterfaceEventType::SET_SLOT_BOOL:
 			{
-				const boost::optional<SetSlotBoolDetails> details{ event.details_set_slot_bool() };
+				const boost::optional<SetSlotBoolDetails> details{ event.details_as<SetSlotBoolDetails>() };
 				assert(details.has_value());
 				the_graph->set_bool(details->slot_id, details->new_value);
 				should_do_undo_push = true;
@@ -703,7 +703,7 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 			}
 			case InterfaceEventType::SET_SLOT_COLOR:
 			{
-				const boost::optional<SetSlotColorDetails> details{ event.details_set_slot_color() };
+				const boost::optional<SetSlotColorDetails> details{ event.details_as<SetSlotColorDetails>() };
 				assert(details.has_value());
 				the_graph->set_color(details->slot_id, details->new_value);
 				should_do_undo_push = true;
@@ -711,7 +711,7 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 			}
 			case InterfaceEventType::SET_SLOT_ENUM:
 			{
-				const boost::optional<SetSlotEnumDetails> details{ event.details_set_slot_enum() };
+				const boost::optional<SetSlotEnumDetails> details{ event.details_as<SetSlotEnumDetails>() };
 				assert(details.has_value());
 				the_graph->set_enum(details->slot_id, details->new_value);
 				should_do_undo_push = true;
@@ -719,7 +719,7 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 			}
 			case InterfaceEventType::SET_SLOT_FLOAT:
 			{
-				const boost::optional<SetSlotFloatDetails> details{ event.details_set_slot_float() };
+				const boost::optional<SetSlotFloatDetails> details{ event.details_as<SetSlotFloatDetails>() };
 				assert(details.has_value());
 				the_graph->set_float(details->slot_id, details->new_value);
 				should_do_undo_push = true;
@@ -727,7 +727,7 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 			}
 			case InterfaceEventType::SET_SLOT_RAMP_COLOR:
 			{
-				const boost::optional<SetSlotRampColorDetails> details{ event.details_set_slot_ramp_color() };
+				const boost::optional<SetSlotRampColorDetails> details{ event.details_as<SetSlotRampColorDetails>() };
 				assert(details.has_value());
 				const boost::optional<csg::ColorRampSlotValue> opt_ramp{ the_graph->get_slot_value_as<csg::ColorRampSlotValue>(details->slot_id) };
 				if (opt_ramp) {
@@ -747,7 +747,7 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 			}
 			case InterfaceEventType::SET_SLOT_RAMP_POS:
 			{
-				const boost::optional<SetSlotRampPosDetails> details{ event.details_set_slot_ramp_pos() };
+				const boost::optional<SetSlotRampPosDetails> details{ event.details_as<SetSlotRampPosDetails>() };
 				assert(details.has_value());
 				const boost::optional<csg::ColorRampSlotValue> opt_ramp{ the_graph->get_slot_value_as<csg::ColorRampSlotValue>(details->slot_id) };
 				if (opt_ramp) {
@@ -765,7 +765,7 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 			}
 			case InterfaceEventType::SET_SLOT_VECTOR:
 			{
-				const boost::optional<SetSlotVectorDetails> details{ event.details_set_slot_vector() };
+				const boost::optional<SetSlotVectorDetails> details{ event.details_as<SetSlotVectorDetails>() };
 				assert(details.has_value());
 				the_graph->set_vector(details->slot_id, details->new_value);
 				should_do_undo_push = true;

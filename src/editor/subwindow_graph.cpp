@@ -134,7 +134,7 @@ bool cse::GraphSubwindow::do_event(const InterfaceEvent& event)
 		switch (event.type()) {
 			case InterfaceEventType::PAN_VIEW:
 			{
-				const auto details{ event.details_pan_view() };
+				const boost::optional<Int2Details> details{ event.details_as<Int2Details>() };
 				assert(details.has_value());
 				if (details) {
 					view_center = view_center + details->value;
@@ -156,7 +156,7 @@ bool cse::GraphSubwindow::do_event(const InterfaceEvent& event)
 				break;
 			case InterfaceEventType::CREATE_NODE:
 			{
-				const auto details{ event.details_create_node() };
+				const boost::optional<CreateNodeDetails> details{ event.details_as<CreateNodeDetails>() };
 				assert(details.has_value());
 				the_graph->add(details->type, csc::Int2{ screen_to_world(details->screen_pos) });
 				graph_altered = true;
@@ -164,7 +164,7 @@ bool cse::GraphSubwindow::do_event(const InterfaceEvent& event)
 			}
 			case InterfaceEventType::SELECT_NODE:
 			{
-				const auto details{ event.details_select_node() };
+				const boost::optional<SelectNodeDetails> details{ event.details_as<SelectNodeDetails>() };
 				assert(details.has_value());
 				node_selection.select(details->mode, details->id);
 				if (details->mode == SelectMode::EXCLUSIVE) {
@@ -177,7 +177,7 @@ bool cse::GraphSubwindow::do_event(const InterfaceEvent& event)
 				break;
 			case InterfaceEventType::BOX_SELECT_END:
 			{
-				const auto details{ event.details_box_select_end() };
+				const boost::optional<SelectModeDetails> details{ event.details_as<SelectModeDetails>() };
 				assert(details.has_value());
 				const auto rect{ selection_rect() };
 				box_select_begin = boost::none;
@@ -236,7 +236,7 @@ bool cse::GraphSubwindow::do_event(const InterfaceEvent& event)
 			}
 			case InterfaceEventType::CONNECTION_BEGIN:
 			{
-				const boost::optional<SlotIdDetails> details{ event.details_connection_begin() };
+				const boost::optional<SlotIdDetails> details{ event.details_as<SlotIdDetails>() };
 				assert(details.has_value());
 				const csg::SlotId slot_id{ details->value };
 				const auto node = the_graph->get(slot_id.node_id());
@@ -257,7 +257,7 @@ bool cse::GraphSubwindow::do_event(const InterfaceEvent& event)
 			}
 			case InterfaceEventType::CONNECTION_ALTER:
 			{
-				const boost::optional<SlotIdDetails> details{ event.details_connection_alter() };
+				const boost::optional<SlotIdDetails> details{ event.details_as<SlotIdDetails>() };
 				assert(details.has_value());
 				const csg::SlotId slot_id{ details->value };
 				const auto old_conn{ the_graph->remove_connection(slot_id) };
@@ -311,7 +311,7 @@ bool cse::GraphSubwindow::do_event(const InterfaceEvent& event)
 			}
 			case InterfaceEventType::SELECT_SLOT:
 			{
-				const boost::optional<SlotIdDetails> details{ event.details_select_slot() };
+				const boost::optional<SlotIdDetails> details{ event.details_as<SlotIdDetails>() };
 				assert(details.has_value());
 				selected_slot = details->value;
 				break;

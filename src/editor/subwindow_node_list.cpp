@@ -57,16 +57,16 @@ void cse::NodeListSubwindow::do_event(const InterfaceEvent& event)
 		switch (event.type()) {
 			case InterfaceEventType::SELECT_NODE_CATEGORY:
 			{
-				if (event.details_select_node_category()) {
-					selected_category = event.details_select_node_category()->value;
+				if (event.details_as<NodeCategoryDetails>()) {
+					selected_category = event.details_as<NodeCategoryDetails>()->value;
 					_selected_type = boost::none;
 				}
 				break;
 			}
 			case InterfaceEventType::SELECT_NODE_TYPE:
 			{
-				if (event.details_select_node_type()) {
-					_selected_type = event.details_select_node_type()->value;
+				if (event.details_as<NodeTypeDetails>()) {
+					_selected_type = event.details_as<NodeTypeDetails>()->value;
 				}
 				break;
 			}

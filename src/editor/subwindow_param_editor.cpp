@@ -350,7 +350,7 @@ void cse::ParamEditorSubwindow::do_event(const InterfaceEvent& event)
 		switch (event.type()) {
 			case InterfaceEventType::SELECT_SLOT:
 			{
-				const boost::optional<SlotIdDetails> details{ event.details_select_slot() };
+				const boost::optional<SlotIdDetails> details{ event.details_as<SlotIdDetails>() };
 				assert(details.has_value());
 				if (selected_slot != details->value) {
 					clear_state();
@@ -365,14 +365,14 @@ void cse::ParamEditorSubwindow::do_event(const InterfaceEvent& event)
 			}
 			case InterfaceEventType::PARAM_EDIT_COLOR_INIT:
 			{
-				const boost::optional<Float3Details> details{ event.details_param_edit_color_init() };
+				const boost::optional<Float3Details> details{ event.details_as<Float3Details>() };
 				assert(details.has_value());
 				edit_color_color = details->value;
 				break;
 			}
 			case InterfaceEventType::PARAM_EDIT_COLOR_CHANGE:
 			{
-				const boost::optional<Float3Details> details{ event.details_param_edit_color_change() };
+				const boost::optional<Float3Details> details{ event.details_as<Float3Details>() };
 				assert(details.has_value());
 				edit_color_color = details->value;
 				break;

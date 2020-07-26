@@ -195,28 +195,28 @@ csg::SlotValue& csg::SlotValue::operator=(const SlotValue& other)
 	return *this;
 }
 
-template <> boost::optional<csg::BoolSlotValue> csg::SlotValue::as<csg::BoolSlotValue>() const {
+template <> boost::optional<csg::BoolSlotValue> csg::SlotValue::as() const {
 	return (type() != SlotType::BOOL) ? boost::none : boost::optional<csg::BoolSlotValue>{ value_union.bool_value };
 }
-template <> boost::optional<csg::ColorSlotValue> csg::SlotValue::as<csg::ColorSlotValue>() const {
+template <> boost::optional<csg::ColorSlotValue> csg::SlotValue::as() const {
 	return (type() != SlotType::COLOR) ? boost::none : boost::optional<csg::ColorSlotValue>{ value_union.color_value };
 }
-template <> boost::optional<csg::EnumSlotValue> csg::SlotValue::as<csg::EnumSlotValue>() const {
+template <> boost::optional<csg::EnumSlotValue> csg::SlotValue::as() const {
 	return (type() != SlotType::ENUM) ? boost::none : boost::optional<csg::EnumSlotValue>{ value_union.enum_value };
 }
-template <> boost::optional<csg::FloatSlotValue> csg::SlotValue::as<csg::FloatSlotValue>() const {
+template <> boost::optional<csg::FloatSlotValue> csg::SlotValue::as() const {
 	return (type() != SlotType::FLOAT) ? boost::none : boost::optional<csg::FloatSlotValue>{ value_union.float_value };
 }
-template <> boost::optional<csg::VectorSlotValue> csg::SlotValue::as<csg::VectorSlotValue>() const {
+template <> boost::optional<csg::VectorSlotValue> csg::SlotValue::as() const {
 	return (type() != SlotType::VECTOR) ? boost::none : boost::optional<csg::VectorSlotValue>{ value_union.vector_value };
 }
-template <> boost::optional<csg::RGBCurveSlotValue> csg::SlotValue::as<csg::RGBCurveSlotValue>() const {
+template <> boost::optional<csg::RGBCurveSlotValue> csg::SlotValue::as() const {
 	return (type() != SlotType::CURVE_RGB || static_cast<bool>(curve_rgb_value) == false) ? boost::none : boost::optional<csg::RGBCurveSlotValue>{ *curve_rgb_value };
 }
-template <> boost::optional<csg::VectorCurveSlotValue> csg::SlotValue::as<csg::VectorCurveSlotValue>() const {
+template <> boost::optional<csg::VectorCurveSlotValue> csg::SlotValue::as() const {
 	return (type() != SlotType::CURVE_VECTOR || static_cast<bool>(curve_vector_value) == false) ? boost::none : boost::optional<csg::VectorCurveSlotValue>{ *curve_vector_value };
 }
-template <> boost::optional<csg::ColorRampSlotValue> csg::SlotValue::as<csg::ColorRampSlotValue>() const {
+template <> boost::optional<csg::ColorRampSlotValue> csg::SlotValue::as() const {
 	return (type() != SlotType::COLOR_RAMP || static_cast<bool>(color_ramp_value) == false) ? boost::none : boost::optional<csg::ColorRampSlotValue>{ *color_ramp_value };
 }
 
