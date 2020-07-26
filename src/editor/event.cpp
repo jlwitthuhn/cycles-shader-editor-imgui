@@ -227,28 +227,36 @@ cse::InterfaceEvent::InterfaceEvent(const SetSlotFloatDetails& set_slot_float_de
 	assert(SetSlotFloatDetails::matches(_type));
 }
 
-cse::InterfaceEvent::InterfaceEvent(const SetSlotRampColorDetails& set_slot_ramp_color_details) :
-	_type{ InterfaceEventType::SET_SLOT_RAMP_COLOR },
-	_target_subwindow{ boost::none },
-	details{ set_slot_ramp_color_details }
-{
-	assert(SetSlotRampColorDetails::matches(_type));
-}
-
-cse::InterfaceEvent::InterfaceEvent(const SetSlotRampPosDetails& set_slot_ramp_pos_details) :
-	_type{ InterfaceEventType::SET_SLOT_RAMP_POS },
-	_target_subwindow{ boost::none },
-	details{ set_slot_ramp_pos_details }
-{
-	assert(SetSlotRampPosDetails::matches(_type));
-}
-
 cse::InterfaceEvent::InterfaceEvent(const SetSlotVectorDetails& set_slot_vector_details) :
 	_type{ InterfaceEventType::SET_SLOT_VECTOR },
 	_target_subwindow{ boost::none },
 	details{ set_slot_vector_details }
 {
 	assert(SetSlotVectorDetails::matches(_type));
+}
+
+cse::InterfaceEvent::InterfaceEvent(const ModifySlotRampColorDetails& mod_slot_ramp_color_details) :
+	_type{ InterfaceEventType::MODIFY_SLOT_RAMP_COLOR },
+	_target_subwindow{ boost::none },
+	details{ mod_slot_ramp_color_details }
+{
+	assert(ModifySlotRampColorDetails::matches(_type));
+}
+
+cse::InterfaceEvent::InterfaceEvent(const ModifySlotRampPosDetails& mod_slot_ramp_pos_details) :
+	_type{ InterfaceEventType::MODIFY_SLOT_RAMP_POS },
+	_target_subwindow{ boost::none },
+	details{ mod_slot_ramp_pos_details }
+{
+	assert(ModifySlotRampPosDetails::matches(_type));
+}
+
+cse::InterfaceEvent::InterfaceEvent(const ModifySlotRampDeleteDetails& mod_slot_ramp_delete_details) :
+	_type{ InterfaceEventType::MODIFY_SLOT_RAMP_DELETE },
+	_target_subwindow{ boost::none },
+	details{ mod_slot_ramp_delete_details }
+{
+	assert(ModifySlotRampDeleteDetails::matches(_type));
 }
 
 cse::InterfaceEvent::InterfaceEvent(const CurveEditorViewClickDetails& curve_edit_view_details) :
@@ -368,14 +376,19 @@ template <> cse::SetSlotFloatDetails cse::InterfaceEvent::InterfaceEventDetails:
 	return set_slot_float;
 }
 
-template <> cse::SetSlotRampColorDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
+template <> cse::ModifySlotRampColorDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	return set_slot_ramp_color;
+	return mod_slot_ramp_color;
 }
 
-template <> cse::SetSlotRampPosDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
+template <> cse::ModifySlotRampPosDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
-	return set_slot_ramp_pos;
+	return mod_slot_ramp_pos;
+}
+
+template <> cse::ModifySlotRampDeleteDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
+{
+	return mod_slot_ramp_delete;
 }
 
 template <> cse::SetSlotVectorDetails cse::InterfaceEvent::InterfaceEventDetails::as() const

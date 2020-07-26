@@ -30,6 +30,22 @@ void csg::ColorRamp::set(const size_t index, ColorRampPoint new_point)
 	}
 }
 
+void csg::ColorRamp::remove(size_t index)
+{
+	if (points.size() < 3) {
+		// There must be 2 points remaining after deletion
+		return;
+	}
+
+	if (index >= points.size()) {
+		// Illegal index
+		return;
+	}
+
+	points.erase(points.begin() + index);
+	sort_points();
+}
+
 bool csg::ColorRamp::similar(const ColorRamp& other, const float margin) const
 {
 	if (points.size() != other.points.size()) {

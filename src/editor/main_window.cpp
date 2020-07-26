@@ -725,9 +725,9 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 				should_do_undo_push = true;
 				break;
 			}
-			case InterfaceEventType::SET_SLOT_RAMP_COLOR:
+			case InterfaceEventType::MODIFY_SLOT_RAMP_COLOR:
 			{
-				const boost::optional<SetSlotRampColorDetails> details{ event.details_as<SetSlotRampColorDetails>() };
+				const boost::optional<ModifySlotRampColorDetails> details{ event.details_as<ModifySlotRampColorDetails>() };
 				assert(details.has_value());
 				const boost::optional<csg::ColorRampSlotValue> opt_ramp{ the_graph->get_slot_value_as<csg::ColorRampSlotValue>(details->slot_id) };
 				if (opt_ramp) {
@@ -745,9 +745,9 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 				}
 				break;
 			}
-			case InterfaceEventType::SET_SLOT_RAMP_POS:
+			case InterfaceEventType::MODIFY_SLOT_RAMP_POS:
 			{
-				const boost::optional<SetSlotRampPosDetails> details{ event.details_as<SetSlotRampPosDetails>() };
+				const boost::optional<ModifySlotRampPosDetails> details{ event.details_as<ModifySlotRampPosDetails>() };
 				assert(details.has_value());
 				const boost::optional<csg::ColorRampSlotValue> opt_ramp{ the_graph->get_slot_value_as<csg::ColorRampSlotValue>(details->slot_id) };
 				if (opt_ramp) {
@@ -760,6 +760,34 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 						the_graph->set_color_ramp(details->slot_id, mut_ramp);
 						should_do_undo_push = true;
 					}
+				}
+				break;
+			}
+			case InterfaceEventType::MODIFY_SLOT_RAMP_NEW:
+			{
+				const boost::optional<SlotIdDetails> details{ event.details_as<SlotIdDetails>() };
+				assert(details.has_value());
+				const boost::optional<csg::ColorRampSlotValue> opt_ramp{ the_graph->get_slot_value_as<csg::ColorRampSlotValue>(details->value) };
+				if (opt_ramp) {
+					const csg::ColorRamp ramp{ opt_ramp->get() };
+					std::vector<csg::ColorRampPoint> mut_points{ ramp.get() };
+					mut_points.push_back(csg::ColorRampPoint{ 1.0f, csc::Float3{ 1.0f, 1.0f, 1.0f }, 1.0f });
+					const csg::ColorRamp new_ramp{ mut_points };
+					the_graph->set_color_ramp(details->value, new_ramp);
+					should_do_undo_push = true;
+				}
+				break;
+			}
+			case InterfaceEventType::MODIFY_SLOT_RAMP_DELETE:
+			{
+				const boost::optional<ModifySlotRampDeleteDetails> details{ event.details_as<ModifySlotRampDeleteDetails>() };
+				assert(details.has_value());
+				const boost::optional<csg::ColorRampSlotValue> opt_ramp{ the_graph->get_slot_value_as<csg::ColorRampSlotValue>(details->slot_id) };
+				if (opt_ramp) {
+					csg::ColorRamp mut_ramp{ opt_ramp->get() };
+					mut_ramp.remove(details->point_index);
+					the_graph->set_color_ramp(details->slot_id, mut_ramp);
+					should_do_undo_push = true;
 				}
 				break;
 			}

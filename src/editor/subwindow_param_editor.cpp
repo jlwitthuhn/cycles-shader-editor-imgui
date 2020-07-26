@@ -309,7 +309,7 @@ cse::InterfaceEventArray cse::ParamEditorSubwindow::run_color_ramp(csg::SlotId s
 {
 	InterfaceEventArray result;
 
-	const char* const float_format{ "%.2f" };
+	const char* const float_format{ "%.3f" };
 
 	const csg::ColorRamp points{ slot_value.get() };
 	for (size_t i = 0; i < points.size(); i++) {
@@ -334,12 +334,24 @@ cse::InterfaceEventArray cse::ParamEditorSubwindow::run_color_ramp(csg::SlotId s
 			result.push(ramp_event);
 		}
 		else if (mut_pos != this_point.pos) {
-			InterfaceEvent ramp_event{ SetSlotRampPosDetails{ slot_id, i, mut_pos } };
+			InterfaceEvent ramp_event{ ModifySlotRampPosDetails{ slot_id, i, mut_pos } };
 			result.push(ramp_event);
+		}
+		ImGui::SameLine();
+
+		std::array<char, 16> name_delete;
+		name_delete.fill('\0');
+		snprintf(name_delete.data(), name_delete.size(), "Delete##%3zu", i);
+		if (ImGui::Button(name_delete.data())) {
+			InterfaceEvent delete_event{ ModifySlotRampDeleteDetails{ slot_id, i } };
+			result.push(delete_event);
 		}
 	}
 
-	ImGui::Button("Add Control Point");
+	if (ImGui::Button("Add Control Point")) {
+		InterfaceEvent add_event{ InterfaceEventType::MODIFY_SLOT_RAMP_NEW, SlotIdDetails{ slot_id }, boost::none };
+		result.push(add_event);
+	}
 
 	return result;
 }

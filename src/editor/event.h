@@ -120,7 +120,7 @@ namespace cse {
 		InterfaceEventType::CONNECTION_BEGIN,
 		InterfaceEventType::CONNECTION_ALTER,
 		InterfaceEventType::SELECT_SLOT,
-		InterfaceEventType::SET_SLOT_RAMP_NEW
+		InterfaceEventType::MODIFY_SLOT_RAMP_NEW
 		> SlotIdDetails;
 	typedef SimpleDetails<csc::Float3,
 		InterfaceEventType::PARAM_EDIT_COLOR_INIT,
@@ -200,30 +200,6 @@ namespace cse {
 		float new_value;
 	};
 
-	struct SetSlotRampColorDetails {
-		SetSlotRampColorDetails(csg::SlotId slot_id, size_t point_index, csc::Float4 new_value) : slot_id{ slot_id }, point_index{ point_index }, new_value{ new_value } {}
-
-		static bool matches(InterfaceEventType type) {
-			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::SET_SLOT_RAMP_COLOR>{}.matches(type);
-		}
-
-		csg::SlotId slot_id;
-		size_t point_index;
-		csc::Float4 new_value;
-	};
-
-	struct SetSlotRampPosDetails {
-		SetSlotRampPosDetails(csg::SlotId slot_id, size_t point_index, float new_value) : slot_id{ slot_id }, point_index{ point_index }, new_value{ new_value } {}
-
-		static bool matches(InterfaceEventType type) {
-			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::SET_SLOT_RAMP_POS>{}.matches(type);
-		}
-
-		csg::SlotId slot_id;
-		size_t point_index;
-		float new_value;
-	};
-
 	struct SetSlotVectorDetails {
 		SetSlotVectorDetails(csg::SlotId slot_id, csc::Float3 new_value) : slot_id{ slot_id }, new_value{ new_value } {}
 
@@ -233,6 +209,41 @@ namespace cse {
 
 		csg::SlotId slot_id;
 		csc::Float3 new_value;
+	};
+
+	struct ModifySlotRampColorDetails {
+		ModifySlotRampColorDetails(csg::SlotId slot_id, size_t point_index, csc::Float4 new_value) : slot_id{ slot_id }, point_index{ point_index }, new_value{ new_value } {}
+
+		static bool matches(InterfaceEventType type) {
+			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::MODIFY_SLOT_RAMP_COLOR>{}.matches(type);
+		}
+
+		csg::SlotId slot_id;
+		size_t point_index;
+		csc::Float4 new_value;
+	};
+
+	struct ModifySlotRampPosDetails {
+		ModifySlotRampPosDetails(csg::SlotId slot_id, size_t point_index, float new_value) : slot_id{ slot_id }, point_index{ point_index }, new_value{ new_value } {}
+
+		static bool matches(InterfaceEventType type) {
+			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::MODIFY_SLOT_RAMP_POS>{}.matches(type);
+		}
+
+		csg::SlotId slot_id;
+		size_t point_index;
+		float new_value;
+	};
+
+	struct ModifySlotRampDeleteDetails {
+		ModifySlotRampDeleteDetails(csg::SlotId slot_id, size_t point_index) : slot_id{ slot_id }, point_index{ point_index } {}
+
+		static bool matches(InterfaceEventType type) {
+			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::MODIFY_SLOT_RAMP_DELETE>{}.matches(type);
+		}
+
+		csg::SlotId slot_id;
+		size_t point_index;
 	};
 
 	struct CurveEditorViewClickDetails {
@@ -308,9 +319,10 @@ namespace cse {
 		InterfaceEvent(const SetSlotColorDetails& set_slot_color_details);
 		InterfaceEvent(const SetSlotEnumDetails& set_slot_enum_details);
 		InterfaceEvent(const SetSlotFloatDetails& set_slot_float_details);
-		InterfaceEvent(const SetSlotRampColorDetails& set_slot_ramp_color_details);
-		InterfaceEvent(const SetSlotRampPosDetails& set_slot_ramp_pos_details);
 		InterfaceEvent(const SetSlotVectorDetails& set_slot_float_details);
+		InterfaceEvent(const ModifySlotRampColorDetails& mod_slot_ramp_color_details);
+		InterfaceEvent(const ModifySlotRampPosDetails& mod_slot_ramp_pos_details);
+		InterfaceEvent(const ModifySlotRampDeleteDetails& mod_slot_ramp_delete_details);
 		InterfaceEvent(const CurveEditorViewClickDetails& curve_edit_view_details);
 		InterfaceEvent(const CurveEditorPointMoveDetails& curve_edit_point_move_details);
 		InterfaceEvent(const CurveEditorSetInterpDetails& curve_edit_set_interp_details);
@@ -352,9 +364,10 @@ namespace cse {
 			InterfaceEventDetails(const SetSlotColorDetails& details) : set_slot_color{ details } {}
 			InterfaceEventDetails(const SetSlotEnumDetails& details) : set_slot_enum{ details } {}
 			InterfaceEventDetails(const SetSlotFloatDetails& details) : set_slot_float{ details } {}
-			InterfaceEventDetails(const SetSlotRampColorDetails& details) : set_slot_ramp_color{ details } {}
-			InterfaceEventDetails(const SetSlotRampPosDetails& details) : set_slot_ramp_pos{ details } {}
 			InterfaceEventDetails(const SetSlotVectorDetails& details) : set_slot_vector{ details } {}
+			InterfaceEventDetails(const ModifySlotRampColorDetails& details) : mod_slot_ramp_color{ details } {}
+			InterfaceEventDetails(const ModifySlotRampPosDetails& details) : mod_slot_ramp_pos{ details } {}
+			InterfaceEventDetails(const ModifySlotRampDeleteDetails& details) : mod_slot_ramp_delete{ details } {}
 			InterfaceEventDetails(const CurveEditorViewClickDetails& details) : curve_edit_view_click{ details } {}
 			InterfaceEventDetails(const CurveEditorPointMoveDetails& details) : curve_edit_point_move{ details } {}
 			InterfaceEventDetails(const CurveEditorSetInterpDetails& details) : curve_edit_set_interp{ details } {}
@@ -382,9 +395,10 @@ namespace cse {
 			SetSlotColorDetails set_slot_color;
 			SetSlotEnumDetails set_slot_enum;
 			SetSlotFloatDetails set_slot_float;
-			SetSlotRampColorDetails set_slot_ramp_color;
-			SetSlotRampPosDetails set_slot_ramp_pos;
 			SetSlotVectorDetails set_slot_vector;
+			ModifySlotRampColorDetails mod_slot_ramp_color;
+			ModifySlotRampPosDetails mod_slot_ramp_pos;
+			ModifySlotRampDeleteDetails mod_slot_ramp_delete;
 			CurveEditorViewClickDetails curve_edit_view_click;
 			CurveEditorPointMoveDetails curve_edit_point_move;
 			CurveEditorSetInterpDetails curve_edit_set_interp;
@@ -417,8 +431,9 @@ namespace cse {
 	template <> SetSlotColorDetails InterfaceEvent::InterfaceEventDetails::as() const;
 	template <> SetSlotEnumDetails InterfaceEvent::InterfaceEventDetails::as() const;
 	template <> SetSlotFloatDetails InterfaceEvent::InterfaceEventDetails::as() const;
-	template <> SetSlotRampColorDetails InterfaceEvent::InterfaceEventDetails::as() const;
-	template <> SetSlotRampPosDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> ModifySlotRampColorDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> ModifySlotRampPosDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> ModifySlotRampDeleteDetails InterfaceEvent::InterfaceEventDetails::as() const;
 	template <> SetSlotVectorDetails InterfaceEvent::InterfaceEventDetails::as() const;
 	template <> CurveEditorViewClickDetails InterfaceEvent::InterfaceEventDetails::as() const;
 	template <> CurveEditorPointMoveDetails InterfaceEvent::InterfaceEventDetails::as() const;

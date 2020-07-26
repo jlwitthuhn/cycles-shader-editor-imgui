@@ -30,6 +30,7 @@ namespace csg {
 		std::vector<ColorRampPoint> get() const { return points; }
 
 		void set(size_t index, ColorRampPoint new_point);
+		void remove(size_t index);
 
 		bool similar(const ColorRamp& other, float margin) const;
 

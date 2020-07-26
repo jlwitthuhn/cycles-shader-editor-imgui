@@ -28,7 +28,7 @@ cse::InterfaceEventArray cse::ModalRampColorPicker::run() const
 
 		if (ImGui::Button("OK")) {
 			const csc::Float4 rgba_f4{ mut_rgba[0], mut_rgba[1], mut_rgba[2], mut_rgba[3] };
-			InterfaceEvent ramp_color_event{ SetSlotRampColorDetails{ attached_location->slot_id, attached_location->index, rgba_f4 } };
+			InterfaceEvent ramp_color_event{ ModifySlotRampColorDetails{ attached_location->slot_id, attached_location->index, rgba_f4 } };
 			result.push(ramp_color_event);
 			InterfaceEvent close_event{ InterfaceEventType::MODAL_RAMP_COLOR_PICK_CLOSE };
 			result.push(close_event);
