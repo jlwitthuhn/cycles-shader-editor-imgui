@@ -281,7 +281,16 @@ bool cse::GraphSubwindow::do_event(const InterfaceEvent& event)
 					}
 				}
 				// Duplicate connections
-				// TODO
+				const std::list<csg::Connection> original_connections{ the_graph->connections() };
+				for (const csg::Connection this_conn : original_connections) {
+					if (old_to_new.count(this_conn.source().node_id()) + old_to_new.count(this_conn.dest().node_id()) < 2) {
+						// Both nodes for this connection were not duplicated, go next
+						continue;
+					}
+					const csg::SlotId new_source{ old_to_new[this_conn.source().node_id()],  this_conn.source().index() };
+					const csg::SlotId new_dest{ old_to_new[this_conn.dest().node_id()],  this_conn.dest().index() };
+					the_graph->add_connection(new_source, new_dest);
+				}
 				graph_altered = true;
 				break;
 			}
