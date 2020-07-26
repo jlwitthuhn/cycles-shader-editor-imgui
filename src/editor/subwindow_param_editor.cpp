@@ -53,12 +53,7 @@ cse::InterfaceEventArray cse::ParamEditorSubwindow::run() const
 		return result;
 	}
 
-	const auto opt_selected_node{ the_graph->get(selected_slot->node_id()) };
-	if (opt_selected_node.has_value() == false) {
-		return result;
-	}
-
-	const std::shared_ptr<const csg::Node> selected_node{ *opt_selected_node };
+	const auto selected_node{ the_graph->get(selected_slot->node_id()) };
 	if (selected_node.use_count() == 0) {
 		return result;
 	}

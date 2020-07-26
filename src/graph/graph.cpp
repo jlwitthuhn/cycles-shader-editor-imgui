@@ -95,13 +95,13 @@ csg::Graph& csg::Graph::operator=(const Graph& other)
 	return *this;
 }
 
-boost::optional<std::shared_ptr<const csg::Node>> csg::Graph::get(const NodeId id) const
+std::shared_ptr<const csg::Node> csg::Graph::get(const NodeId id) const
 {
 	if (nodes_by_id.count(id)) {
 		return std::const_pointer_cast<const Node>(nodes_by_id.at(id));
 	}
 	else {
-		return boost::none;
+		return std::shared_ptr<const csg::Node>{};
 	}
 }
 
@@ -109,7 +109,7 @@ boost::optional<csg::SlotValue> csg::Graph::get_slot_value(SlotId slot_id) const
 {
 	const auto opt_node{ get(slot_id.node_id()) };
 	if (opt_node) {
-		const boost::optional<Slot> opt_slot{ (*opt_node)->slot(slot_id.index()) };
+		const boost::optional<Slot> opt_slot{ opt_node->slot(slot_id.index()) };
 		if (opt_slot) {
 			return opt_slot->value;
 		}
@@ -182,15 +182,15 @@ boost::optional<csg::NodeId> csg::Graph::duplicate(const NodeId node_id)
 
 bool csg::Graph::add_connection(const SlotId source, const SlotId dest)
 {
-	const auto source_node = get(source.node_id());
-	const auto dest_node = get(dest.node_id());
-	if (source_node.has_value() == false || dest_node.has_value() == false) {
+	const std::shared_ptr<const Node> source_node = get(source.node_id());
+	const std::shared_ptr<const Node> dest_node = get(dest.node_id());
+	if (source_node.use_count() == 0 || dest_node.use_count() == 0) {
 		return false;
 	}
-	if ((*source_node)->has_pin(source.index(), SlotDirection::OUTPUT) == false) {
+	if (source_node->has_pin(source.index(), SlotDirection::OUTPUT) == false) {
 		return false;
 	}
-	if ((*dest_node)->has_pin(dest.index(), SlotDirection::INPUT) == false) {
+	if (dest_node->has_pin(dest.index(), SlotDirection::INPUT) == false) {
 		return false;
 	}
 
@@ -315,11 +315,10 @@ bool csg::Graph::operator==(const Graph& other) const
 	// Check that all nodes match (order does not matter)
 	{
 		for (const std::shared_ptr<Node>& this_node : _nodes) {
-			const auto opt_other_node{ other.get(this_node->id()) };
-			if (opt_other_node.has_value() == false) {
+			const std::shared_ptr<const Node> other_node{ other.get(this_node->id()) };
+			if (other_node.use_count() == 0) {
 				return false;
 			}
-			const std::shared_ptr<const Node>& other_node{ *opt_other_node };
 			if (*this_node != *other_node) {
 				return false;
 			}

@@ -240,7 +240,7 @@ bool cse::GraphSubwindow::do_event(const InterfaceEvent& event)
 				assert(details.has_value());
 				const csg::SlotId slot_id{ details->value };
 				const auto node = the_graph->get(slot_id.node_id());
-				if (node && (*node)->has_pin(slot_id.index(), csg::SlotDirection::OUTPUT)) {
+				if (node && node->has_pin(slot_id.index(), csg::SlotDirection::OUTPUT)) {
 					pending_connection_begin = slot_id;
 				}
 				break;

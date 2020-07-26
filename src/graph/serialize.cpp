@@ -243,12 +243,12 @@ std::string csg::serialize_graph(const Graph& graph)
 		const auto opt_node_dest{ graph.get(id_dest) };
 
 		// We already checked that these nodes exist, so the optionals here should always hold a value
-		assert(opt_node_src.has_value());
-		assert(opt_node_dest.has_value());
+		assert(opt_node_src.use_count() > 0);
+		assert(opt_node_dest.use_count() > 0);
 
 		// Now we need to get the slots to find the slot names
-		const auto opt_slot_src{ (*opt_node_src)->slot(connection.source().index()) };
-		const auto opt_slot_dest{ (*opt_node_dest)->slot(connection.dest().index()) };
+		const auto opt_slot_src{ opt_node_src->slot(connection.source().index()) };
+		const auto opt_slot_dest{ opt_node_dest->slot(connection.dest().index()) };
 		if (opt_slot_src.has_value() == false || opt_slot_dest.has_value() == false) {
 			// One of the slots is not real, ignore this connection
 			continue;
@@ -663,9 +663,8 @@ boost::optional<csg::Graph> csg::deserialize_graph(const std::string& graph_stri
 			assert(token_iter != tokenizer.end());
 			const std::string input_value{ *token_iter++ };
 
-			const auto opt_node{ result.get(node_id) };
-			assert(opt_node.has_value());
-			const std::shared_ptr<const Node> node{ *opt_node };
+			const std::shared_ptr<const Node> node{ result.get(node_id) };
+			assert(node.use_count() > 0);
 
 			const boost::optional<size_t> opt_slot_index{ node->slot_index(SlotDirection::INPUT, input_name) };
 			if (opt_slot_index.has_value()) {
@@ -825,12 +824,12 @@ boost::optional<csg::Graph> csg::deserialize_graph(const std::string& graph_stri
 		const NodeId id_dst{ ids_by_name[name_dst] };
 
 		// Find source slot
-		const auto opt_node_src{ result.get(id_src) };
-		assert(opt_node_src.has_value());
+		const auto node_src{ result.get(id_src) };
+		assert(node_src.use_count() > 0);
 		boost::optional<size_t> slot_index_src;
 		{
 			size_t current_index{ 0 };
-			for (const Slot this_slot : (*opt_node_src)->slots()) {
+			for (const Slot this_slot : node_src->slots()) {
 				if (slot_src == this_slot.disp_name()) {
 					slot_index_src = current_index;
 					break;
@@ -840,12 +839,12 @@ boost::optional<csg::Graph> csg::deserialize_graph(const std::string& graph_stri
 		}
 
 		// Find Dest slot
-		const auto opt_node_dst{ result.get(id_dst) };
-		assert(opt_node_dst.has_value());
+		const auto node_dst{ result.get(id_dst) };
+		assert(node_dst.use_count() > 0);
 		boost::optional<size_t> slot_index_dst;
 		{
 			size_t current_index{ 0 };
-			for (const Slot this_slot : (*opt_node_dst)->slots()) {
+			for (const Slot this_slot : node_dst->slots()) {
 				if (slot_dst == this_slot.disp_name()) {
 					slot_index_dst = current_index;
 					break;

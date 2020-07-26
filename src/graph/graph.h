@@ -63,7 +63,7 @@ namespace csg {
 		Graph(const Graph& other) { this->operator=(other); }
 		Graph& operator=(const Graph& other);
 
-		boost::optional<std::shared_ptr<const Node>> get(NodeId id) const;
+		std::shared_ptr<const Node> get(NodeId id) const;
 		boost::optional<SlotValue> get_slot_value(SlotId slot_id) const;
 		template <typename T> boost::optional<T> get_slot_value_as(SlotId slot_id) const
 		{
