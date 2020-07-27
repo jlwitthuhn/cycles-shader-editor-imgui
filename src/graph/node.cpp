@@ -277,6 +277,32 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Scale",        "scale",        FloatSlotValue{ 1.0f, 0.0f, FLT_MAX } });
 		_slots.push_back(Slot{ "Normal",       "normal",       SlotDirection::INPUT, SlotType::VECTOR });
 		break;
+	case NodeType::MAPPING:
+		_slots.push_back(Slot{ "Vector",   "vector",   SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Type",     "type",     EnumSlotValue{ VectorMappingType::POINT } });
+		_slots.push_back(Slot{ "Vector",   "vector",   VectorSlotValue{
+			csc::Float3{ 0.0f, 0.0f, 0.0f }, csc::Float3{ -FLT_MAX, -FLT_MAX, -FLT_MAX } , csc::Float3{ FLT_MAX, FLT_MAX, FLT_MAX }
+		} });
+		_slots.push_back(Slot{ "Location", "location", VectorSlotValue{
+			csc::Float3{ 0.0f, 0.0f, 0.0f }, csc::Float3{ -FLT_MAX, -FLT_MAX, -FLT_MAX } , csc::Float3{ FLT_MAX, FLT_MAX, FLT_MAX }
+		} });
+		_slots.push_back(Slot{ "Rotation", "rotation", VectorSlotValue{
+			csc::Float3{ 0.0f, 0.0f, 0.0f }, csc::Float3{ -FLT_MAX, -FLT_MAX, -FLT_MAX } , csc::Float3{ FLT_MAX, FLT_MAX, FLT_MAX }
+		} });
+		_slots.push_back(Slot{ "Scale", "scale", VectorSlotValue{
+			csc::Float3{ 1.0f, 1.0f, 1.0f }, csc::Float3{ -FLT_MAX, -FLT_MAX, -FLT_MAX } , csc::Float3{ FLT_MAX, FLT_MAX, FLT_MAX }
+		} });
+		break;
+	case NodeType::NORMAL:
+		_slots.push_back(Slot{ "Normal",    "normal",    SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Dot",       "dot",       SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Direction", "direction", VectorSlotValue{
+			csc::Float3{ 0.0f, 0.0f, 0.0f },  csc::Float3{ -FLT_MAX, -FLT_MAX, -FLT_MAX } , csc::Float3{ FLT_MAX, FLT_MAX, FLT_MAX }
+		}, false });
+		_slots.push_back(Slot{ "Normal",    "normal",    VectorSlotValue{
+			csc::Float3{ 0.0f, 0.0f, 0.0f }, csc::Float3{ -FLT_MAX, -FLT_MAX, -FLT_MAX } , csc::Float3{ FLT_MAX, FLT_MAX, FLT_MAX }
+		} });
+		break;
 	case NodeType::NORMAL_MAP:
 		_slots.push_back(Slot{ "Normal",   "normal",   SlotDirection::OUTPUT, SlotType::VECTOR });
 		_slots.push_back(Slot{ "Space",    "space",    EnumSlotValue{ NormalMapSpace::TANGENT } });

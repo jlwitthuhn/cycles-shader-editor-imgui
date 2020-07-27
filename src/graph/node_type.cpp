@@ -172,6 +172,10 @@ boost::optional<csg::NodeTypeInfo> csg::NodeTypeInfo::from(const NodeType type)
 			return NodeTypeInfo{ type, NodeCategory::VECTOR, "Bump",                  "bump" };
 		case NodeType::DISPLACEMENT:
 			return NodeTypeInfo{ type, NodeCategory::VECTOR, "Displacement",          "displacement" };
+		case NodeType::MAPPING:
+			return NodeTypeInfo{ type, NodeCategory::VECTOR, "Mapping",               "mapping" };
+		case NodeType::NORMAL:
+			return NodeTypeInfo{ type, NodeCategory::VECTOR, "Normal",                "normal" };
 		case NodeType::NORMAL_MAP:
 			return NodeTypeInfo{ type, NodeCategory::VECTOR, "Normal Map",            "normal_map" };
 		case NodeType::VECTOR_CURVES:

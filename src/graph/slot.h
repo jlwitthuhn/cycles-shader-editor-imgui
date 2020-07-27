@@ -81,6 +81,7 @@ namespace csg {
 		EnumSlotValue(ToonComponent initial) :                  EnumSlotValue(NodeMetaEnum::TOON_COMPONENT, initial) {}
 		// Vector
 		EnumSlotValue(DisplacementSpace initial) :              EnumSlotValue(NodeMetaEnum::DISPLACEMENT_SPACE, initial) {}
+		EnumSlotValue(VectorMappingType initial) :              EnumSlotValue(NodeMetaEnum::VECTOR_MAPPING_TYPE, initial) {}
 		EnumSlotValue(NormalMapSpace initial) :                 EnumSlotValue(NodeMetaEnum::NORMAL_MAP_SPACE, initial) {}
 		EnumSlotValue(VectorDisplacementSpace initial) :        EnumSlotValue(NodeMetaEnum::VECTOR_DISPLACEMENT_SPACE, initial) {}
 		EnumSlotValue(VectorTransformType initial) :            EnumSlotValue(NodeMetaEnum::VECTOR_TRANSFORM_TYPE, initial) {}

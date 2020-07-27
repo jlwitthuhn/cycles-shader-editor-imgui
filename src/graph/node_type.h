@@ -89,6 +89,8 @@ namespace csg {
 		// Vector
 		BUMP,
 		DISPLACEMENT,
+		MAPPING,
+		NORMAL,
 		NORMAL_MAP,
 		VECTOR_CURVES,
 		VECTOR_DISPLACEMENT,

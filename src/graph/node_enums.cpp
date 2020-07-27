@@ -24,7 +24,7 @@ boost::optional<csg::NodeEnumInfo> csg::NodeEnumInfo::from(const NodeMetaEnum me
 	}
 
 	switch (meta_enum) {
-		// Color
+	// Color
 	case NodeMetaEnum::MIX_RGB_TYPE:
 		return NodeEnumInfo{ meta_enum, get_count<MixRGBType>() };
 	// Shader
@@ -51,6 +51,8 @@ boost::optional<csg::NodeEnumInfo> csg::NodeEnumInfo::from(const NodeMetaEnum me
 	// Vector
 	case NodeMetaEnum::DISPLACEMENT_SPACE:
 		return NodeEnumInfo{ meta_enum, get_count<DisplacementSpace>() };
+	case NodeMetaEnum::VECTOR_MAPPING_TYPE:
+		return NodeEnumInfo{ meta_enum, get_count<VectorMappingType>() };
 	case NodeMetaEnum::NORMAL_MAP_SPACE:
 		return NodeEnumInfo{ meta_enum, get_count<NormalMapSpace>() };
 	case NodeMetaEnum::VECTOR_DISPLACEMENT_SPACE:
@@ -297,6 +299,23 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		}
 		else {
 			return std::make_pair("[Bad Space]", "ERROR");
+		}
+	}
+	case NodeMetaEnum::VECTOR_MAPPING_TYPE:
+	{
+		const auto opt_enum{ as_enum<VectorMappingType>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(VectorMappingType::POINT,   "Point",   "point");
+				CASE_PAIR(VectorMappingType::TEXTURE, "Texture", "texture");
+				CASE_PAIR(VectorMappingType::VECTOR,  "Vector",  "vector");
+				CASE_PAIR(VectorMappingType::NORMAL,  "Normal",  "normal");
+			default:
+				return std::make_pair("[Unknown Type]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Type]", "ERROR");
 		}
 	}
 	case NodeMetaEnum::NORMAL_MAP_SPACE:

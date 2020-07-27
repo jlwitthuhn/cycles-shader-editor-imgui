@@ -21,6 +21,7 @@ namespace csg {
 		TOON_COMPONENT,
 		// Vector
 		DISPLACEMENT_SPACE,
+		VECTOR_MAPPING_TYPE,
 		NORMAL_MAP_SPACE,
 		VECTOR_DISPLACEMENT_SPACE,
 		VECTOR_TRANSFORM_TYPE,
@@ -125,6 +126,14 @@ namespace csg {
 	enum class DisplacementSpace {
 		OBJECT,
 		WORLD,
+		COUNT
+	};
+
+	enum class VectorMappingType {
+		POINT,
+		TEXTURE,
+		VECTOR,
+		NORMAL,
 		COUNT
 	};
 
