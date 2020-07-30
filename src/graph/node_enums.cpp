@@ -27,6 +27,13 @@ boost::optional<csg::NodeEnumInfo> csg::NodeEnumInfo::from(const NodeMetaEnum me
 	// Color
 	case NodeMetaEnum::MIX_RGB_TYPE:
 		return NodeEnumInfo{ meta_enum, get_count<MixRGBType>() };
+	// Converter
+	case NodeMetaEnum::MAP_RANGE_TYPE:
+		return NodeEnumInfo{ meta_enum, get_count<MapRangeType>() };
+	case NodeMetaEnum::MATH_TYPE:
+		return NodeEnumInfo{ meta_enum, get_count<MathType>() };
+	case NodeMetaEnum::VECTOR_MATH_TYPE:
+		return NodeEnumInfo{ meta_enum, get_count<VectorMathType>() };
 	// Shader
 	case NodeMetaEnum::ANISOTROPIC_DISTRIBUTION:
 		return NodeEnumInfo{ meta_enum, get_count<AnisotropicDistribution>() };
@@ -114,6 +121,116 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 				CASE_PAIR(MixRGBType::SATURATION,   "Saturation",   "saturation");
 				CASE_PAIR(MixRGBType::COLOR,        "Color",        "color");
 				CASE_PAIR(MixRGBType::VALUE,        "Value",        "value");
+			default:
+				return std::make_pair("[Unknown Type]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Type]", "ERROR");
+		}
+	}
+	//////
+	// Converter
+	//////
+	case NodeMetaEnum::MAP_RANGE_TYPE:
+	{
+		const auto opt_enum{ as_enum<MapRangeType>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(MapRangeType::LINEAR, "Linear", "linear");
+				CASE_PAIR(MapRangeType::STEPPED, "Stepped", "stepped");
+				CASE_PAIR(MapRangeType::SMOOTH_STEP, "Smooth Step", "smooth_step");
+				CASE_PAIR(MapRangeType::SMOOTHER_STEP, "Smoother Step", "smoother_step");
+			default:
+				return std::make_pair("[Unknown Type]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Type]", "ERROR");
+		}
+	}
+	case NodeMetaEnum::MATH_TYPE:
+	{
+		const auto opt_enum{ as_enum<MathType>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(MathType::ADD,          "Add (2)",                "add");
+				CASE_PAIR(MathType::SUBTRACT,     "Subtract (2)",           "subtract");
+				CASE_PAIR(MathType::MULTIPLY,     "Multiply (2)",           "multiply");
+				CASE_PAIR(MathType::DIVIDE,       "Divide (2)",             "divide");
+				CASE_PAIR(MathType::MULTIPLY_ADD, "Multiply Add (2)",       "multiply_add");
+				CASE_PAIR(MathType::SINE,         "Sine (1)",               "sine");
+				CASE_PAIR(MathType::COSINE,       "Cosine (1)",             "cosine");
+				CASE_PAIR(MathType::TANGENT,      "Tangent (1)",            "tangent");
+				CASE_PAIR(MathType::ARCSINE,      "Arcsine (1)",            "arcsine");
+				CASE_PAIR(MathType::ARCCOSINE,    "Arccosine (1)",          "arccosine");
+				CASE_PAIR(MathType::ARCTANGENT,   "Arctangent (1)",         "arctangent");
+				CASE_PAIR(MathType::ARCTAN2,      "Arctan2 (1)",            "arctan2");
+				CASE_PAIR(MathType::SINH,         "Hyperbolic Sine (1)",    "sinh");
+				CASE_PAIR(MathType::COSH,         "Hyperbolic Cosine (1)",  "cosh");
+				CASE_PAIR(MathType::TANH,         "Hyperbolic Tangent (1)", "tanh");
+				CASE_PAIR(MathType::POWER,        "Power (2)",              "power");
+				CASE_PAIR(MathType::LOGARITHM,    "Logarithm (2)",          "logarithm");
+				CASE_PAIR(MathType::MINIMUM,      "Maximum (2)",            "maximum");
+				CASE_PAIR(MathType::MAXIMUM,      "Minimum (2)",            "minimum");
+				CASE_PAIR(MathType::LESS_THAN,    "Less Than (2)",          "less_than");
+				CASE_PAIR(MathType::GREATER_THAN, "Greater Than (2)",       "greater_than");
+				CASE_PAIR(MathType::MODULO,       "Modulo (2)",             "modulo");
+				CASE_PAIR(MathType::ABSOLUTE,     "Absolute (1)",           "absolute");
+				CASE_PAIR(MathType::ROUND,        "Round (1)",              "round");
+				CASE_PAIR(MathType::FLOOR,        "Floor (1)",              "floor");
+				CASE_PAIR(MathType::CEIL,         "Ceil (1)",               "ceil");
+				CASE_PAIR(MathType::FRACTION,     "Fraction (1)",           "fraction");
+				CASE_PAIR(MathType::SQRT,         "Square Root (1)",        "sqrt");
+				CASE_PAIR(MathType::INV_SQRT,     "Inverse Sqrt (1)",       "inv_sqrt");
+				CASE_PAIR(MathType::SIGN,         "Sign (1)",               "sign");
+				CASE_PAIR(MathType::EXPONENT,     "Exponent (1)",           "exponent");
+				CASE_PAIR(MathType::RADIANS,      "To Radians (1)",         "radians");
+				CASE_PAIR(MathType::DEGREES,      "To Degrees (1)",         "degrees");
+				CASE_PAIR(MathType::TRUNC,        "Truncate (1)",           "truncate");
+				CASE_PAIR(MathType::SNAP,         "Snap (2)",               "snap");
+				CASE_PAIR(MathType::WRAP,         "Wrap (3)",               "wrap");
+				CASE_PAIR(MathType::COMPARE,      "Compare (3)",            "compare");
+				CASE_PAIR(MathType::PINGPONG,     "Ping Pong (3)",          "pingpong");
+				CASE_PAIR(MathType::SMOOTH_MIN,   "Smooth Min (3)",         "smooth_min");
+				CASE_PAIR(MathType::SMOOTH_MAX,   "Smooth Max (3)",         "smooth_max");
+			default:
+				return std::make_pair("[Unknown Type]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Type]", "ERROR");
+		}
+	}
+	case NodeMetaEnum::VECTOR_MATH_TYPE:
+	{
+		const auto opt_enum{ as_enum<VectorMathType>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(VectorMathType::ADD,           "Add (2)",           "add");
+				CASE_PAIR(VectorMathType::SUBTRACT,      "Subtract (2)",      "subtract");
+				CASE_PAIR(VectorMathType::MULTIPLY,      "Multiply (2)",      "multiply");
+				CASE_PAIR(VectorMathType::DIVIDE,        "Divide (2)",        "divide");
+				CASE_PAIR(VectorMathType::CROSS_PRODUCT, "Cross Product (2)", "cross_product");
+				CASE_PAIR(VectorMathType::PROJECT,       "Project (2)",       "project");
+				CASE_PAIR(VectorMathType::REFLECT,       "Reflect (2)",       "reflect");
+				CASE_PAIR(VectorMathType::DOT_PRODUCT,   "Dot Product (2)",   "dot_product");
+				CASE_PAIR(VectorMathType::DISTANCE,      "Distance (2)",      "distance");
+				CASE_PAIR(VectorMathType::LENGTH,        "Length (1)",        "length");
+				CASE_PAIR(VectorMathType::SCALE,         "Scale (1)",         "scale");
+				CASE_PAIR(VectorMathType::NORMALIZE,     "Normalize (1)",     "normalize");
+				CASE_PAIR(VectorMathType::SNAP,          "Snap (2)",          "snap");
+				CASE_PAIR(VectorMathType::FLOOR,         "Floor (1)",         "floor");
+				CASE_PAIR(VectorMathType::CEIL,          "Ceil (1)",          "ceil");
+				CASE_PAIR(VectorMathType::MODULO,        "Modulo (2)",        "modulo");
+				CASE_PAIR(VectorMathType::FRACTION,      "Fraction (1)",      "fraction");
+				CASE_PAIR(VectorMathType::ABSOLUTE,      "Absolute (1)",      "absolute");
+				CASE_PAIR(VectorMathType::MINIMUM,       "Minimum (2)",       "minimum");
+				CASE_PAIR(VectorMathType::MAXIMUM,       "Maximum (2)",       "maximum");
+				CASE_PAIR(VectorMathType::WRAP,          "Wrap (3)",          "wrap");
+				CASE_PAIR(VectorMathType::SINE,          "Sine (1)",          "sine");
+				CASE_PAIR(VectorMathType::COSINE,        "Cosine (1)",        "cosine");
+				CASE_PAIR(VectorMathType::TANGENT,       "Tangent (1)",       "tangent");
 			default:
 				return std::make_pair("[Unknown Type]", "ERROR");
 			}
@@ -355,7 +472,7 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<VectorTransformType>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(VectorTransformType::POINT, "Point", "point");
+				CASE_PAIR(VectorTransformType::POINT,  "Point",  "point");
 				CASE_PAIR(VectorTransformType::VECTOR, "Vector", "vector");
 				CASE_PAIR(VectorTransformType::NORMAL, "Normal", "normal");
 			default:

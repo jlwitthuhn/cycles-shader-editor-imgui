@@ -66,6 +66,8 @@ boost::optional<csg::NodeTypeInfo> csg::NodeTypeInfo::from(const NodeType type)
 			return NodeTypeInfo{ type, NodeCategory::CONVERTER, "Combine RGB",        "combine_rgb" };
 		case NodeType::COMBINE_XYZ:
 			return NodeTypeInfo{ type, NodeCategory::CONVERTER, "Combine XYZ",        "combine_xyz" };
+		case NodeType::MAP_RANGE:
+			return NodeTypeInfo{ type, NodeCategory::CONVERTER, "Map Range",          "map_range" };
 		case NodeType::MATH:
 			return NodeTypeInfo{ type, NodeCategory::CONVERTER, "Math",               "math" };
 		case NodeType::RGB_TO_BW:

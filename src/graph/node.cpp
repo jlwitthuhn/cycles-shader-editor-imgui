@@ -77,11 +77,93 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		//////
 		// Converter
 		//////
+	case NodeType::BLACKBODY:
+		_slots.push_back(Slot{ "Color",       "color",       SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Temperature", "temperature", FloatSlotValue{ 1500.0f, 800.0f, 20000.0f } });
+		break;
 	case NodeType::COLOR_RAMP:
 		_slots.push_back(Slot{ "Color",  "color",  SlotDirection::OUTPUT, SlotType::COLOR });
 		_slots.push_back(Slot{ "Alpha",  "alpha",  SlotDirection::OUTPUT, SlotType::FLOAT });
 		_slots.push_back(Slot{ "Ramp",   "ramp",   ColorRampSlotValue{} });
 		_slots.push_back(Slot{ "Fac",    "fac",    FloatSlotValue{ 0.5f, 0.0f, 1.0f } });
+		break;
+	case NodeType::COMBINE_HSV:
+		_slots.push_back(Slot{ "Color", "color", SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "H",     "h",     FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "S",     "s",     FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "V",     "v",     FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		break;
+	case NodeType::COMBINE_RGB:
+		_slots.push_back(Slot{ "Color", "color", SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "R",     "r",     FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "G",     "g",     FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "B",     "b",     FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		break;
+	case NodeType::COMBINE_XYZ:
+		_slots.push_back(Slot{ "Color", "color", SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "X",     "x",     FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Y",     "y",     FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Z",     "z",     FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		break;
+	case NodeType::MAP_RANGE:
+		_slots.push_back(Slot{ "Result",   "result",   SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Type",     "type",     EnumSlotValue{ MapRangeType::LINEAR } });
+		_slots.push_back(Slot{ "Clamp",    "clamp",    BoolSlotValue{ true } });
+		_slots.push_back(Slot{ "Value",    "value",    FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "From Min", "from_min", FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "From Max", "from_max", FloatSlotValue{ 1.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "To Min",   "to_min",   FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "To Max",   "to_max",   FloatSlotValue{ 1.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "Steps",    "steps",    FloatSlotValue{ 4.0f, 0.0f, FLT_MAX } });
+		break;
+	case NodeType::MATH:
+		_slots.push_back(Slot{ "Value",  "value",  SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Type",   "type",   EnumSlotValue{ MathType::ADD } });
+		_slots.push_back(Slot{ "Value1", "value1", FloatSlotValue{ 0.0f,  0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Value2", "value2", FloatSlotValue{ 0.0f,  0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Value3", "value3", FloatSlotValue{ 0.0f,  0.0f, 1.0f } });
+		break;
+	case NodeType::RGB_TO_BW:
+		_slots.push_back(Slot{ "Val",   "val",   SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Color", "color", ColorSlotValue{ csc::Float3{ 0.9f, 0.9f, 0.9f} } });
+		break;
+	case NodeType::SEPARATE_HSV:
+		_slots.push_back(Slot{ "H",     "h",     SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "S",     "s",     SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "V",     "v",     SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Color", "color", ColorSlotValue{ csc::Float3{ 0.9f, 0.9f, 0.9f} } });
+		break;
+	case NodeType::SEPARATE_RGB:
+		_slots.push_back(Slot{ "R",     "r",     SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "G",     "g",     SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "B",     "b",     SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Image", "image", ColorSlotValue{ csc::Float3{ 0.9f, 0.9f, 0.9f} } });
+		break;
+	case NodeType::SEPARATE_XYZ:
+		_slots.push_back(Slot{ "X",      "x",      SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Y",      "y",      SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Z",      "z",      SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Vector", "vector", VectorSlotValue{
+			csc::Float3{ 0.0f, 0.0f, 0.0f }, csc::Float3{ -FLT_MAX, -FLT_MAX, -FLT_MAX } , csc::Float3{ FLT_MAX, FLT_MAX, FLT_MAX }
+		} });
+		break;
+	case NodeType::VECTOR_MATH:
+		_slots.push_back(Slot{ "Vector",  "vector",  SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Type",    "type",    EnumSlotValue{ VectorMathType::ADD } });
+		_slots.push_back(Slot{ "Vector1", "vector1", VectorSlotValue{
+			csc::Float3{ 0.0f, 0.0f, 0.0f }, csc::Float3{ -FLT_MAX, -FLT_MAX, -FLT_MAX } , csc::Float3{ FLT_MAX, FLT_MAX, FLT_MAX }
+		} });
+		_slots.push_back(Slot{ "Vector2", "vector2", VectorSlotValue{
+			csc::Float3{ 0.0f, 0.0f, 0.0f }, csc::Float3{ -FLT_MAX, -FLT_MAX, -FLT_MAX } , csc::Float3{ FLT_MAX, FLT_MAX, FLT_MAX }
+		} });
+		_slots.push_back(Slot{ "Vector3", "vector3", VectorSlotValue{
+			csc::Float3{ 0.0f, 0.0f, 0.0f }, csc::Float3{ -FLT_MAX, -FLT_MAX, -FLT_MAX } , csc::Float3{ FLT_MAX, FLT_MAX, FLT_MAX }
+		} });
+		_slots.push_back(Slot{ "Scale",   "scale",   FloatSlotValue{ 1.0f,  -FLT_MAX, FLT_MAX } });
+		break;
+	case NodeType::WAVELENGTH:
+		_slots.push_back(Slot{ "Color",      "color",        SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Wavelength", "wavelength",   FloatSlotValue{ 500.0f,  380.0f, 780.0f } });
 		break;
 		//////
 		// Shader
@@ -325,11 +407,11 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Scale",        "scale",        FloatSlotValue{ 1.0f, 0.0f, FLT_MAX } });
 		break;
 	case NodeType::VECTOR_TRANSFORM:
-		_slots.push_back(Slot{ "Vector",       "vector", SlotDirection::OUTPUT, SlotType::VECTOR });
-		_slots.push_back(Slot{ "Type",         "type", EnumSlotValue{ VectorTransformType::VECTOR } });
+		_slots.push_back(Slot{ "Vector",       "vector",       SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Type",         "type",         EnumSlotValue{ VectorTransformType::VECTOR } });
 		_slots.push_back(Slot{ "Convert From", "convert_from", EnumSlotValue{ VectorTransformSpace::WORLD } });
-		_slots.push_back(Slot{ "Convert To",   "convert_to", EnumSlotValue{ VectorTransformSpace::OBJECT } });
-		_slots.push_back(Slot{ "Vector",       "vector", VectorSlotValue{
+		_slots.push_back(Slot{ "Convert To",   "convert_to",   EnumSlotValue{ VectorTransformSpace::OBJECT } });
+		_slots.push_back(Slot{ "Vector",       "vector",       VectorSlotValue{
 			csc::Float3{ 1.0f, 1.0f, 1.0f }, csc::Float3{ -FLT_MAX, -FLT_MAX, -FLT_MAX } , csc::Float3{ FLT_MAX, FLT_MAX, FLT_MAX }
 		} });
 		break;

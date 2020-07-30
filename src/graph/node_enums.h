@@ -8,6 +8,10 @@ namespace csg {
 	enum class NodeMetaEnum {
 		// Color
 		MIX_RGB_TYPE,
+		// Converter
+		MAP_RANGE_TYPE,
+		MATH_TYPE,
+		VECTOR_MATH_TYPE,
 		// Shader
 		ANISOTROPIC_DISTRIBUTION,
 		GLASS_DISTRIBUTION,
@@ -49,6 +53,86 @@ namespace csg {
 		SATURATION,
 		COLOR,
 		VALUE,
+		COUNT
+	};
+
+	enum class MapRangeType {
+		LINEAR,
+		STEPPED,
+		SMOOTH_STEP,
+		SMOOTHER_STEP,
+		COUNT
+	};
+
+	enum class MathType {
+		ADD,
+		SUBTRACT,
+		MULTIPLY,
+		DIVIDE,
+		MULTIPLY_ADD,
+		SINE,
+		COSINE,
+		TANGENT,
+		ARCSINE,
+		ARCCOSINE,
+		ARCTANGENT,
+		ARCTAN2,
+		SINH,
+		COSH,
+		TANH,
+		POWER,
+		LOGARITHM,
+		MINIMUM,
+		MAXIMUM,
+		LESS_THAN,
+		GREATER_THAN,
+		MODULO,
+		ABSOLUTE,
+		ROUND,
+		FLOOR,
+		CEIL,
+		FRACTION,
+		SQRT,
+		INV_SQRT,
+		SIGN,
+		EXPONENT,
+		RADIANS,
+		DEGREES,
+		TRUNC,
+		SNAP,
+		WRAP,
+		COMPARE,
+		PINGPONG,
+		SMOOTH_MIN,
+		SMOOTH_MAX,
+		COUNT
+	};
+
+	enum class VectorMathType {
+		ADD,
+		SUBTRACT,
+		MULTIPLY,
+		DIVIDE,
+		CROSS_PRODUCT,
+		PROJECT,
+		REFLECT,
+		DOT_PRODUCT,
+		DISTANCE,
+		LENGTH,
+		SCALE,
+		NORMALIZE,
+		SNAP,
+		FLOOR,
+		CEIL,
+		MODULO,
+		FRACTION,
+		ABSOLUTE,
+		MINIMUM,
+		MAXIMUM,
+		WRAP,
+		SINE,
+		COSINE,
+		TANGENT,
 		COUNT
 	};
 

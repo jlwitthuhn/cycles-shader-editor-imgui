@@ -68,6 +68,10 @@ namespace csg {
 		// Use an explicit constructor for each available enum
 		// Color
 		EnumSlotValue(MixRGBType initial) :                     EnumSlotValue(NodeMetaEnum::MIX_RGB_TYPE, initial) {}
+		// Converter
+		EnumSlotValue(MapRangeType initial) :                   EnumSlotValue(NodeMetaEnum::MAP_RANGE_TYPE, initial) {}
+		EnumSlotValue(MathType initial) :                       EnumSlotValue(NodeMetaEnum::MATH_TYPE, initial) {}
+		EnumSlotValue(VectorMathType initial) :                 EnumSlotValue(NodeMetaEnum::VECTOR_MATH_TYPE, initial) {}
 		// Shader
 		EnumSlotValue(AnisotropicDistribution initial) :        EnumSlotValue(NodeMetaEnum::ANISOTROPIC_DISTRIBUTION, initial) {}
 		EnumSlotValue(GlassDistribution initial) :              EnumSlotValue(NodeMetaEnum::GLASS_DISTRIBUTION, initial) {}

@@ -55,6 +55,7 @@ namespace csg {
 	 */
 	class Graph {
 	public:
+		// Deserialize a graph
 		static boost::optional<Graph> from(const std::string& graph_string);
 
 		Graph(GraphType type);

@@ -34,6 +34,7 @@ namespace csg {
 		COMBINE_HSV,
 		COMBINE_RGB,
 		COMBINE_XYZ,
+		MAP_RANGE,
 		MATH,
 		RGB_TO_BW,
 		SEPARATE_HSV,
