@@ -10,6 +10,7 @@
 #include <cassert>
 #include <cstddef>
 #include <string>
+#include <type_traits>
 
 #include <boost/optional.hpp>
 
@@ -373,7 +374,7 @@ namespace cse {
 			InterfaceEventDetails(const CurveEditorSetInterpDetails& details) : curve_edit_set_interp{ details } {}
 			InterfaceEventDetails(const ModalRampColorPickShowDetails& details) : modal_ramp_color_pick_show{ details } {}
 
-			template <typename T> T as() const { static_assert(false, "This function must be specialized"); }
+			template <typename T> T as() const { static_assert(std::is_same<T, T>() == false, "This function must be specialized"); }
 
 		private:
 			CurveEditorModeDetails curve_editor_mode;
