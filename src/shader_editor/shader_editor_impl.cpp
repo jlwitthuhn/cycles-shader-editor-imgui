@@ -12,7 +12,7 @@
 static void thread_func(const std::shared_ptr<cse::SharedState> shared_state, bool* const running)
 {
 	auto main_window{ std::make_unique<cse::MainWindow>(shared_state) };
-	while (main_window->should_close() == false) {
+	while (main_window->should_close() == false && shared_state->should_stop() == false) {
 		main_window->event_loop_iteration();
 	}
 	*running = false;
@@ -69,4 +69,9 @@ bool cse::ShaderGraphEditorImpl::has_new_data()
 std::string cse::ShaderGraphEditorImpl::get_serialized_graph()
 {
 	return shared_state->get_graph();
+}
+
+void cse::ShaderGraphEditorImpl::force_close()
+{
+	shared_state->request_stop();
 }

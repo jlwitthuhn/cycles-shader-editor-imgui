@@ -28,6 +28,8 @@ namespace cse {
 		bool has_new_data();
 		std::string get_serialized_graph();
 
+		void force_close();
+
 	private:
 		std::unique_ptr<ShaderGraphEditorImpl> impl;
 	};

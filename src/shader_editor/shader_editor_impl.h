@@ -5,6 +5,7 @@
  * @brief Defines ShaderGraphEditorImpl.
  */
 
+#include <atomic>
 #include <memory>
 #include <string>
 #include <thread>
@@ -28,6 +29,8 @@ namespace cse {
 
 		bool has_new_data();
 		std::string get_serialized_graph();
+
+		void force_close();
 
 	private:
 		std::shared_ptr<SharedState> shared_state;

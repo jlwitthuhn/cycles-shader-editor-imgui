@@ -36,3 +36,8 @@ std::string cse::ShaderGraphEditor::get_serialized_graph()
 {
 	return impl->get_serialized_graph();
 }
+
+void cse::ShaderGraphEditor::force_close()
+{
+	impl->force_close();
+}

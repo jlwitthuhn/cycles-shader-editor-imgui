@@ -5,6 +5,7 @@
  * @brief Defines SharedState. 
  */
 
+#include <atomic>
 #include <mutex>
 #include <string>
 
@@ -20,10 +21,15 @@ namespace cse {
 		std::string get_graph();
 		void set_new_graph(const std::string& new_graph);
 
-	private:
-		bool _updated{ false };
-		std::string graph;
+		void request_stop();
+		bool should_stop();
 
-		std::mutex mutex;
+	private:
+		bool graph_updated{ false };
+
+		std::string graph;
+		std::mutex graph_mutex;
+
+		std::atomic<bool> stop{ false };
 	};
 }
