@@ -54,6 +54,8 @@ namespace cse {
 		void callback_mouse_button(int button, int action, int mods);
 		void callback_scroll(double xoffset, double yoffset);
 
+		void load_graph(std::string serialized_graph);
+
 	private:
 		void new_frame();
 

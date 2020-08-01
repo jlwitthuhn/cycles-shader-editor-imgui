@@ -20,6 +20,8 @@ namespace cse {
 		ShaderGraphEditor();
 		~ShaderGraphEditor();
 
+		void load_graph(std::string graph);
+
 		bool running() const;
 
 		bool open_window();

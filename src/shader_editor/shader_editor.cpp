@@ -12,6 +12,11 @@ cse::ShaderGraphEditor::~ShaderGraphEditor()
 {
 }
 
+void cse::ShaderGraphEditor::load_graph(const std::string graph)
+{
+	impl->load_graph(graph);
+}
+
 bool cse::ShaderGraphEditor::running() const
 {
 	return impl->running();

@@ -22,6 +22,8 @@ namespace cse {
 		ShaderGraphEditorImpl();
 		~ShaderGraphEditorImpl();
 
+		void load_graph(std::string graph);
+
 		bool running() const;
 
 		bool open_window();

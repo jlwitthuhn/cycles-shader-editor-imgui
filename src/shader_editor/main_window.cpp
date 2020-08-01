@@ -1,8 +1,10 @@
 #include "main_window.h"
 
 #include <cassert>
+#include <chrono>
 #include <iostream>
 #include <string>
+#include <thread>
 
 #include <boost/optional.hpp>
 #include <GLFW/glfw3.h>
@@ -76,6 +78,9 @@ bool cse::MainWindow::should_close() const
 void cse::MainWindow::event_loop_iteration()
 {
 	new_frame();
+
+	// Small sleep here to limit the framerate in case vsync is unavailable
+	std::this_thread::sleep_for(std::chrono::milliseconds{ 4 });
 
 	glfwPollEventsSafe(glfw_window);
 
@@ -159,6 +164,21 @@ void cse::MainWindow::callback_mouse_button(const int button, const int action, 
 void cse::MainWindow::callback_scroll(const double xoffset, const double yoffset)
 {
 	pending_input_events.push_back(InputScrollDetails{ xoffset, yoffset });
+}
+
+void cse::MainWindow::load_graph(const std::string serialized_graph)
+{
+	const boost::optional<csg::Graph> opt_graph{ csg::Graph::from(serialized_graph) };
+	if (opt_graph.has_value()) {
+		*the_graph = *opt_graph;
+		undo_stack.clear(*the_graph);
+	}
+	else {
+		const InterfaceEvent alert_event{
+			InterfaceEventType::MODAL_ALERT_SHOW, boost::none, boost::optional<std::string>{ "Selected file is not a valid shader graph." }
+		};
+		do_event(alert_event);
+	}
 }
 
 void cse::MainWindow::new_frame()
@@ -552,7 +572,7 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 				quit_requested = true;
 				break;
 			case InterfaceEventType::SAVE_TO_MAX:
-				shared_state->set_new_graph(the_graph->serialize());
+				shared_state->set_output_graph(the_graph->serialize());
 				break;
 			case InterfaceEventType::SAVE_TO_FILE:
 				Platform::save_graph_dialog(the_graph->serialize());
@@ -561,17 +581,7 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 			{
 				const boost::optional<std::string> loaded_graph{ Platform::load_graph_dialog() };
 				if (loaded_graph.has_value()) {
-					const boost::optional<csg::Graph> opt_graph{ csg::Graph::from(*loaded_graph) };
-					if (opt_graph.has_value()) {
-						*the_graph = *opt_graph;
-						undo_stack.clear(*the_graph);
-					}
-					else {
-						const InterfaceEvent alert_event{
-							InterfaceEventType::MODAL_ALERT_SHOW, boost::none, boost::optional<std::string>{ "Selected file is not a valid shader graph." }
-						};
-						do_event(alert_event);
-					}
+					load_graph(*loaded_graph);
 				}
 				break;
 			}
