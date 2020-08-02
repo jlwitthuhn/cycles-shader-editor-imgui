@@ -441,6 +441,10 @@ cse::InterfaceEventArray cse::MainWindow::process_event(const InputEvent& event)
 			const InterfaceEvent redo_event{ InterfaceEventType::DUPLICATE_SELECTION, SubwindowId::GRAPH };
 			new_events.push(redo_event);
 		}
+		else if (details.key == GLFW_KEY_S && mod_ctrl && details.action == GLFW_PRESS) {
+			const InterfaceEvent save_event{ InterfaceEventType::SAVE_TO_MAX };
+			new_events.push(save_event);
+		}
 	}
 
 	const InterfaceEventArray graph_events{ window_graph.process_event(event, get_mode(), hovered_subwindow == SubwindowId::GRAPH) };
