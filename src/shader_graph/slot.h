@@ -87,6 +87,8 @@ namespace csg {
 		EnumSlotValue(RefractionDistribution initial) :         EnumSlotValue(NodeMetaEnum::REFRACTION_DISTRIBUTION, initial) {}
 		EnumSlotValue(SubsurfaceScatterFalloff initial) :       EnumSlotValue(NodeMetaEnum::SSS_FALLOFF, initial) {}
 		EnumSlotValue(ToonComponent initial) :                  EnumSlotValue(NodeMetaEnum::TOON_COMPONENT, initial) {}
+		// Texture
+		EnumSlotValue(MaxTexmapPrecision initial) :             EnumSlotValue(NodeMetaEnum::MAX_TEXMAP_PRECISION, initial) {}
 		// Vector
 		EnumSlotValue(DisplacementSpace initial) :              EnumSlotValue(NodeMetaEnum::DISPLACEMENT_SPACE, initial) {}
 		EnumSlotValue(VectorMappingType initial) :              EnumSlotValue(NodeMetaEnum::VECTOR_MAPPING_TYPE, initial) {}

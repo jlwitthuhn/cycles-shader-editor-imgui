@@ -26,6 +26,8 @@ namespace csg {
 		REFRACTION_DISTRIBUTION,
 		SSS_FALLOFF,
 		TOON_COMPONENT,
+		// Texture
+		MAX_TEXMAP_PRECISION,
 		// Vector
 		DISPLACEMENT_SPACE,
 		VECTOR_MAPPING_TYPE,
@@ -220,6 +222,12 @@ namespace csg {
 	enum class ToonComponent {
 		DIFFUSE,
 		GLOSSY,
+		COUNT
+	};
+
+	enum class MaxTexmapPrecision {
+		UCHAR,
+		FLOAT,
 		COUNT
 	};
 

@@ -60,6 +60,9 @@ boost::optional<csg::NodeEnumInfo> csg::NodeEnumInfo::from(const NodeMetaEnum me
 		return NodeEnumInfo{ meta_enum, get_count<SubsurfaceScatterFalloff>() };
 	case NodeMetaEnum::TOON_COMPONENT:
 		return NodeEnumInfo{ meta_enum, get_count<ToonComponent>() };
+	// Texture
+	case NodeMetaEnum::MAX_TEXMAP_PRECISION:
+		return NodeEnumInfo{ meta_enum, get_count<MaxTexmapPrecision>() };
 	// Vector
 	case NodeMetaEnum::DISPLACEMENT_SPACE:
 		return NodeEnumInfo{ meta_enum, get_count<DisplacementSpace>() };
@@ -442,6 +445,27 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 			return std::make_pair("[Bad Component]", "ERROR");
 		}
 	}
+	//////
+	// Texmap
+	//////
+	case NodeMetaEnum::MAX_TEXMAP_PRECISION:
+	{
+		const auto opt_enum{ as_enum<MaxTexmapPrecision>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(MaxTexmapPrecision::UCHAR, "8-bit/Channel Char", "uchar");
+				CASE_PAIR(MaxTexmapPrecision::FLOAT, "32-bit/Channel Float", "float");
+			default:
+				return std::make_pair("[Unknown Precision]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Precision]", "ERROR");
+		}
+	}
+	//////
+	// Vector
+	//////
 	case NodeMetaEnum::DISPLACEMENT_SPACE:
 	{
 		const auto opt_enum{ as_enum<DisplacementSpace>(option) };

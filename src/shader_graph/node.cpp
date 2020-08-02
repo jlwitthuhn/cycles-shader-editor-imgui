@@ -436,6 +436,19 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Anisotropy", "anisotropy", FloatSlotValue{ 0.0f, -1.0f, 1.0f } });
 		break;
 		//////
+		// Texture
+		//////
+	case NodeType::MAX_TEXMAP:
+		_slots.push_back(Slot{ "Color",     "color",     SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Alpha",     "alpha",     SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Slot",      "slot",      IntSlotValue{ 1,  1, 32 } });
+		_slots.push_back(Slot{ "Auto-size", "autosize",  BoolSlotValue{ true } });
+		_slots.push_back(Slot{ "Width",     "width",     IntSlotValue{ 512,  1, 32768 } });
+		_slots.push_back(Slot{ "Height",    "height",    IntSlotValue{ 512,  1, 32768 } });
+		_slots.push_back(Slot{ "Precision", "precision", EnumSlotValue{ MaxTexmapPrecision::UCHAR } });
+		_slots.push_back(Slot{ "Vector",    "vector",    SlotDirection::INPUT, SlotType::VECTOR });
+		break;
+		//////
 		// Vector
 		//////
 	case NodeType::BUMP:
