@@ -34,12 +34,25 @@ namespace csg {
 		
 		boost::optional<size_t> slot_index(SlotDirection dir, const std::string& slot_name) const;
 		boost::optional<Slot> slot(size_t index) const;
+		boost::optional<Slot> slot(SlotDirection dir, const std::string& slot_name) const;
 		boost::optional<SlotValue> slot_value(size_t index) const;
+		boost::optional<SlotValue> slot_value(const std::string& slot_name) const;
 		Slot& slot_ref(size_t index) { return _slots[index]; }
 
-		template <typename T> T slot_value_as(size_t index) const
+		template <typename T> boost::optional<T> slot_value_as(size_t index) const
 		{
 			const boost::optional<SlotValue> opt_value{ slot_value(index) };
+			if (opt_value) {
+				return opt_value->as<T>();
+			}
+			else {
+				return boost::none;
+			}
+		}
+
+		template <typename T> boost::optional<T> slot_value_as(const std::string& slot_name) const
+		{
+			const boost::optional<SlotValue> opt_value{ slot_value(slot_name) };
 			if (opt_value) {
 				return opt_value->as<T>();
 			}
