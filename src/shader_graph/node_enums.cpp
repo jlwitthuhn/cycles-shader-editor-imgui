@@ -34,6 +34,11 @@ boost::optional<csg::NodeEnumInfo> csg::NodeEnumInfo::from(const NodeMetaEnum me
 		return NodeEnumInfo{ meta_enum, get_count<MathType>() };
 	case NodeMetaEnum::VECTOR_MATH_TYPE:
 		return NodeEnumInfo{ meta_enum, get_count<VectorMathType>() };
+	// Input
+	case NodeMetaEnum::TANGENT_DIRECTION:
+		return NodeEnumInfo{ meta_enum, get_count<TangentDirection>() };
+	case NodeMetaEnum::TANGENT_AXIS:
+		return NodeEnumInfo{ meta_enum, get_count<TangentAxis>() };
 	// Shader
 	case NodeMetaEnum::ANISOTROPIC_DISTRIBUTION:
 		return NodeEnumInfo{ meta_enum, get_count<AnisotropicDistribution>() };
@@ -237,6 +242,40 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		}
 		else {
 			return std::make_pair("[Bad Type]", "ERROR");
+		}
+	}
+	//////
+	// Input
+	//////
+	case NodeMetaEnum::TANGENT_DIRECTION:
+	{
+		const auto opt_enum{ as_enum<TangentDirection>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(TangentDirection::RADIAL, "Radial", "radial");
+				CASE_PAIR(TangentDirection::UV_MAP, "UV Map", "uv_map");
+			default:
+				return std::make_pair("[Unknown Direction]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Direction]", "ERROR");
+		}
+	}
+	case NodeMetaEnum::TANGENT_AXIS:
+	{
+		const auto opt_enum{ as_enum<TangentAxis>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(TangentAxis::X, "X", "x");
+				CASE_PAIR(TangentAxis::Y, "Y", "y");
+				CASE_PAIR(TangentAxis::Z, "Z", "z");
+			default:
+				return std::make_pair("[Unknown Axis]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Axis]", "ERROR");
 		}
 	}
 	//////

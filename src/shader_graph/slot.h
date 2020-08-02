@@ -28,6 +28,7 @@ namespace csg {
 		CLOSURE,
 		COLOR,
 		FLOAT,
+		INT,
 		VECTOR,
 		ENUM,
 		CURVE_RGB,
@@ -72,6 +73,9 @@ namespace csg {
 		EnumSlotValue(MapRangeType initial) :                   EnumSlotValue(NodeMetaEnum::MAP_RANGE_TYPE, initial) {}
 		EnumSlotValue(MathType initial) :                       EnumSlotValue(NodeMetaEnum::MATH_TYPE, initial) {}
 		EnumSlotValue(VectorMathType initial) :                 EnumSlotValue(NodeMetaEnum::VECTOR_MATH_TYPE, initial) {}
+		// Input
+		EnumSlotValue(TangentDirection initial) :               EnumSlotValue(NodeMetaEnum::TANGENT_DIRECTION, initial) {}
+		EnumSlotValue(TangentAxis initial) :                    EnumSlotValue(NodeMetaEnum::TANGENT_AXIS, initial) {}
 		// Shader
 		EnumSlotValue(AnisotropicDistribution initial) :        EnumSlotValue(NodeMetaEnum::ANISOTROPIC_DISTRIBUTION, initial) {}
 		EnumSlotValue(GlassDistribution initial) :              EnumSlotValue(NodeMetaEnum::GLASS_DISTRIBUTION, initial) {}
@@ -120,7 +124,7 @@ namespace csg {
 	public:
 		FloatSlotValue(float initial, float min, float max, size_t precision = 3) :
 			value{ initial }, min{ min }, max{ max }, _precision{ precision }
-			{}
+		{}
 
 		float get() const { return value; }
 		void set(float new_value);
@@ -135,6 +139,24 @@ namespace csg {
 		float min;
 		float max;
 		size_t _precision;
+	};
+
+	class IntSlotValue {
+	public:
+		IntSlotValue(int initial, int min, int max) :
+			value{ initial }, min{ min }, max{ max }
+		{}
+
+		int get() const { return value; }
+		void set(int new_value);
+
+		bool operator==(const IntSlotValue& other) const;
+		bool operator!=(const IntSlotValue& other) const { return operator==(other) == false; }
+
+	private:
+		int value;
+		int min;
+		int max;
 	};
 
 	class VectorSlotValue {
@@ -233,6 +255,7 @@ namespace csg {
 		SlotValue(ColorSlotValue color_value) :   _type{ SlotType::COLOR },  value_union{ color_value } {}
 		SlotValue(EnumSlotValue enum_value) :     _type{ SlotType::ENUM },   value_union{ enum_value } {}
 		SlotValue(FloatSlotValue float_value) :   _type{ SlotType::FLOAT },  value_union{ float_value } {}
+		SlotValue(IntSlotValue int_value) :       _type{ SlotType::INT }, value_union{ int_value } {}
 		SlotValue(VectorSlotValue vector_value) : _type{ SlotType::VECTOR }, value_union{ vector_value } {}
 
 		SlotValue(const RGBCurveSlotValue& curve_value) : _type{ SlotType::CURVE_RGB }, curve_rgb_value{ std::make_unique<RGBCurveSlotValue>(curve_value) } {}
@@ -262,12 +285,14 @@ namespace csg {
 			SlotValueUnion(ColorSlotValue color_value) : color_value{ color_value } {}
 			SlotValueUnion(EnumSlotValue enum_value) :   enum_value{ enum_value } {}
 			SlotValueUnion(FloatSlotValue float_value) : float_value{ float_value } {}
+			SlotValueUnion(IntSlotValue int_value) : int_value{ int_value } {}
 			SlotValueUnion(VectorSlotValue vector_value) : vector_value{ vector_value } {}
 
 			BoolSlotValue bool_value;
 			ColorSlotValue color_value;
 			EnumSlotValue  enum_value;
 			FloatSlotValue float_value;
+			IntSlotValue int_value;
 			VectorSlotValue vector_value;
 		};
 		SlotType _type;
@@ -285,6 +310,7 @@ namespace csg {
 	template <> boost::optional<ColorSlotValue> SlotValue::as() const;
 	template <> boost::optional<EnumSlotValue> SlotValue::as() const;
 	template <> boost::optional<FloatSlotValue> SlotValue::as() const;
+	template <> boost::optional<IntSlotValue> SlotValue::as() const;
 	template <> boost::optional<VectorSlotValue> SlotValue::as() const;
 	template <> boost::optional<RGBCurveSlotValue> SlotValue::as() const;
 	template <> boost::optional<VectorCurveSlotValue> SlotValue::as() const;
@@ -309,6 +335,9 @@ namespace csg {
 		{}
 		Slot(const char* disp_name, const char* name, FloatSlotValue float_value, bool has_pin = true) :
 			value{ float_value }, _disp_name{ disp_name }, _name{ name }, _dir{ SlotDirection::INPUT }, _type{ SlotType::FLOAT }, _has_pin{ has_pin }
+		{}
+		Slot(const char* disp_name, const char* name, IntSlotValue int_value, bool has_pin = false) :
+			value{ int_value }, _disp_name{ disp_name }, _name{ name }, _dir{ SlotDirection::INPUT }, _type{ SlotType::INT }, _has_pin{ has_pin }
 		{}
 		Slot(const char* disp_name, const char* name, VectorSlotValue vector_value, bool has_pin = true) :
 			value{ vector_value }, _disp_name{ disp_name }, _name{ name }, _dir{ SlotDirection::INPUT }, _type{ SlotType::VECTOR }, _has_pin{ has_pin }

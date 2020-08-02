@@ -25,8 +25,8 @@ namespace cse {
 		std::string get_output_graph();
 		void set_output_graph(const std::string& new_graph);
 
-		void request_stop();
-		bool should_stop();
+		void request_stop() { return stop.store(true); }
+		bool should_stop() { return stop.load(); }
 
 	private:
 

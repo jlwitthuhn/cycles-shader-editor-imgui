@@ -201,6 +201,17 @@ namespace cse {
 		float new_value;
 	};
 
+	struct SetSlotIntDetails {
+		SetSlotIntDetails(csg::SlotId slot_id, int new_value) : slot_id{ slot_id }, new_value{ new_value } {}
+
+		static bool matches(InterfaceEventType type) {
+			return csc::EnumMatcher<InterfaceEventType, InterfaceEventType::SET_SLOT_INT>{}.matches(type);
+		}
+
+		csg::SlotId slot_id;
+		int new_value;
+	};
+
 	struct SetSlotVectorDetails {
 		SetSlotVectorDetails(csg::SlotId slot_id, csc::Float3 new_value) : slot_id{ slot_id }, new_value{ new_value } {}
 
@@ -320,6 +331,7 @@ namespace cse {
 		InterfaceEvent(const SetSlotColorDetails& set_slot_color_details);
 		InterfaceEvent(const SetSlotEnumDetails& set_slot_enum_details);
 		InterfaceEvent(const SetSlotFloatDetails& set_slot_float_details);
+		InterfaceEvent(const SetSlotIntDetails& set_slot_float_details);
 		InterfaceEvent(const SetSlotVectorDetails& set_slot_float_details);
 		InterfaceEvent(const ModifySlotRampColorDetails& mod_slot_ramp_color_details);
 		InterfaceEvent(const ModifySlotRampPosDetails& mod_slot_ramp_pos_details);
@@ -365,6 +377,7 @@ namespace cse {
 			InterfaceEventDetails(const SetSlotColorDetails& details) : set_slot_color{ details } {}
 			InterfaceEventDetails(const SetSlotEnumDetails& details) : set_slot_enum{ details } {}
 			InterfaceEventDetails(const SetSlotFloatDetails& details) : set_slot_float{ details } {}
+			InterfaceEventDetails(const SetSlotIntDetails& details) : set_slot_int{ details } {}
 			InterfaceEventDetails(const SetSlotVectorDetails& details) : set_slot_vector{ details } {}
 			InterfaceEventDetails(const ModifySlotRampColorDetails& details) : mod_slot_ramp_color{ details } {}
 			InterfaceEventDetails(const ModifySlotRampPosDetails& details) : mod_slot_ramp_pos{ details } {}
@@ -396,6 +409,7 @@ namespace cse {
 			SetSlotColorDetails set_slot_color;
 			SetSlotEnumDetails set_slot_enum;
 			SetSlotFloatDetails set_slot_float;
+			SetSlotIntDetails set_slot_int;
 			SetSlotVectorDetails set_slot_vector;
 			ModifySlotRampColorDetails mod_slot_ramp_color;
 			ModifySlotRampPosDetails mod_slot_ramp_pos;
@@ -432,6 +446,7 @@ namespace cse {
 	template <> SetSlotColorDetails InterfaceEvent::InterfaceEventDetails::as() const;
 	template <> SetSlotEnumDetails InterfaceEvent::InterfaceEventDetails::as() const;
 	template <> SetSlotFloatDetails InterfaceEvent::InterfaceEventDetails::as() const;
+	template <> SetSlotIntDetails InterfaceEvent::InterfaceEventDetails::as() const;
 	template <> ModifySlotRampColorDetails InterfaceEvent::InterfaceEventDetails::as() const;
 	template <> ModifySlotRampPosDetails InterfaceEvent::InterfaceEventDetails::as() const;
 	template <> ModifySlotRampDeleteDetails InterfaceEvent::InterfaceEventDetails::as() const;

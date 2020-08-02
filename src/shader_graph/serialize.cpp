@@ -119,6 +119,14 @@ static std::string serialize_slot_value(const csg::SlotValue& slot_value)
 			return sstream.str();
 		}
 		break;
+	case csg::SlotType::INT:
+		if (slot_value.as<csg::IntSlotValue>().has_value()) {
+			const csg::IntSlotValue int_slot_value{ slot_value.as<csg::IntSlotValue>().value() };
+			std::stringstream sstream;
+			sstream << int_slot_value.get();
+			return sstream.str();
+		}
+		break;
 	case csg::SlotType::VECTOR:
 		if (slot_value.as<csg::VectorSlotValue>().has_value()) {
 			const csg::VectorSlotValue vec_slot_value{ slot_value.as<csg::VectorSlotValue>().value() };
@@ -709,6 +717,12 @@ boost::optional<csg::Graph> csg::deserialize_graph(const std::string& graph_stri
 					{
 						const float float_value{ my_stof(input_value) };
 						result.set_float(slot_id, float_value);
+						break;
+					}
+					case SlotType::INT:
+					{
+						const int int_value{ my_stoi(input_value) };
+						result.set_int(slot_id, int_value);
 						break;
 					}
 					case SlotType::VECTOR:

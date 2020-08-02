@@ -16,6 +16,7 @@ namespace csg {
 	class ColorSlotValue;
 	class EnumSlotValue;
 	class FloatSlotValue;
+	class IntSlotValue;
 	class VectorSlotValue;
 	class Graph;
 	class SlotId;
@@ -31,6 +32,7 @@ namespace cse {
 		InterfaceEventArray run_color(csg::SlotId slot_id, csg::ColorSlotValue slot_value) const;
 		InterfaceEventArray run_enum(csg::SlotId slot_id, csg::EnumSlotValue slot_value) const;
 		InterfaceEventArray run_float(csg::SlotId slot_id, csg::FloatSlotValue slot_value) const;
+		InterfaceEventArray run_int(csg::SlotId slot_id, csg::IntSlotValue slot_value) const;
 		InterfaceEventArray run_vector(csg::SlotId slot_id, csg::VectorSlotValue slot_value) const;
 		InterfaceEventArray run_color_ramp(csg::SlotId slot_id, csg::ColorRampSlotValue slot_value) const;
 

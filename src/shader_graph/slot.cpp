@@ -55,6 +55,16 @@ bool csg::FloatSlotValue::operator==(const FloatSlotValue& other) const
 	return (fabs(value - other.value) < FLOAT_COMPARE_DIFF) && min == other.min && max == other.max && _precision == other._precision;
 }
 
+void csg::IntSlotValue::set(const int new_value)
+{
+	value = boost::algorithm::clamp(new_value, min, max);
+}
+
+bool csg::IntSlotValue::operator==(const IntSlotValue& other) const
+{
+	return value == other.value && min == other.min && max == other.max;
+}
+
 void csg::VectorSlotValue::set(const csc::Float3 new_value)
 {
 	const float x{ boost::algorithm::clamp(new_value.x, min.x, max.x) };
@@ -207,6 +217,9 @@ template <> boost::optional<csg::EnumSlotValue> csg::SlotValue::as() const {
 template <> boost::optional<csg::FloatSlotValue> csg::SlotValue::as() const {
 	return (type() != SlotType::FLOAT) ? boost::none : boost::optional<csg::FloatSlotValue>{ value_union.float_value };
 }
+template <> boost::optional<csg::IntSlotValue> csg::SlotValue::as() const {
+	return (type() != SlotType::INT) ? boost::none : boost::optional<csg::IntSlotValue>{ value_union.int_value };
+}
 template <> boost::optional<csg::VectorSlotValue> csg::SlotValue::as() const {
 	return (type() != SlotType::VECTOR) ? boost::none : boost::optional<csg::VectorSlotValue>{ value_union.vector_value };
 }
@@ -251,6 +264,13 @@ bool csg::SlotValue::operator==(const SlotValue& other) const
 		case SlotType::FLOAT:
 		{
 			if (value_union.float_value != other.value_union.float_value) {
+				return false;
+			}
+			break;
+		}
+		case SlotType::INT:
+		{
+			if (value_union.int_value != other.value_union.int_value) {
 				return false;
 			}
 			break;

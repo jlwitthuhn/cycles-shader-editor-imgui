@@ -637,17 +637,6 @@ void cse::GraphSubwindow::draw_nodes(ImDrawList* const draw_list) const
 								snprintf(label_text.data(), label_text.size() - 1, "%s: False", slot.disp_name());
 							}
 						}
-						else if (slot.type() == csg::SlotType::FLOAT) {
-							const auto float_value = slot.value->as<csg::FloatSlotValue>();
-							assert(float_value.has_value());
-							// Use snprintf to generate a pattern for another snprintf to get the label
-							// This is so the precision held by the slot is respected
-							std::array<char, 24> pattern_text;
-							pattern_text.fill('\0');
-							snprintf(pattern_text.data(), pattern_text.size() - 1, "%%s: %%.%zuf", float_value->precision());
-							// pattern_text will look like "%s: %.2f"
-							snprintf(label_text.data(), label_text.size() - 1, pattern_text.data(), slot.disp_name(), float_value->get());
-						}
 						else if (slot.type() == csg::SlotType::COLOR) {
 							const auto color_value = slot.value->as<csg::ColorSlotValue>();
 							assert(color_value.has_value());
@@ -665,6 +654,22 @@ void cse::GraphSubwindow::draw_nodes(ImDrawList* const draw_list) const
 						}
 						else if (slot.type() == csg::SlotType::ENUM) {
 							snprintf(label_text.data(), label_text.size() - 1, "%s: [Enum]", slot.disp_name());
+						}
+						else if (slot.type() == csg::SlotType::FLOAT) {
+							const auto float_value = slot.value->as<csg::FloatSlotValue>();
+							assert(float_value.has_value());
+							// Use snprintf to generate a pattern for another snprintf to get the label
+							// This is so the precision held by the slot is respected
+							std::array<char, 24> pattern_text;
+							pattern_text.fill('\0');
+							snprintf(pattern_text.data(), pattern_text.size() - 1, "%%s: %%.%zuf", float_value->precision());
+							// pattern_text will look like "%s: %.2f"
+							snprintf(label_text.data(), label_text.size() - 1, pattern_text.data(), slot.disp_name(), float_value->get());
+						}
+						else if (slot.type() == csg::SlotType::INT) {
+							const auto int_value{ slot.value->as<csg::IntSlotValue>() };
+							assert(int_value.has_value());
+							snprintf(label_text.data(), label_text.size() - 1, "%s: %d", slot.disp_name(), int_value->get());
 						}
 						else if (slot.type() == csg::SlotType::VECTOR) {
 							snprintf(label_text.data(), label_text.size() - 1, "%s: [Vec]", slot.disp_name());

@@ -89,6 +89,7 @@ namespace csg {
 		bool set_color(SlotId slot_id, csc::Float3 new_value);
 		bool set_enum(SlotId slot_id, size_t new_value);
 		bool set_float(SlotId slot_id, float new_value);
+		bool set_int(SlotId slot_id, int new_value);
 		bool set_vector(SlotId slot_id, csc::Float3 new_value);
 		bool set_color_ramp(SlotId slot_id, const ColorRampSlotValue& new_value);
 		bool set_curve_rgb(SlotId slot_id, const RGBCurveSlotValue& new_value);

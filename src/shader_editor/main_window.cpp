@@ -735,6 +735,14 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 				should_do_undo_push = true;
 				break;
 			}
+			case InterfaceEventType::SET_SLOT_INT:
+			{
+				const boost::optional<SetSlotIntDetails> details{ event.details_as<SetSlotIntDetails>() };
+				assert(details.has_value());
+				the_graph->set_int(details->slot_id, details->new_value);
+				should_do_undo_push = true;
+				break;
+			}
 			case InterfaceEventType::MODIFY_SLOT_RAMP_COLOR:
 			{
 				const boost::optional<ModifySlotRampColorDetails> details{ event.details_as<ModifySlotRampColorDetails>() };

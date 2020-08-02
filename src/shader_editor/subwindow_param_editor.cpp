@@ -30,6 +30,8 @@ static const char* type_name_str(csg::SlotType slot_type)
 		return "Closure";
 	case csg::SlotType::FLOAT:
 		return "Float";
+	case csg::SlotType::INT:
+		return "Integer";
 	case csg::SlotType::VECTOR:
 		return "Vector";
 	case csg::SlotType::ENUM:
@@ -78,8 +80,8 @@ cse::InterfaceEventArray cse::ParamEditorSubwindow::run() const
 				if (opt_slot->type() == csg::SlotType::BOOL) {
 					const auto opt_bool_val{ opt_slot->value->as<csg::BoolSlotValue>() };
 					if (opt_bool_val) {
-						const InterfaceEventArray bool_events{ run_bool(*selected_slot, *opt_bool_val) };
-						result.push(bool_events);
+						const InterfaceEventArray bool_event{ run_bool(*selected_slot, *opt_bool_val) };
+						result.push(bool_event);
 					}
 					else {
 						ImGui::Text("Error: Failed to find editable bool.");
@@ -88,38 +90,48 @@ cse::InterfaceEventArray cse::ParamEditorSubwindow::run() const
 				else if (opt_slot->type() == csg::SlotType::COLOR) {
 					const auto opt_color_val{ opt_slot->value->as<csg::ColorSlotValue>() };
 					if (opt_color_val) {
-						const InterfaceEventArray color_events{ run_color(*selected_slot, *opt_color_val) };
-						result.push(color_events);
+						const InterfaceEventArray color_event{ run_color(*selected_slot, *opt_color_val) };
+						result.push(color_event);
 					}
 					else {
 						ImGui::Text("Error: Failed to find editable color.");
 					}
 				}
-				else if (opt_slot->type() == csg::SlotType::FLOAT) {
-					const auto opt_float_val{ opt_slot->value.value().as<csg::FloatSlotValue>() };
-					if (opt_float_val) {
-						const InterfaceEventArray float_events{ run_float(*selected_slot, *opt_float_val) };
-						result.push(float_events);
-					}
-					else {
-						ImGui::Text("Error: Failed to find editable float.");
-					}
-				}
 				else if (opt_slot->type() == csg::SlotType::ENUM) {
 					const auto opt_enum_val{ opt_slot->value.value().as<csg::EnumSlotValue>() };
 					if (opt_enum_val) {
-						const InterfaceEventArray enum_events{ run_enum(*selected_slot, *opt_enum_val) };
-						result.push(enum_events);
+						const InterfaceEventArray enum_event{ run_enum(*selected_slot, *opt_enum_val) };
+						result.push(enum_event);
 					}
 					else {
 						ImGui::Text("Error: Failed to find editable enum.");
 					}
 				}
+				else if (opt_slot->type() == csg::SlotType::FLOAT) {
+					const auto opt_float_val{ opt_slot->value.value().as<csg::FloatSlotValue>() };
+					if (opt_float_val) {
+						const InterfaceEventArray float_event{ run_float(*selected_slot, *opt_float_val) };
+						result.push(float_event);
+					}
+					else {
+						ImGui::Text("Error: Failed to find editable float.");
+					}
+				}
+				else if (opt_slot->type() == csg::SlotType::INT) {
+					const auto opt_int_val{ opt_slot->value.value().as<csg::IntSlotValue>() };
+					if (opt_int_val) {
+						const InterfaceEventArray int_event{ run_int(*selected_slot, *opt_int_val) };
+						result.push(int_event);
+					}
+					else {
+						ImGui::Text("Error: Failed to find editable float.");
+					}
+				}
 				else if (opt_slot->type() == csg::SlotType::VECTOR) {
 					const auto opt_vec_val{ opt_slot->value.value().as<csg::VectorSlotValue>() };
 					if (opt_vec_val) {
-						const InterfaceEventArray vec_events{ run_vector(*selected_slot, *opt_vec_val) };
-						result.push(vec_events);
+						const InterfaceEventArray vec_event{ run_vector(*selected_slot, *opt_vec_val) };
+						result.push(vec_event);
 					}
 					else {
 						ImGui::Text("Error: Failed to find editable vector.");
@@ -262,6 +274,27 @@ cse::InterfaceEventArray cse::ParamEditorSubwindow::run_float(const csg::SlotId 
 
 	if (new_value != slot_value) {
 		const SetSlotFloatDetails details{ slot_id, new_value.get() };
+		const InterfaceEvent event{ details };
+		result.push(event);
+	}
+
+	return result;
+}
+
+cse::InterfaceEventArray cse::ParamEditorSubwindow::run_int(const csg::SlotId slot_id, const csg::IntSlotValue slot_value) const
+{
+	InterfaceEventArray result;
+
+	const int start_val{ slot_value.get() };
+	int mutable_val{ start_val };
+
+	ImGui::InputInt("Value", &mutable_val, 1, 4, ImGuiInputTextFlags_EnterReturnsTrue);
+
+	csg::IntSlotValue new_value{ slot_value };
+	new_value.set(mutable_val);
+
+	if (new_value != slot_value) {
+		const SetSlotIntDetails details{ slot_id, new_value.get() };
 		const InterfaceEvent event{ details };
 		result.push(event);
 	}

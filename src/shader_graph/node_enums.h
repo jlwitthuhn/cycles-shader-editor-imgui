@@ -12,6 +12,9 @@ namespace csg {
 		MAP_RANGE_TYPE,
 		MATH_TYPE,
 		VECTOR_MATH_TYPE,
+		// Input
+		TANGENT_DIRECTION,
+		TANGENT_AXIS,
 		// Shader
 		ANISOTROPIC_DISTRIBUTION,
 		GLASS_DISTRIBUTION,
@@ -133,6 +136,19 @@ namespace csg {
 		SINE,
 		COSINE,
 		TANGENT,
+		COUNT
+	};
+
+	enum class TangentDirection {
+		RADIAL,
+		UV_MAP,
+		COUNT
+	};
+
+	enum class TangentAxis {
+		X,
+		Y,
+		Z,
 		COUNT
 	};
 

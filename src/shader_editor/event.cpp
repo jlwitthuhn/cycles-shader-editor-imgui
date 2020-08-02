@@ -227,6 +227,14 @@ cse::InterfaceEvent::InterfaceEvent(const SetSlotFloatDetails& set_slot_float_de
 	assert(SetSlotFloatDetails::matches(_type));
 }
 
+cse::InterfaceEvent::InterfaceEvent(const SetSlotIntDetails& set_slot_int_details) :
+	_type{ InterfaceEventType::SET_SLOT_INT },
+	_target_subwindow{ boost::none },
+	details{ set_slot_int_details }
+{
+	assert(SetSlotIntDetails::matches(_type));
+}
+
 cse::InterfaceEvent::InterfaceEvent(const SetSlotVectorDetails& set_slot_vector_details) :
 	_type{ InterfaceEventType::SET_SLOT_VECTOR },
 	_target_subwindow{ boost::none },
@@ -374,6 +382,11 @@ template <> cse::SetSlotEnumDetails cse::InterfaceEvent::InterfaceEventDetails::
 template <> cse::SetSlotFloatDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
 	return set_slot_float;
+}
+
+template <> cse::SetSlotIntDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
+{
+	return set_slot_int;
 }
 
 template <> cse::ModifySlotRampColorDetails cse::InterfaceEvent::InterfaceEventDetails::as() const

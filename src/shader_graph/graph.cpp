@@ -232,6 +232,11 @@ bool csg::Graph::set_float(const SlotId slot_id, const float new_value)
 	return set_graph_value<FloatSlotValue>(nodes_by_id, slot_id, new_value);
 }
 
+bool csg::Graph::set_int(const SlotId slot_id, const int new_value)
+{
+	return set_graph_value<IntSlotValue>(nodes_by_id, slot_id, new_value);
+}
+
 bool csg::Graph::set_vector(const SlotId slot_id, const csc::Float3 new_value)
 {
 	return set_graph_value<VectorSlotValue>(nodes_by_id, slot_id, new_value);

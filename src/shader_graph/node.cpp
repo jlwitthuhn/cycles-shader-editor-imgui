@@ -166,6 +166,101 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Wavelength", "wavelength",   FloatSlotValue{ 500.0f,  380.0f, 780.0f } });
 		break;
 		//////
+		// Input
+		//////
+	case NodeType::AMBIENT_OCCLUSION:
+		_slots.push_back(Slot{ "Color",       "color",      SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "AO",          "ao",         SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Samples",     "samples",    IntSlotValue{ 16,  1, 128 } });
+		_slots.push_back(Slot{ "Inside",      "inside",     BoolSlotValue{ false } });
+		_slots.push_back(Slot{ "Only Local",  "only_local", BoolSlotValue{ false } });
+		_slots.push_back(Slot{ "Color",       "color",      ColorSlotValue{ csc::Float3{ 1.0f, 1.0f, 1.0f} } });
+		_slots.push_back(Slot{ "Distance",    "distance",   FloatSlotValue{ 1.0f,  0.0f, FLT_MAX } });
+		_slots.push_back(Slot{ "Normal",      "normal",     SlotDirection::INPUT, SlotType::VECTOR });
+		break;
+	case NodeType::BEVEL:
+		_slots.push_back(Slot{ "Normal",  "normal",  SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Samples", "samples", IntSlotValue{ 4,  2, 16 } });
+		_slots.push_back(Slot{ "Radius",  "radius",  FloatSlotValue{ 0.5f, 0.5f, 0.5f } });
+		_slots.push_back(Slot{ "Normal",  "normal",  SlotDirection::INPUT, SlotType::VECTOR });
+		break;
+	case NodeType::CAMERA_DATA:
+		_slots.push_back(Slot{ "View Vector",   "view_vector",    SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "View Z Depth",  "view_z_depth",   SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "View Distance", "view_distance",  SlotDirection::OUTPUT, SlotType::FLOAT });
+		break;
+	case NodeType::FRESNEL:
+		_slots.push_back(Slot{ "Fac",    "fac",    SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "IOR",    "ior",    FloatSlotValue{ 1.45f, 0.0f, 100.0f } });
+		_slots.push_back(Slot{ "Normal", "normal", SlotDirection::INPUT, SlotType::VECTOR });
+		break;
+	case NodeType::GEOMETRY:
+		_slots.push_back(Slot{ "Position",           "position",           SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Normal",             "normal",             SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Tangent",            "tangent",            SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "True Normal",        "true_normal",        SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Incoming",           "incoming",           SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Parametric",         "parametric",         SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Backfacing",         "backfacing",         SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Pointiness",         "pointiness",         SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Random per Island",  "random_per_island",  SlotDirection::OUTPUT, SlotType::FLOAT });
+		break;
+	case NodeType::LAYER_WEIGHT:
+		_slots.push_back(Slot{ "Fresnel", "fresnel", SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Facing",  "facing",  SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Blend",   "blend",   FloatSlotValue{ 0.5f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Normal",  "normal",  SlotDirection::INPUT, SlotType::VECTOR });
+		break;
+	case NodeType::LIGHT_PATH:
+		_slots.push_back(Slot{ "Is Camera Ray",       "is_camera_ray",       SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Is Shadow Ray",       "is_shadow_ray",       SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Is Diffuse Ray",      "is_diffuse_ray",      SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Is Glossy Ray",       "is_glossy_ray",       SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Is Singular Ray",     "is_singular_ray",     SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Is Reflection Ray",   "is_reflection_ray",   SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Is Transmission Ray", "is_transmission_ray", SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Ray Length",          "ray_length",          SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Ray Depth",           "ray_depth",           SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Diffuse Depth",       "diffuse_depth",       SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Glossy Depth",        "glossy_depth",        SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Transparent Depth",   "transparent_depth",   SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Transmission Depth",  "transmission_depth",  SlotDirection::OUTPUT, SlotType::FLOAT });
+		break;
+	case NodeType::OBJECT_INFO:
+		_slots.push_back(Slot{ "Location",       "location",     SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Color",          "color",        SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Object Index",   "object_index", SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Material Index", "material",     SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Random",         "random",       SlotDirection::OUTPUT, SlotType::FLOAT });
+		break;
+	case NodeType::RGB:
+		_slots.push_back(Slot{ "Color", "color", SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Value", "value", ColorSlotValue{ csc::Float3{ 0.9f, 0.9f, 0.9f} } });
+		break;
+	case NodeType::TANGENT:
+		_slots.push_back(Slot{ "Tangent",     "tangent",   SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Direction",   "direction", EnumSlotValue{ TangentDirection::RADIAL } });
+		_slots.push_back(Slot{ "Radial Axis", "axis",      EnumSlotValue{ TangentAxis::Z } });
+		break;
+	case NodeType::TEXTURE_COORDINATE:
+		_slots.push_back(Slot{ "Generated",  "generated",  SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Normal",     "normal",     SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "UV",         "UV",         SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Object",     "object",     SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Camera",     "camera",     SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Window",     "window",     SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Reflection", "reflection", SlotDirection::OUTPUT, SlotType::VECTOR });
+		break;
+	case NodeType::VALUE:
+		_slots.push_back(Slot{ "Value", "value", SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Value", "value", FloatSlotValue{ 0.0f,  -FLT_MAX, FLT_MAX } });
+		break;
+	case NodeType::WIREFRAME:
+		_slots.push_back(Slot{ "Fac",            "fac",              SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Use Pixel Size", "use_pixel_size",   BoolSlotValue{ false } });
+		_slots.push_back(Slot{ "Value",          "value",            FloatSlotValue{ 0.1f,  0.0f, FLT_MAX } });
+		break;
+		//////
 		// Shader
 		//////
 	case NodeType::ADD_SHADER:

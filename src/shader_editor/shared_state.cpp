@@ -43,13 +43,3 @@ void cse::SharedState::set_output_graph(const std::string& new_graph)
 	output_graph = new_graph;
 	_output_updated = true;
 }
-
-void cse::SharedState::request_stop()
-{
-	stop.store(true);
-}
-
-bool cse::SharedState::should_stop()
-{
-	return stop.load();
-}
