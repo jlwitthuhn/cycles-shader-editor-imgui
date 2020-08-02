@@ -11,7 +11,7 @@ namespace cse {
 
 		void clear(const csg::Graph& graph);
 
-		void push_undo(const csg::Graph& graph);
+		bool push_undo(const csg::Graph& graph);
 
 		csg::Graph pop_undo(const csg::Graph& for_redo);
 		csg::Graph pop_redo(const csg::Graph& for_undo);

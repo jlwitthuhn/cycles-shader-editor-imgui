@@ -135,7 +135,9 @@ void cse::MainWindow::event_loop_iteration()
 
 	// Push undo state if something has changed
 	if (should_do_undo_push) {
-		undo_stack.push_undo(*the_graph);
+		if (undo_stack.push_undo(*the_graph)) {
+			graph_unsaved = true;
+		}
 	}
 
 	glfwSwapBuffers(glfw_window->window_ptr);
@@ -378,7 +380,7 @@ cse::InterfaceEventArray cse::MainWindow::run_gui_windows() const
 		events.push(debug_events);
 	}
 
-	const auto graph_events{ window_graph.run(get_mode()) };
+	const auto graph_events{ window_graph.run(get_mode(), graph_unsaved) };
 	events.push(graph_events);
 
 	const auto node_list_events{ window_node_list.run() };
@@ -573,9 +575,11 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 				break;
 			case InterfaceEventType::SAVE_TO_MAX:
 				shared_state->set_output_graph(the_graph->serialize());
+				graph_unsaved = false;
 				break;
 			case InterfaceEventType::SAVE_TO_FILE:
 				Platform::save_graph_dialog(the_graph->serialize());
+				graph_unsaved = false;
 				break;
 			case InterfaceEventType::LOAD_FROM_FILE:
 			{

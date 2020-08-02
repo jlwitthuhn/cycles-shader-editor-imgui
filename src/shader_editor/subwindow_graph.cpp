@@ -65,7 +65,7 @@ static ImU32 get_slot_type_color(const csg::SlotType type)
 	}
 }
 
-cse::InterfaceEventArray cse::GraphSubwindow::run(const InteractionMode mode) const
+cse::InterfaceEventArray cse::GraphSubwindow::run(const InteractionMode mode, const bool graph_unsaved) const
 {
 	InterfaceEventArray result;
 
@@ -86,8 +86,16 @@ cse::InterfaceEventArray cse::GraphSubwindow::run(const InteractionMode mode) co
 		}
 
 		ImGui::BeginTabBar("Bar");
-		if (ImGui::BeginTabItem("Graph")) {
-			ImGui::EndTabItem();
+
+		if (graph_unsaved) {
+			if (ImGui::BeginTabItem("Graph*###Graph")) {
+				ImGui::EndTabItem();
+			}
+		}
+		else {
+			if (ImGui::BeginTabItem("Graph###Graph")) {
+				ImGui::EndTabItem();
+			}
 		}
 		ImGui::EndTabBar();
 

@@ -17,7 +17,7 @@ void cse::UndoStack::clear(const csg::Graph& graph)
 	next_undo_graph = graph;
 }
 
-void cse::UndoStack::push_undo(const csg::Graph& graph)
+bool cse::UndoStack::push_undo(const csg::Graph& graph)
 {
 	if (next_undo_graph != graph) {
 		redo_state.clear();
@@ -26,6 +26,10 @@ void cse::UndoStack::push_undo(const csg::Graph& graph)
 		while (undo_state.size() > UNDO_LIMIT) {
 			undo_state.pop_back();
 		}
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 

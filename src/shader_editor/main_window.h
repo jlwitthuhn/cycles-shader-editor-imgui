@@ -72,6 +72,7 @@ namespace cse {
 		InteractionMode get_mode() const;
 
 		std::shared_ptr<csg::Graph> the_graph;
+		bool graph_unsaved{ false };
 
 		std::shared_ptr<SharedState> shared_state;
 

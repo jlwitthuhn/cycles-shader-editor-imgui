@@ -31,7 +31,7 @@ namespace cse {
 	public:
 		GraphSubwindow(std::shared_ptr<csg::Graph> the_graph) : the_graph{ the_graph } {}
 
-		InterfaceEventArray run(InteractionMode mode) const;
+		InterfaceEventArray run(InteractionMode mode, bool graph_unsaved) const;
 
 		// Returns true if this event cause a change that may affect undo state
 		bool do_event(const InterfaceEvent& event);
