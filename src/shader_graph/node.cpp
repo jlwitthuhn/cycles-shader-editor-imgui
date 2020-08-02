@@ -556,6 +556,17 @@ boost::optional<csg::Slot> csg::Node::slot(const size_t index) const
 	return _slots.at(index);
 }
 
+boost::optional<csg::SlotValue> csg::Node::slot_value(const size_t index) const
+{
+	const boost::optional<csg::Slot> the_slot{ slot(index) };
+	if (the_slot) {
+		return the_slot->value;
+	}
+	else {
+		return boost::none;
+	}
+}
+
 void csg::Node::copy_from(const Node& other)
 {
 	// Copy everything except id
