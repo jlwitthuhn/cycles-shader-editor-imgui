@@ -191,7 +191,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		break;
 	case NodeType::FRESNEL:
 		_slots.push_back(Slot{ "Fac",    "fac",    SlotDirection::OUTPUT, SlotType::FLOAT });
-		_slots.push_back(Slot{ "IOR",    "ior",    FloatSlotValue{ 1.45f, 0.0f, 100.0f } });
+		_slots.push_back(Slot{ "IOR",    "IOR",    FloatSlotValue{ 1.45f, 0.0f, 100.0f } });
 		_slots.push_back(Slot{ "Normal", "normal", SlotDirection::INPUT, SlotType::VECTOR });
 		break;
 	case NodeType::GEOMETRY:
@@ -294,7 +294,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Distribution", "distribution", EnumSlotValue{ GlassDistribution::GGX } });
 		_slots.push_back(Slot{ "Color",        "color",        ColorSlotValue{ csc::Float3{ 0.9f, 0.9f, 0.9f} } });
 		_slots.push_back(Slot{ "Roughness",    "roughness",    FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "IOR",          "ior",          FloatSlotValue{ 1.45f, 0.0f, 100.0f } });
+		_slots.push_back(Slot{ "IOR",          "IOR",          FloatSlotValue{ 1.45f, 0.0f, 100.0f } });
 		_slots.push_back(Slot{ "Normal",       "normal",       SlotDirection::INPUT, SlotType::VECTOR });
 		break;
 	case NodeType::GLOSSY_BSDF:
@@ -386,7 +386,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Distribution", "distribution", EnumSlotValue{ RefractionDistribution::GGX } });
 		_slots.push_back(Slot{ "Color",        "color",        ColorSlotValue{ csc::Float3{ 0.9f, 0.9f, 0.9f} } });
 		_slots.push_back(Slot{ "Roughness",    "roughness",    FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "IOR",          "ior",          FloatSlotValue{ 1.45f, 0.0f, 100.0f } });
+		_slots.push_back(Slot{ "IOR",          "IOR",          FloatSlotValue{ 1.45f, 0.0f, 100.0f } });
 		_slots.push_back(Slot{ "Normal",       "normal",       SlotDirection::INPUT, SlotType::VECTOR });
 		break;
 	case NodeType::SUBSURFACE_SCATTER:
