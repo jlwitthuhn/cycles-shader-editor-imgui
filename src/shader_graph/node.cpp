@@ -287,7 +287,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 	case NodeType::EMISSION:
 		_slots.push_back(Slot{ "Emission", "emission", SlotDirection::OUTPUT, SlotType::CLOSURE });
 		_slots.push_back(Slot{ "Color",    "color",    ColorSlotValue{ csc::Float3{ 0.9f, 0.9f, 0.9f} } });
-		_slots.push_back(Slot{ "Strength", "strength", FloatSlotValue{ 0.0f, 0.0f, FLT_MAX } });
+		_slots.push_back(Slot{ "Strength", "strength", FloatSlotValue{ 1.0f, 0.0f, FLT_MAX } });
 		break;
 	case NodeType::GLASS_BSDF:
 		_slots.push_back(Slot{ "BSDF",         "BSDF",         SlotDirection::OUTPUT, SlotType::CLOSURE });
