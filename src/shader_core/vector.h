@@ -79,6 +79,10 @@ namespace csc {
 
 		std::array<float, 4> as_array() const { return std::array<float, 4>{ x, y, z, w }; }
 
+		Float4 operator+(const Float4& other) const;
+		Float4 operator-(const Float4& other) const;
+		Float4 operator*(float other) const;
+
 		bool operator==(const Float4& other) const { return x == other.x && y == other.y && z == other.z && w == other.w; }
 		bool operator!=(const Float4& other) const { return operator==(other) == false; }
 

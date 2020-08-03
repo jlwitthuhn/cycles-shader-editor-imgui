@@ -7,6 +7,8 @@
 
 #include <boost/algorithm/clamp.hpp>
 
+#include <shader_core/lerp.h>
+
 csg::ColorRamp::ColorRamp()
 {
 	// Set a default value mapping from black to white
@@ -19,6 +21,42 @@ csg::ColorRamp::ColorRamp(const std::vector<ColorRampPoint>& points) : points{ p
 {
 	assert(points.size() >= 2);
 	sort_points();
+}
+
+csc::Float4 csg::ColorRamp::eval(const float pos) const
+{
+	// For speed, assume the vector is already sorted
+	assert(points.size() >= 2);
+
+	// If the pos is outside our control points, extend the boundary color
+	const float pos_begin{ points[0].pos };
+	if (pos <= pos_begin) {
+		return csc::Float4{ points[0].color, points[0].alpha };
+	}
+	const float pos_end{ points[points.size() - 1].pos };
+	if (pos >= pos_end) {
+		return csc::Float4{ points[points.size() - 1].color, points[points.size() - 1].alpha };
+	}
+
+	// Find the bounding points
+	// We know that a pos both before and after the input position must exist
+	csg::ColorRampPoint point_before{ points[0] };
+	csg::ColorRampPoint point_after{ points[points.size() - 1] };
+	for (const csg::ColorRampPoint this_point : points) {
+		if (this_point.pos > point_before.pos && this_point.pos < pos) {
+			point_before = this_point;
+		}
+		if (this_point.pos < point_after.pos && this_point.pos > pos) {
+			point_after = this_point;
+		}
+	}
+
+	const float fraction{ (pos - point_before.pos) / (point_after.pos - point_before.pos) };
+
+	const csc::Float4 result_before{ point_before.color, point_before.alpha };
+	const csc::Float4 result_after{ point_after.color, point_after.alpha };
+
+	return csc::lerp(result_before, result_after, fraction);
 }
 
 void csg::ColorRamp::set(const size_t index, ColorRampPoint new_point)

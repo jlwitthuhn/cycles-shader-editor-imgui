@@ -86,6 +86,21 @@ bool csc::Float3::similar(const Float3& other, const float margin) const
 	return fabs(diff_x) < fabs(margin) && fabs(diff_y) < fabs(margin) && fabs(diff_z) < fabs(margin);
 }
 
+csc::Float4 csc::Float4::operator+(const Float4& other) const
+{
+	return csc::Float4{ x + other.x, y + other.y, z + other.z, w + other.w };
+}
+
+csc::Float4 csc::Float4::operator-(const Float4& other) const
+{
+	return csc::Float4{ x - other.x, y - other.y, z - other.z, w - other.w };
+}
+
+csc::Float4 csc::Float4::operator*(const float other) const
+{
+	return csc::Float4{ x * other, y * other, z * other, w * other };
+}
+
 csc::Int2::Int2(const csc::Float2 float2) :
 	x{ static_cast<int>(float2.x) },
 	y{ static_cast<int>(float2.y) }

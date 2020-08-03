@@ -21,6 +21,8 @@ namespace csg {
 		ColorRamp();
 		ColorRamp(const std::vector<ColorRampPoint>& points);
 
+		csc::Float4 eval(float pos) const;
+
 		size_t size() const { return points.size(); }
 
 		ColorRampPoint get(size_t index) const {
