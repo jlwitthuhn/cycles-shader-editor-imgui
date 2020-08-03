@@ -844,7 +844,7 @@ boost::optional<csg::Graph> csg::deserialize_graph(const std::string& graph_stri
 		{
 			size_t current_index{ 0 };
 			for (const Slot this_slot : node_src->slots()) {
-				if (slot_src == this_slot.disp_name()) {
+				if (this_slot.dir() == csg::SlotDirection::OUTPUT && slot_src == this_slot.disp_name()) {
 					slot_index_src = current_index;
 					break;
 				}
@@ -859,7 +859,7 @@ boost::optional<csg::Graph> csg::deserialize_graph(const std::string& graph_stri
 		{
 			size_t current_index{ 0 };
 			for (const Slot this_slot : node_dst->slots()) {
-				if (slot_dst == this_slot.disp_name()) {
+				if (this_slot.dir() == csg::SlotDirection::INPUT && slot_dst == this_slot.disp_name()) {
 					slot_index_dst = current_index;
 					break;
 				}
@@ -875,7 +875,6 @@ boost::optional<csg::Graph> csg::deserialize_graph(const std::string& graph_stri
 		const SlotId dst_slot_id{ id_dst, slot_index_dst.value() };
 
 		result.add_connection(src_slot_id, dst_slot_id);
-
 	}
 
 	return result;
