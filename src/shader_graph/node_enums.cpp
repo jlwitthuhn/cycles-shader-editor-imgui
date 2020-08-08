@@ -63,6 +63,24 @@ boost::optional<csg::NodeEnumInfo> csg::NodeEnumInfo::from(const NodeMetaEnum me
 	// Texture
 	case NodeMetaEnum::MAX_TEXMAP_PRECISION:
 		return NodeEnumInfo{ meta_enum, get_count<MaxTexmapPrecision>() };
+	case NodeMetaEnum::GRADIENT_TEX_TYPE:
+		return NodeEnumInfo{ meta_enum, get_count<GradientTexType>() };
+	case NodeMetaEnum::MUSGRAVE_TEX_DIMENSIONS:
+		return NodeEnumInfo{ meta_enum, get_count<MusgraveTexDimensions>() };
+	case NodeMetaEnum::MUSGRAVE_TEX_TYPE:
+		return NodeEnumInfo{ meta_enum, get_count<MusgraveTexType>() };
+	case NodeMetaEnum::NOISE_TEX_DIMENSIONS:
+		return NodeEnumInfo{ meta_enum, get_count<NoiseTexDimensions>() };
+	case NodeMetaEnum::VORONOI_TEX_DIMENSIONS:
+		return NodeEnumInfo{ meta_enum, get_count<VoronoiTexDimensions>() };
+	case NodeMetaEnum::WAVE_TEX_TYPE:
+		return NodeEnumInfo{ meta_enum, get_count<WaveTexType>() };
+	case NodeMetaEnum::WAVE_TEX_DIRECTION:
+		return NodeEnumInfo{ meta_enum, get_count<WaveTexDirection>() };
+	case NodeMetaEnum::WAVE_TEX_PROFILE:
+		return NodeEnumInfo{ meta_enum, get_count<WaveTexProfile>() };
+	case NodeMetaEnum::WHITE_NOISE_TEX_DIMENSIONS:
+		return NodeEnumInfo{ meta_enum, get_count<WhiteNoiseTexDimensions>() };
 	// Vector
 	case NodeMetaEnum::DISPLACEMENT_SPACE:
 		return NodeEnumInfo{ meta_enum, get_count<DisplacementSpace>() };
@@ -453,7 +471,7 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<MaxTexmapPrecision>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(MaxTexmapPrecision::UCHAR, "8-bit/Channel Char", "uchar");
+				CASE_PAIR(MaxTexmapPrecision::UCHAR, "8-bit/Channel Char",   "uchar");
 				CASE_PAIR(MaxTexmapPrecision::FLOAT, "32-bit/Channel Float", "float");
 			default:
 				return std::make_pair("[Unknown Precision]", "ERROR");
@@ -461,6 +479,160 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		}
 		else {
 			return std::make_pair("[Bad Precision]", "ERROR");
+		}
+	}
+	case NodeMetaEnum::GRADIENT_TEX_TYPE:
+	{
+		const auto opt_enum{ as_enum<GradientTexType>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(GradientTexType::LINEAR,           "Linear",           "linear");
+				CASE_PAIR(GradientTexType::QUADRATIC,        "Quadratic",        "quadratic");
+				CASE_PAIR(GradientTexType::EASING,           "Easing",           "easing");
+				CASE_PAIR(GradientTexType::DIAGONAL,         "Diagonal",         "diagonal");
+				CASE_PAIR(GradientTexType::RADIAL,           "Radial",           "radial");
+				CASE_PAIR(GradientTexType::QUADRATIC_SPHERE, "Quadratic Shpere", "quadratic_sphere");
+				CASE_PAIR(GradientTexType::SPHERICAL,        "Shperical",        "spherical");
+			default:
+				return std::make_pair("[Unknown Type]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Type]", "ERROR");
+		}
+	}
+	case NodeMetaEnum::MUSGRAVE_TEX_DIMENSIONS:
+	{
+		const auto opt_enum{ as_enum<MusgraveTexDimensions>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(MusgraveTexDimensions::ONE,   "1D", "1D");
+				CASE_PAIR(MusgraveTexDimensions::TWO,   "2D", "2D");
+				CASE_PAIR(MusgraveTexDimensions::THREE, "3D", "3D");
+				CASE_PAIR(MusgraveTexDimensions::FOUR,  "4D", "4D");
+			default:
+				return std::make_pair("[Unknown Dimensions]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Dimensions]", "ERROR");
+		}
+	}
+	case NodeMetaEnum::MUSGRAVE_TEX_TYPE:
+	{
+		const auto opt_enum{ as_enum<MusgraveTexType>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(MusgraveTexType::MULTIFRACTAL,        "Multifractal",        "multifractal");
+				CASE_PAIR(MusgraveTexType::RIDGED_MULTIFRACTAL, "Ridged Multifractal", "ridged_multifractal");
+				CASE_PAIR(MusgraveTexType::HYBRID_MULTIFRACTAL, "Hyvrid Multifractal", "hybrid_multifractal");
+				CASE_PAIR(MusgraveTexType::FBM,                 "fBM",                 "fbm");
+				CASE_PAIR(MusgraveTexType::HETERO_TERRAIN,      "Hetero Terrain",      "hetero_terrain");
+			default:
+				return std::make_pair("[Unknown Type]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Type]", "ERROR");
+		}
+	}
+	case NodeMetaEnum::NOISE_TEX_DIMENSIONS:
+	{
+		const auto opt_enum{ as_enum<NoiseTexDimensions>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(NoiseTexDimensions::ONE, "1D", "1D");
+				CASE_PAIR(NoiseTexDimensions::TWO, "2D", "2D");
+				CASE_PAIR(NoiseTexDimensions::THREE, "3D", "3D");
+				CASE_PAIR(NoiseTexDimensions::FOUR, "4D", "4D");
+			default:
+				return std::make_pair("[Unknown Dimensions]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Dimensions]", "ERROR");
+		}
+	}
+	case NodeMetaEnum::VORONOI_TEX_DIMENSIONS:
+	{
+		const auto opt_enum{ as_enum<VoronoiTexDimensions>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(VoronoiTexDimensions::ONE, "1D", "1D");
+				CASE_PAIR(VoronoiTexDimensions::TWO, "2D", "2D");
+				CASE_PAIR(VoronoiTexDimensions::THREE, "3D", "3D");
+				CASE_PAIR(VoronoiTexDimensions::FOUR, "4D", "4D");
+			default:
+				return std::make_pair("[Unknown Dimensions]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Dimensions]", "ERROR");
+		}
+	}
+	case NodeMetaEnum::WAVE_TEX_TYPE:
+	{
+		const auto opt_enum{ as_enum<WaveTexType>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(WaveTexType::BANDS, "Bands", "bands");
+				CASE_PAIR(WaveTexType::RINGS, "Rings", "rings");
+			default:
+				return std::make_pair("[Unknown Type]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Type]", "ERROR");
+		}
+	}
+	case NodeMetaEnum::WAVE_TEX_DIRECTION:
+	{
+		const auto opt_enum{ as_enum<WaveTexDirection>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(WaveTexDirection::X, "X", "x");
+				CASE_PAIR(WaveTexDirection::Y, "Y", "y");
+				CASE_PAIR(WaveTexDirection::Z, "Z", "z");
+				CASE_PAIR(WaveTexDirection::DIAGONAL, "Diagonal", "diagonal");
+			default:
+				return std::make_pair("[Unknown Direction]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Direction]", "ERROR");
+		}
+	}
+	case NodeMetaEnum::WAVE_TEX_PROFILE:
+	{
+		const auto opt_enum{ as_enum<WaveTexProfile>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(WaveTexProfile::SINE,     "Sine",     "sine");
+				CASE_PAIR(WaveTexProfile::SAW,      "Saw",      "saw");
+				CASE_PAIR(WaveTexProfile::TRIANGLE, "Triangle", "triangle");
+			default:
+				return std::make_pair("[Unknown Profile]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Profile]", "ERROR");
+		}
+	}
+	case NodeMetaEnum::WHITE_NOISE_TEX_DIMENSIONS:
+	{
+		const auto opt_enum{ as_enum<WhiteNoiseTexDimensions>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(WhiteNoiseTexDimensions::ONE, "1D", "1D");
+				CASE_PAIR(WhiteNoiseTexDimensions::TWO, "2D", "2D");
+				CASE_PAIR(WhiteNoiseTexDimensions::THREE, "3D", "3D");
+				CASE_PAIR(WhiteNoiseTexDimensions::FOUR, "4D", "4D");
+			default:
+				return std::make_pair("[Unknown Dimensions]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Dimensions]", "ERROR");
 		}
 	}
 	//////

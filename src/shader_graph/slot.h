@@ -89,6 +89,15 @@ namespace csg {
 		EnumSlotValue(ToonComponent initial) :                  EnumSlotValue(NodeMetaEnum::TOON_COMPONENT, initial) {}
 		// Texture
 		EnumSlotValue(MaxTexmapPrecision initial) :             EnumSlotValue(NodeMetaEnum::MAX_TEXMAP_PRECISION, initial) {}
+		EnumSlotValue(GradientTexType initial) :                EnumSlotValue(NodeMetaEnum::GRADIENT_TEX_TYPE, initial) {}
+		EnumSlotValue(MusgraveTexDimensions initial) :          EnumSlotValue(NodeMetaEnum::MUSGRAVE_TEX_DIMENSIONS, initial) {}
+		EnumSlotValue(MusgraveTexType initial) :                EnumSlotValue(NodeMetaEnum::MUSGRAVE_TEX_TYPE, initial) {}
+		EnumSlotValue(NoiseTexDimensions initial) :             EnumSlotValue(NodeMetaEnum::NOISE_TEX_DIMENSIONS, initial) {}
+		EnumSlotValue(VoronoiTexDimensions initial) :           EnumSlotValue(NodeMetaEnum::VORONOI_TEX_DIMENSIONS, initial) {}
+		EnumSlotValue(WaveTexType initial) :                    EnumSlotValue(NodeMetaEnum::WAVE_TEX_TYPE, initial) {}
+		EnumSlotValue(WaveTexDirection initial) :               EnumSlotValue(NodeMetaEnum::WAVE_TEX_DIRECTION, initial) {}
+		EnumSlotValue(WaveTexProfile initial) :                 EnumSlotValue(NodeMetaEnum::WAVE_TEX_PROFILE, initial) {}
+		EnumSlotValue(WhiteNoiseTexDimensions initial) :        EnumSlotValue(NodeMetaEnum::WHITE_NOISE_TEX_DIMENSIONS, initial) {}
 		// Vector
 		EnumSlotValue(DisplacementSpace initial) :              EnumSlotValue(NodeMetaEnum::DISPLACEMENT_SPACE, initial) {}
 		EnumSlotValue(VectorMappingType initial) :              EnumSlotValue(NodeMetaEnum::VECTOR_MAPPING_TYPE, initial) {}

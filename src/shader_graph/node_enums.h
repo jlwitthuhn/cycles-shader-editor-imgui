@@ -28,6 +28,15 @@ namespace csg {
 		TOON_COMPONENT,
 		// Texture
 		MAX_TEXMAP_PRECISION,
+		GRADIENT_TEX_TYPE,
+		MUSGRAVE_TEX_DIMENSIONS,
+		MUSGRAVE_TEX_TYPE,
+		NOISE_TEX_DIMENSIONS,
+		VORONOI_TEX_DIMENSIONS,
+		WAVE_TEX_TYPE,
+		WAVE_TEX_DIRECTION,
+		WAVE_TEX_PROFILE,
+		WHITE_NOISE_TEX_DIMENSIONS,
 		// Vector
 		DISPLACEMENT_SPACE,
 		VECTOR_MAPPING_TYPE,
@@ -228,6 +237,79 @@ namespace csg {
 	enum class MaxTexmapPrecision {
 		UCHAR,
 		FLOAT,
+		COUNT
+	};
+
+	enum class GradientTexType {
+		LINEAR,
+		QUADRATIC,
+		EASING,
+		DIAGONAL,
+		RADIAL,
+		QUADRATIC_SPHERE,
+		SPHERICAL,
+		COUNT
+	};
+
+	enum class MusgraveTexDimensions {
+		ONE,
+		TWO,
+		THREE,
+		FOUR,
+		COUNT
+	};
+
+	enum class MusgraveTexType {
+		MULTIFRACTAL,
+		RIDGED_MULTIFRACTAL,
+		HYBRID_MULTIFRACTAL,
+		FBM,
+		HETERO_TERRAIN,
+		COUNT
+	};
+
+	enum class NoiseTexDimensions {
+		ONE,
+		TWO,
+		THREE,
+		FOUR,
+		COUNT
+	};
+
+	enum class VoronoiTexDimensions {
+		ONE,
+		TWO,
+		THREE,
+		FOUR,
+		COUNT
+	};
+
+	enum class WaveTexType {
+		BANDS,
+		RINGS,
+		COUNT
+	};
+
+	enum class WaveTexDirection {
+		X,
+		Y,
+		Z,
+		DIAGONAL,
+		COUNT
+	};
+
+	enum class WaveTexProfile {
+		SINE,
+		SAW,
+		TRIANGLE,
+		COUNT
+	};
+
+	enum class WhiteNoiseTexDimensions {
+		ONE,
+		TWO,
+		THREE,
+		FOUR,
 		COUNT
 	};
 

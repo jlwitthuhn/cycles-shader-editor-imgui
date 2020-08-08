@@ -150,13 +150,21 @@ std::string cse::DebugSubwindow::run_validation() const
 		const csc::EnumList<csg::NodeMetaEnum, csg::NodeMetaEnum::COUNT> enum_list;
 		for (const csg::NodeMetaEnum this_enum : enum_list) {
 			boost::optional<csg::NodeEnumInfo> enum_info{ csg::NodeEnumInfo::from(this_enum) };
+			std::set<std::string> names;
 			if (enum_info) {
 				for (size_t i = 0; i < enum_info->count(); i++) {
 					boost::optional<csg::NodeEnumOptionInfo> enum_option_info{ csg::NodeEnumOptionInfo::from(this_enum, i) };
 					if (enum_option_info) {
-						if (std::string{ "ERROR" } == enum_option_info->internal_name()) {
+						if (names.count(enum_option_info->internal_name())) {
+							++error_count;
+							out_stream << "NodeEnumOptionInfo::from(" << static_cast<int>(this_enum) << ", " << i << ") has repeated name" << std::endl;
+						}
+						else if (std::string{ "ERROR" } == enum_option_info->internal_name()) {
 							++error_count;
 							out_stream << "NodeEnumOptionInfo::from(" << static_cast<int>(this_enum) << ", " << i << ") has ERROR string" << std::endl;
+						}
+						else {
+							names.insert(enum_option_info->internal_name());
 						}
 					}
 					else {

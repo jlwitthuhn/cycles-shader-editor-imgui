@@ -331,24 +331,25 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Subsurface Radius",   "subsurface_radius",    VectorSlotValue{
 			csc::Float3{ 1.0f, 0.2f, 0.1f }, csc::Float3{ 0.0f, 0.0f, 0.0f } , csc::Float3{ FLT_MAX, FLT_MAX, FLT_MAX }
 		}});
-		_slots.push_back(Slot{ "Subsurface Color",    "subsurface_color",     ColorSlotValue{ csc::Float3{ 0.7f, 1.0f, 1.0f} } });
-		_slots.push_back(Slot{ "Metallic",            "metallic",             FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Specular",            "specular",             FloatSlotValue{ 0.5f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Specular Tint",       "specular_tint",        FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Roughness",           "roughness",            FloatSlotValue{ 0.5f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Anisotropic",         "anisotropic",          FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Rotation",            "anisotropic_rotation", FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Sheen",               "sheen",                FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Sheen Tint",          "sheen_tint",           FloatSlotValue{ 0.5f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Clearcoat",           "clearcoat",            FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Clearcoat Roughness", "clearcoat_roughness",  FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "IOR",                 "ior",                  FloatSlotValue{ 1.45f, 0.0f, 100.0f } });
-		_slots.push_back(Slot{ "Transmission",        "transmission",         FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Emission",            "emission",             ColorSlotValue{ csc::Float3{ 0.0f, 0.0f, 0.0f } } });
-		_slots.push_back(Slot{ "Alpha",               "alpha",                FloatSlotValue{ 1.0f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Normal",              "normal",               SlotDirection::INPUT, SlotType::VECTOR });
-		_slots.push_back(Slot{ "Clearcoat Normal",    "clearcoat_normal",     SlotDirection::INPUT, SlotType::VECTOR });
-		_slots.push_back(Slot{ "Tangent",             "tangent",              SlotDirection::INPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Subsurface Color",       "subsurface_color",       ColorSlotValue{ csc::Float3{ 0.7f, 1.0f, 1.0f} } });
+		_slots.push_back(Slot{ "Metallic",               "metallic",               FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Specular",               "specular",               FloatSlotValue{ 0.5f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Specular Tint",          "specular_tint",          FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Roughness",              "roughness",              FloatSlotValue{ 0.5f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Anisotropic",            "anisotropic",            FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Rotation",               "anisotropic_rotation",   FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Sheen",                  "sheen",                  FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Sheen Tint",             "sheen_tint",             FloatSlotValue{ 0.5f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Clearcoat",              "clearcoat",              FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Clearcoat Roughness",    "clearcoat_roughness",    FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "IOR",                    "ior",                    FloatSlotValue{ 1.45f, 0.0f, 100.0f } });
+		_slots.push_back(Slot{ "Transmission",           "transmission",           FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Transmission Roughness", "transmission_roughness", FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Emission",               "emission",               ColorSlotValue{ csc::Float3{ 0.0f, 0.0f, 0.0f } } });
+		_slots.push_back(Slot{ "Alpha",                  "alpha",                  FloatSlotValue{ 1.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Normal",                 "normal",                 SlotDirection::INPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Clearcoat Normal",       "clearcoat_normal",       SlotDirection::INPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Tangent",                "tangent",                SlotDirection::INPUT, SlotType::VECTOR });
 		break;
 	case NodeType::PRINCIPLED_HAIR:
 		_slots.push_back(Slot{ "BSDF",                   "BSDF",                   SlotDirection::OUTPUT, SlotType::CLOSURE });
@@ -447,6 +448,105 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Height",    "height",    IntSlotValue{ 512,  1, 32768 } });
 		_slots.push_back(Slot{ "Precision", "precision", EnumSlotValue{ MaxTexmapPrecision::UCHAR } });
 		_slots.push_back(Slot{ "Vector",    "vector",    SlotDirection::INPUT, SlotType::VECTOR });
+		break;
+	case NodeType::BRICK_TEX:
+		_slots.push_back(Slot{ "Color",               "color",               SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Fac",                 "fac",                 SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Offset",              "offset",              FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Off. Frequency",      "offset_frequency",    IntSlotValue{ 2, 1, 99 } });
+		_slots.push_back(Slot{ "Squash",              "squash",              FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Squash Frequency",    "squash_frequency",    IntSlotValue{ 2, 1, 99 } });
+		_slots.push_back(Slot{ "Vector",              "vector",              SlotDirection::INPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Color1",              "color1",              ColorSlotValue{ csc::Float3{ 0.9f, 0.9f, 0.9f} } });
+		_slots.push_back(Slot{ "Color2",              "color2",              ColorSlotValue{ csc::Float3{ 0.4f, 0.4f, 0.4f} } });
+		_slots.push_back(Slot{ "Mortar",              "mortar",              ColorSlotValue{ csc::Float3{ 0.4f, 0.4f, 0.4f} } });
+		_slots.push_back(Slot{ "Scale",               "scale",               FloatSlotValue{ 5.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "Mortar Size",         "mortar_size",         FloatSlotValue{ 0.08f, 0.0f, 0.25f } });
+		_slots.push_back(Slot{ "Mortar Smooth",       "mortar_smooth",       FloatSlotValue{ 0.1f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Bias",                "bias",                FloatSlotValue{ 0.0f, -1.0f, 1.0f } });
+		_slots.push_back(Slot{ "Brick Width",         "brick_width",         FloatSlotValue{ 0.5f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Row Height",          "row_height",          FloatSlotValue{ 0.25f, 0.0f, 1.0f } });
+		break;
+	case NodeType::CHECKER_TEX:
+		_slots.push_back(Slot{ "Color",  "color",  SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Fac",    "fac",    SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Vector", "vector", SlotDirection::INPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Color1", "color1", ColorSlotValue{ csc::Float3{ 0.9f, 0.9f, 0.9f} } });
+		_slots.push_back(Slot{ "Color2", "color2", ColorSlotValue{ csc::Float3{ 0.4f, 0.4f, 0.4f} } });
+		_slots.push_back(Slot{ "Scale",  "scale",  FloatSlotValue{ 5.0f, -FLT_MAX, FLT_MAX } });
+		break;
+	case NodeType::GRADIENT_TEX:
+		_slots.push_back(Slot{ "Color",  "color",  SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Fac",    "fac",    SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Type",   "type",   EnumSlotValue{ GradientTexType::LINEAR } });
+		_slots.push_back(Slot{ "Vector", "vector", SlotDirection::INPUT, SlotType::VECTOR });
+		break;
+	case NodeType::MAGIC_TEX:
+		_slots.push_back(Slot{ "Color",      "color",      SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Fac",        "fac",        SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Depth",      "depth",      IntSlotValue{ 2, 0, 10 } });
+		_slots.push_back(Slot{ "Vector",     "vector",     SlotDirection::INPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Scale",      "scale",      FloatSlotValue{ 5.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "Distortion", "distortion", FloatSlotValue{ 1.0f, -FLT_MAX, FLT_MAX } });
+		break;
+	case NodeType::MUSGRAVE_TEX:
+		_slots.push_back(Slot{ "Fac",        "fac",        SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Dimensions", "dimensions", EnumSlotValue{ MusgraveTexDimensions::THREE } });
+		_slots.push_back(Slot{ "Type",       "type",       EnumSlotValue{ MusgraveTexType::FBM } });
+		_slots.push_back(Slot{ "Vector",     "vector",     SlotDirection::INPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "W",          "w",          FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "Scale",      "scale",      FloatSlotValue{ 5.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "Detail",     "Detail",     FloatSlotValue{ 2.0f, 0.0f, 16.0f } });
+		_slots.push_back(Slot{ "Dimension",  "dimension",  FloatSlotValue{ 2.0f, 0.0f, FLT_MAX } });
+		_slots.push_back(Slot{ "Lacunarity", "lacunarity", FloatSlotValue{ 2.0f, 0.0f, FLT_MAX } });
+		_slots.push_back(Slot{ "Offset",     "offset",     FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "Gain",       "gain",       FloatSlotValue{ 1.0f, 0.0f, FLT_MAX } });
+		break;
+	case NodeType::NOISE_TEX:
+		_slots.push_back(Slot{ "Color",      "color",      SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Fac",        "fac",        SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Dimensions", "dimensions", EnumSlotValue{ NoiseTexDimensions::THREE } });
+		_slots.push_back(Slot{ "Vector",     "vector",     SlotDirection::INPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "W",          "w",          FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "Scale",      "scale",      FloatSlotValue{ 5.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "Detail",     "detail",     FloatSlotValue{ 2.0f, 0.0f, 16.0f } });
+		_slots.push_back(Slot{ "Roughness",  "roughness",  FloatSlotValue{ 0.5f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Distortion", "distortion", FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
+		break;
+	case NodeType::VORONOI_TEX:
+		_slots.push_back(Slot{ "Distance",   "distance",   SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Color",      "color",      SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Position",   "position",   SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "W",          "w",          SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Radius",     "radius",     SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Dimensions", "dimensions", EnumSlotValue{ VoronoiTexDimensions::THREE } });
+		_slots.push_back(Slot{ "Vector",     "vector",     SlotDirection::INPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "W",          "w",          FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "Scale",      "scale",      FloatSlotValue{ 5.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "Smoothness", "smoothness", FloatSlotValue{ 1.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Exponent",   "exponent",   FloatSlotValue{ 0.5f, 0.0f, 32.0f } });
+		_slots.push_back(Slot{ "Randomness", "randomness", FloatSlotValue{ 1.0f, 0.0f, 1.0f } });
+		break;
+	case NodeType::WAVE_TEX:
+		_slots.push_back(Slot{ "Color",            "color",            SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Fac",              "fac",              SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Type",             "type",             EnumSlotValue{ WaveTexType::BANDS } });
+		_slots.push_back(Slot{ "Direction",        "direction",        EnumSlotValue{ WaveTexDirection::X } });
+		_slots.push_back(Slot{ "Sine",             "sine",             EnumSlotValue{ WaveTexProfile::SINE } });
+		_slots.push_back(Slot{ "Vector",           "vector",           SlotDirection::INPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Scale",            "scale",            FloatSlotValue{ 5.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "Distortion",       "distortion",       FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "Detail",           "detail",           FloatSlotValue{ 2.0f, 0.0f, 16.0f } });
+		_slots.push_back(Slot{ "Detail Scale",     "detail_scale",     FloatSlotValue{ 1.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "Detail Roughness", "detail_roughness", FloatSlotValue{ 0.5f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Phase Offset",     "phase",            FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
+		break;
+	case NodeType::WHITE_NOISE_TEX:
+		_slots.push_back(Slot{ "Value",      "value",      SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Color",      "color",      SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Dimensions", "dimensions", EnumSlotValue{ VoronoiTexDimensions::THREE } });
+		_slots.push_back(Slot{ "Vector",     "vector",     SlotDirection::INPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "W",          "w",          FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
 		break;
 		//////
 		// Vector

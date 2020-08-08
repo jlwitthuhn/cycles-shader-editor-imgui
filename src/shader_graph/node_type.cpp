@@ -169,6 +169,8 @@ boost::optional<csg::NodeTypeInfo> csg::NodeTypeInfo::from(const NodeType type)
 			return NodeTypeInfo{ type, NodeCategory::TEXTURE, "Voronoi Texture",      "voronoi_tex" };
 		case NodeType::WAVE_TEX:
 			return NodeTypeInfo{ type, NodeCategory::TEXTURE, "Wave Texture",         "wave_tex" };
+		case NodeType::WHITE_NOISE_TEX:
+			return NodeTypeInfo{ type, NodeCategory::TEXTURE, "White Noise Texture",  "white_noise_tex" };
 		// Vector
 		case NodeType::BUMP:
 			return NodeTypeInfo{ type, NodeCategory::VECTOR, "Bump",                  "bump" };

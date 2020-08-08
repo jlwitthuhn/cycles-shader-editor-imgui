@@ -87,6 +87,7 @@ namespace csg {
 		NOISE_TEX,
 		VORONOI_TEX,
 		WAVE_TEX,
+		WHITE_NOISE_TEX,
 		// Vector
 		BUMP,
 		DISPLACEMENT,
