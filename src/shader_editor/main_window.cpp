@@ -323,21 +323,23 @@ cse::InterfaceEventArray cse::MainWindow::run_gui_menu_bar() const
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Debug")) {
-			events.push(InterfaceEventType::IGNORE_INPUT_EVENTS_THIS_FRAME);
+		if (enable_debug_menu) {
+			if (ImGui::BeginMenu("Debug")) {
+				events.push(InterfaceEventType::IGNORE_INPUT_EVENTS_THIS_FRAME);
 
-			if (ImGui::MenuItem("Reload Graph (with assert)", nullptr, nullptr)) {
-				events.push(InterfaceEventType::RELOAD_GRAPH);
+				if (ImGui::MenuItem("Reload Graph (with assert)", nullptr, nullptr)) {
+					events.push(InterfaceEventType::RELOAD_GRAPH);
+				}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Debug Window...", nullptr, nullptr)) {
+					events.push(InterfaceEventType::WINDOW_SHOW_DEBUG);
+				}
+				ImGui::Separator();
+				if (ImGui::MenuItem("ImGui Demo...", nullptr, nullptr)) {
+					events.push(InterfaceEventType::WINDOW_SHOW_DEMO);
+				}
+				ImGui::EndMenu();
 			}
-			ImGui::Separator();
-			if (ImGui::MenuItem("Debug Window...", nullptr, nullptr)) {
-				events.push(InterfaceEventType::WINDOW_SHOW_DEBUG);
-			}
-			ImGui::Separator();
-			if (ImGui::MenuItem("ImGui Demo...", nullptr, nullptr)) {
-				events.push(InterfaceEventType::WINDOW_SHOW_DEMO);
-			}
-			ImGui::EndMenu();
 		}
 
 		ImGui::EndMainMenuBar();
@@ -403,6 +405,10 @@ cse::InterfaceEventArray cse::MainWindow::process_event(const InputEvent& event)
 		const auto details{ event.details_key().get() };
 		const bool press_or_repeat{ details.action == GLFW_PRESS || details.action == GLFW_REPEAT };
 		const bool mod_ctrl{ static_cast<bool>(details.mods & GLFW_MOD_CONTROL) };
+		if (details.key == GLFW_KEY_F12 && press_or_repeat) {
+			const InterfaceEvent debug_event{ InterfaceEventType::ENABLE_DEBUG };
+			new_events.push(debug_event);
+		}
 		if (details.key == GLFW_KEY_LEFT && press_or_repeat) {
 			const InterfaceEvent pan_event{ InterfaceEventType::PAN_VIEW, Int2Details(csc::Int2(-1 * GRID_PAN_DISTANCE, 0)) };
 			new_events.push(pan_event);
@@ -574,6 +580,9 @@ void cse::MainWindow::do_event(const InterfaceEvent& event)
 	else {
 		// No target subwindow, this is for the main window to handle directly
 		switch (event.type()) {
+			case InterfaceEventType::ENABLE_DEBUG:
+				enable_debug_menu = true;
+				break;
 			case InterfaceEventType::QUIT:
 				quit_requested = true;
 				break;

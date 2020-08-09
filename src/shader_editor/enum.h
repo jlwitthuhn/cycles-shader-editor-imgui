@@ -16,6 +16,7 @@ namespace cse {
 
 	enum class InterfaceEventType {
 		// Main window
+		ENABLE_DEBUG,
 		QUIT,
 		SAVE_TO_MAX,
 		SAVE_TO_FILE,

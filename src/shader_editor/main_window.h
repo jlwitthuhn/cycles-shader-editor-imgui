@@ -115,6 +115,8 @@ namespace cse {
 		// Not worth adding right now
 		boost::optional<ModalWindow> modal_window;
 
+		bool enable_debug_menu{ false };
+
 		// Frame-specific data below
 		bool should_do_undo_push;
 		bool process_input_events;
