@@ -109,6 +109,8 @@ namespace csg {
 		bool operator!=(const Graph& other) const { return (operator==(other) == false); }
 
 	private:
+		bool contains_cycle() const;
+
 		std::list<std::shared_ptr<Node>> _nodes;
 		std::list<Connection> _connections;
 
