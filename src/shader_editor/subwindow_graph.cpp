@@ -410,9 +410,13 @@ cse::InterfaceEventArray cse::GraphSubwindow::process_event(const InputEvent& ev
 					}
 					else if (node_id) {
 						if (slot) {
-							// Select the slot
-							const InterfaceEvent slot_event{ InterfaceEventType::SELECT_SLOT, *slot, boost::none };
-							new_events.push(slot_event);
+							// Check if the slot has a value
+							// Slots with no value are unselectable
+							if (the_graph->get_slot_value(*slot)) {
+								// Select the slot
+								const InterfaceEvent slot_event{ InterfaceEventType::SELECT_SLOT, *slot, boost::none };
+								new_events.push(slot_event);
+							}
 						}
 
 						// Select the node
