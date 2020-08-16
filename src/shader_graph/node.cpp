@@ -252,7 +252,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Reflection", "reflection", SlotDirection::OUTPUT, SlotType::VECTOR });
 		break;
 	case NodeType::VALUE:
-		_slots.push_back(Slot{ "Value", "value", SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Value", "value", SlotDirection::OUTPUT, SlotType::FLOAT });
 		_slots.push_back(Slot{ "Value", "value", FloatSlotValue{ 0.0f,  -FLT_MAX, FLT_MAX } });
 		break;
 	case NodeType::WIREFRAME:
