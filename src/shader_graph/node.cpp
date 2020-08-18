@@ -94,16 +94,16 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "V",     "v",     FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
 		break;
 	case NodeType::COMBINE_RGB:
-		_slots.push_back(Slot{ "Color", "color", SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Image", "image", SlotDirection::OUTPUT, SlotType::COLOR });
 		_slots.push_back(Slot{ "R",     "r",     FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
 		_slots.push_back(Slot{ "G",     "g",     FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
 		_slots.push_back(Slot{ "B",     "b",     FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
 		break;
 	case NodeType::COMBINE_XYZ:
-		_slots.push_back(Slot{ "Color", "color", SlotDirection::OUTPUT, SlotType::COLOR });
-		_slots.push_back(Slot{ "X",     "x",     FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Y",     "y",     FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Z",     "z",     FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Vector", "vector", SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "X",      "x",      FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Y",      "y",      FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Z",      "z",      FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
 		break;
 	case NodeType::MAP_RANGE:
 		_slots.push_back(Slot{ "Result",   "result",   SlotDirection::OUTPUT, SlotType::FLOAT });
