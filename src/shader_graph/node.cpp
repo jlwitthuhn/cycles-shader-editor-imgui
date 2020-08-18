@@ -181,7 +181,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 	case NodeType::BEVEL:
 		_slots.push_back(Slot{ "Normal",  "normal",  SlotDirection::OUTPUT, SlotType::VECTOR });
 		_slots.push_back(Slot{ "Samples", "samples", IntSlotValue{ 4,  2, 16 } });
-		_slots.push_back(Slot{ "Radius",  "radius",  FloatSlotValue{ 0.5f, 0.5f, 0.5f } });
+		_slots.push_back(Slot{ "Radius",  "radius",  FloatSlotValue{ 0.5f, 0.0f, FLT_MAX } });
 		_slots.push_back(Slot{ "Normal",  "normal",  SlotDirection::INPUT, SlotType::VECTOR });
 		break;
 	case NodeType::CAMERA_DATA:
