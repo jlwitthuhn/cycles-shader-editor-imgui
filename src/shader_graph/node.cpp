@@ -137,7 +137,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "R",     "r",     SlotDirection::OUTPUT, SlotType::FLOAT });
 		_slots.push_back(Slot{ "G",     "g",     SlotDirection::OUTPUT, SlotType::FLOAT });
 		_slots.push_back(Slot{ "B",     "b",     SlotDirection::OUTPUT, SlotType::FLOAT });
-		_slots.push_back(Slot{ "Image", "image", ColorSlotValue{ csc::Float3{ 0.9f, 0.9f, 0.9f} } });
+		_slots.push_back(Slot{ "Image", "color", ColorSlotValue{ csc::Float3{ 0.9f, 0.9f, 0.9f} } });
 		break;
 	case NodeType::SEPARATE_XYZ:
 		_slots.push_back(Slot{ "X",      "x",      SlotDirection::OUTPUT, SlotType::FLOAT });
