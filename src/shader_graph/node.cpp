@@ -496,7 +496,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Vector",     "vector",     SlotDirection::INPUT, SlotType::VECTOR });
 		_slots.push_back(Slot{ "W",          "w",          FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
 		_slots.push_back(Slot{ "Scale",      "scale",      FloatSlotValue{ 5.0f, -FLT_MAX, FLT_MAX } });
-		_slots.push_back(Slot{ "Detail",     "Detail",     FloatSlotValue{ 2.0f, 0.0f, 16.0f } });
+		_slots.push_back(Slot{ "Detail",     "detail",     FloatSlotValue{ 2.0f, 0.0f, 16.0f } });
 		_slots.push_back(Slot{ "Dimension",  "dimension",  FloatSlotValue{ 2.0f, 0.0f, FLT_MAX } });
 		_slots.push_back(Slot{ "Lacunarity", "lacunarity", FloatSlotValue{ 2.0f, 0.0f, FLT_MAX } });
 		_slots.push_back(Slot{ "Offset",     "offset",     FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
@@ -532,7 +532,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Fac",              "fac",              SlotDirection::OUTPUT, SlotType::FLOAT });
 		_slots.push_back(Slot{ "Type",             "type",             EnumSlotValue{ WaveTexType::BANDS } });
 		_slots.push_back(Slot{ "Direction",        "direction",        EnumSlotValue{ WaveTexDirection::X } });
-		_slots.push_back(Slot{ "Sine",             "sine",             EnumSlotValue{ WaveTexProfile::SINE } });
+		_slots.push_back(Slot{ "Profile",          "profile",          EnumSlotValue{ WaveTexProfile::SINE } });
 		_slots.push_back(Slot{ "Vector",           "vector",           SlotDirection::INPUT, SlotType::VECTOR });
 		_slots.push_back(Slot{ "Scale",            "scale",            FloatSlotValue{ 5.0f, -FLT_MAX, FLT_MAX } });
 		_slots.push_back(Slot{ "Distortion",       "distortion",       FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
@@ -544,7 +544,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 	case NodeType::WHITE_NOISE_TEX:
 		_slots.push_back(Slot{ "Value",      "value",      SlotDirection::OUTPUT, SlotType::FLOAT });
 		_slots.push_back(Slot{ "Color",      "color",      SlotDirection::OUTPUT, SlotType::COLOR });
-		_slots.push_back(Slot{ "Dimensions", "dimensions", EnumSlotValue{ VoronoiTexDimensions::THREE } });
+		_slots.push_back(Slot{ "Dimensions", "dimensions", EnumSlotValue{ WhiteNoiseTexDimensions::THREE } });
 		_slots.push_back(Slot{ "Vector",     "vector",     SlotDirection::INPUT, SlotType::VECTOR });
 		_slots.push_back(Slot{ "W",          "w",          FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
 		break;
@@ -625,8 +625,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		break;
 	default:
 		// Uncomment the below assert once all node types have been implemented
-		//assert(false);
-		;
+		assert(false);
 	}
 	roll_id();
 }
