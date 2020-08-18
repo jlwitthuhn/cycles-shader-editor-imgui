@@ -199,17 +199,7 @@ bool csg::Graph::add_connection(const SlotId source, const SlotId dest)
 	boost::optional<Connection> removed_connection{ remove_connection(dest) };
 	_connections.push_back(Connection{ source, dest });
 
-	// If this change made the graph contain a cycle, roll back graph to previous state
-	if (contains_cycle()) {
-		_connections.pop_back();
-		if (removed_connection) {
-			_connections.push_back(*removed_connection);
-		}
-		return false;
-	}
-	else {
-		return true;
-	}
+	return true;
 }
 
 boost::optional<csg::Connection> csg::Graph::remove_connection(const SlotId dest)
@@ -343,40 +333,4 @@ bool csg::Graph::operator==(const Graph& other) const
 	}
 
 	return true;
-}
-
-bool csg::Graph::contains_cycle() const
-{
-	// For each node, follow the graph and record visited nodes
-	// If a visited node reappears, then a cycle exists
-	std::set<NodeId> good_nodes;
-	for (const std::shared_ptr<Node> root_node : _nodes) {
-		std::set<NodeId> visited_nodes;
-		std::list<NodeId> pending_nodes;
-		pending_nodes.push_back(root_node->id());
-		while (pending_nodes.size() > 0) {
-			const NodeId this_node_id{ pending_nodes.front() };
-			pending_nodes.pop_front();
-			if (good_nodes.count(this_node_id)) {
-				// This node is known to not be part of a cycle
-				// No need to search down this path again
-				continue;
-			}
-			if (visited_nodes.count(this_node_id)) {
-				// This node has been visited before, a cycle exists
-				return true;
-			}
-			for (const Connection this_conn : _connections) {
-				if (this_conn.source().node_id() == this_node_id) {
-					pending_nodes.push_back(this_conn.dest().node_id());
-				}
-			}
-			visited_nodes.insert(this_node_id);
-		}
-
-		// The test has succeeded for this root node, mark every visited node as good
-		good_nodes.insert(visited_nodes.begin(), visited_nodes.end());
-	}
-
-	return false;
 }
