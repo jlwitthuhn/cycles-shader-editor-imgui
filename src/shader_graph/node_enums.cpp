@@ -101,6 +101,13 @@ boost::optional<csg::NodeEnumInfo> csg::NodeEnumInfo::from(const NodeMetaEnum me
 	}
 }
 
+csg::NodeEnumInfo csg::NodeEnumInfo::from_assert(const NodeMetaEnum meta_enum)
+{
+	const auto result{ from(meta_enum) };
+	assert(result.has_value());
+	return *result;
+}
+
 boost::optional<csg::NodeEnumOptionInfo> csg::NodeEnumOptionInfo::from(NodeMetaEnum meta_enum, size_t option)
 {
 	const boost::optional<NodeEnumInfo> enum_info{ NodeEnumInfo::from(meta_enum) };

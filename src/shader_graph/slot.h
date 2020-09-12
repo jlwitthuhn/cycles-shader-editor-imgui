@@ -66,46 +66,7 @@ namespace csg {
 
 	class EnumSlotValue {
 	public:
-		// Use an explicit constructor for each available enum
-		// Color
-		EnumSlotValue(MixRGBType initial) :                     EnumSlotValue(NodeMetaEnum::MIX_RGB_TYPE, initial) {}
-		// Converter
-		EnumSlotValue(ClampType initial) :                      EnumSlotValue(NodeMetaEnum::CLAMP_TYPE, initial) {}
-		EnumSlotValue(MapRangeType initial) :                   EnumSlotValue(NodeMetaEnum::MAP_RANGE_TYPE, initial) {}
-		EnumSlotValue(MathType initial) :                       EnumSlotValue(NodeMetaEnum::MATH_TYPE, initial) {}
-		EnumSlotValue(VectorMathType initial) :                 EnumSlotValue(NodeMetaEnum::VECTOR_MATH_TYPE, initial) {}
-		// Input
-		EnumSlotValue(TangentDirection initial) :               EnumSlotValue(NodeMetaEnum::TANGENT_DIRECTION, initial) {}
-		EnumSlotValue(TangentAxis initial) :                    EnumSlotValue(NodeMetaEnum::TANGENT_AXIS, initial) {}
-		// Shader
-		EnumSlotValue(AnisotropicDistribution initial) :        EnumSlotValue(NodeMetaEnum::ANISOTROPIC_DISTRIBUTION, initial) {}
-		EnumSlotValue(GlassDistribution initial) :              EnumSlotValue(NodeMetaEnum::GLASS_DISTRIBUTION, initial) {}
-		EnumSlotValue(GlossyDistribution initial) :             EnumSlotValue(NodeMetaEnum::GLOSSY_DISTRIBUTION, initial) {}
-		EnumSlotValue(HairComponent initial) :                  EnumSlotValue(NodeMetaEnum::HAIR_COMPONENT, initial) {}
-		EnumSlotValue(PrincipledBSDFDistribution initial) :     EnumSlotValue(NodeMetaEnum::PRINCIPLED_BSDF_DISTRIBUTION, initial) {}
-		EnumSlotValue(PrincipledBSDFSubsurfaceMethod initial) : EnumSlotValue(NodeMetaEnum::PRINCIPLED_BSDF_SSS, initial) {}
-		EnumSlotValue(PrincipledHairColoring initial) :         EnumSlotValue(NodeMetaEnum::PRINCIPLED_HAIR_COLORING, initial) {}
-		EnumSlotValue(RefractionDistribution initial) :         EnumSlotValue(NodeMetaEnum::REFRACTION_DISTRIBUTION, initial) {}
-		EnumSlotValue(SubsurfaceScatterFalloff initial) :       EnumSlotValue(NodeMetaEnum::SSS_FALLOFF, initial) {}
-		EnumSlotValue(ToonComponent initial) :                  EnumSlotValue(NodeMetaEnum::TOON_COMPONENT, initial) {}
-		// Texture
-		EnumSlotValue(MaxTexmapPrecision initial) :             EnumSlotValue(NodeMetaEnum::MAX_TEXMAP_PRECISION, initial) {}
-		EnumSlotValue(GradientTexType initial) :                EnumSlotValue(NodeMetaEnum::GRADIENT_TEX_TYPE, initial) {}
-		EnumSlotValue(MusgraveTexDimensions initial) :          EnumSlotValue(NodeMetaEnum::MUSGRAVE_TEX_DIMENSIONS, initial) {}
-		EnumSlotValue(MusgraveTexType initial) :                EnumSlotValue(NodeMetaEnum::MUSGRAVE_TEX_TYPE, initial) {}
-		EnumSlotValue(NoiseTexDimensions initial) :             EnumSlotValue(NodeMetaEnum::NOISE_TEX_DIMENSIONS, initial) {}
-		EnumSlotValue(VoronoiTexDimensions initial) :           EnumSlotValue(NodeMetaEnum::VORONOI_TEX_DIMENSIONS, initial) {}
-		EnumSlotValue(WaveTexType initial) :                    EnumSlotValue(NodeMetaEnum::WAVE_TEX_TYPE, initial) {}
-		EnumSlotValue(WaveTexDirection initial) :               EnumSlotValue(NodeMetaEnum::WAVE_TEX_DIRECTION, initial) {}
-		EnumSlotValue(WaveTexProfile initial) :                 EnumSlotValue(NodeMetaEnum::WAVE_TEX_PROFILE, initial) {}
-		EnumSlotValue(WhiteNoiseTexDimensions initial) :        EnumSlotValue(NodeMetaEnum::WHITE_NOISE_TEX_DIMENSIONS, initial) {}
-		// Vector
-		EnumSlotValue(DisplacementSpace initial) :              EnumSlotValue(NodeMetaEnum::DISPLACEMENT_SPACE, initial) {}
-		EnumSlotValue(VectorMappingType initial) :              EnumSlotValue(NodeMetaEnum::VECTOR_MAPPING_TYPE, initial) {}
-		EnumSlotValue(NormalMapSpace initial) :                 EnumSlotValue(NodeMetaEnum::NORMAL_MAP_SPACE, initial) {}
-		EnumSlotValue(VectorDisplacementSpace initial) :        EnumSlotValue(NodeMetaEnum::VECTOR_DISPLACEMENT_SPACE, initial) {}
-		EnumSlotValue(VectorTransformType initial) :            EnumSlotValue(NodeMetaEnum::VECTOR_TRANSFORM_TYPE, initial) {}
-		EnumSlotValue(VectorTransformSpace initial) :           EnumSlotValue(NodeMetaEnum::VECTOR_TRANSFORM_SPACE, initial) {}
+		template <typename T> EnumSlotValue(T initial) : EnumSlotValue(NodeEnumInfo::from(initial).meta_enum(), initial) {}
 
 		NodeMetaEnum get_meta() const { return meta_enum; }
 		size_t get() const { return value; }

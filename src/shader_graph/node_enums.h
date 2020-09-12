@@ -365,11 +365,45 @@ namespace csg {
 	class NodeEnumInfo {
 	public:
 		static boost::optional<NodeEnumInfo> from(NodeMetaEnum meta_enum);
+		static NodeEnumInfo from(MixRGBType) { return from_assert(NodeMetaEnum::MIX_RGB_TYPE); }
+		static NodeEnumInfo from(ClampType) { return from_assert(NodeMetaEnum::CLAMP_TYPE); }
+		static NodeEnumInfo from(MapRangeType) { return from_assert(NodeMetaEnum::MAP_RANGE_TYPE); }
+		static NodeEnumInfo from(MathType) { return from_assert(NodeMetaEnum::MATH_TYPE); }
+		static NodeEnumInfo from(VectorMathType) { return from_assert(NodeMetaEnum::VECTOR_MATH_TYPE); }
+		static NodeEnumInfo from(TangentDirection) { return from_assert(NodeMetaEnum::TANGENT_DIRECTION); }
+		static NodeEnumInfo from(TangentAxis) { return from_assert(NodeMetaEnum::TANGENT_AXIS); }
+		static NodeEnumInfo from(AnisotropicDistribution) { return from_assert(NodeMetaEnum::ANISOTROPIC_DISTRIBUTION); }
+		static NodeEnumInfo from(GlassDistribution) { return from_assert(NodeMetaEnum::GLASS_DISTRIBUTION); }
+		static NodeEnumInfo from(GlossyDistribution) { return from_assert(NodeMetaEnum::GLOSSY_DISTRIBUTION); }
+		static NodeEnumInfo from(HairComponent) { return from_assert(NodeMetaEnum::HAIR_COMPONENT); }
+		static NodeEnumInfo from(PrincipledBSDFDistribution) { return from_assert(NodeMetaEnum::PRINCIPLED_BSDF_DISTRIBUTION); }
+		static NodeEnumInfo from(PrincipledBSDFSubsurfaceMethod) { return from_assert(NodeMetaEnum::PRINCIPLED_BSDF_SSS); }
+		static NodeEnumInfo from(PrincipledHairColoring) { return from_assert(NodeMetaEnum::PRINCIPLED_HAIR_COLORING); }
+		static NodeEnumInfo from(RefractionDistribution) { return from_assert(NodeMetaEnum::REFRACTION_DISTRIBUTION); }
+		static NodeEnumInfo from(SubsurfaceScatterFalloff) { return from_assert(NodeMetaEnum::SSS_FALLOFF); }
+		static NodeEnumInfo from(ToonComponent) { return from_assert(NodeMetaEnum::TOON_COMPONENT); }
+		static NodeEnumInfo from(MaxTexmapPrecision) { return from_assert(NodeMetaEnum::MAX_TEXMAP_PRECISION); }
+		static NodeEnumInfo from(GradientTexType) { return from_assert(NodeMetaEnum::GRADIENT_TEX_TYPE); }
+		static NodeEnumInfo from(MusgraveTexDimensions) { return from_assert(NodeMetaEnum::MUSGRAVE_TEX_DIMENSIONS); }
+		static NodeEnumInfo from(MusgraveTexType) { return from_assert(NodeMetaEnum::MUSGRAVE_TEX_TYPE); }
+		static NodeEnumInfo from(NoiseTexDimensions) { return from_assert(NodeMetaEnum::NOISE_TEX_DIMENSIONS); }
+		static NodeEnumInfo from(VoronoiTexDimensions) { return from_assert(NodeMetaEnum::VORONOI_TEX_DIMENSIONS); }
+		static NodeEnumInfo from(WaveTexType) { return from_assert(NodeMetaEnum::WAVE_TEX_TYPE); }
+		static NodeEnumInfo from(WaveTexDirection) { return from_assert(NodeMetaEnum::WAVE_TEX_DIRECTION); }
+		static NodeEnumInfo from(WaveTexProfile) { return from_assert(NodeMetaEnum::WAVE_TEX_PROFILE); }
+		static NodeEnumInfo from(WhiteNoiseTexDimensions) { return from_assert(NodeMetaEnum::WHITE_NOISE_TEX_DIMENSIONS); }
+		static NodeEnumInfo from(DisplacementSpace) { return from_assert(NodeMetaEnum::DISPLACEMENT_SPACE); }
+		static NodeEnumInfo from(VectorMappingType) { return from_assert(NodeMetaEnum::VECTOR_MAPPING_TYPE); }
+		static NodeEnumInfo from(NormalMapSpace) { return from_assert(NodeMetaEnum::NORMAL_MAP_SPACE); }
+		static NodeEnumInfo from(VectorDisplacementSpace) { return from_assert(NodeMetaEnum::VECTOR_DISPLACEMENT_SPACE); }
+		static NodeEnumInfo from(VectorTransformType) { return from_assert(NodeMetaEnum::VECTOR_TRANSFORM_TYPE); }
+		static NodeEnumInfo from(VectorTransformSpace) { return from_assert(NodeMetaEnum::VECTOR_TRANSFORM_SPACE); }
 
 		NodeMetaEnum meta_enum() const { return _meta_enum; }
 		size_t count() const { return _count; }
 
 	private:
+		static NodeEnumInfo from_assert(NodeMetaEnum meta_enum);
 		NodeEnumInfo(NodeMetaEnum meta_enum, size_t count) : _meta_enum{ meta_enum }, _count{ count } {}
 
 		NodeMetaEnum _meta_enum;
