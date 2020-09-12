@@ -30,6 +30,7 @@ namespace csg {
 		RGB_CURVES,
 		// Converter
 		BLACKBODY,
+		CLAMP,
 		COLOR_RAMP,
 		COMBINE_HSV,
 		COMBINE_RGB,

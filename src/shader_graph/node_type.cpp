@@ -58,6 +58,8 @@ boost::optional<csg::NodeTypeInfo> csg::NodeTypeInfo::from(const NodeType type)
 		// Converter
 		case NodeType::BLACKBODY:
 			return NodeTypeInfo{ type, NodeCategory::CONVERTER, "Blackbody",          "blackbody" };
+		case NodeType::CLAMP:
+			return NodeTypeInfo{ type, NodeCategory::CONVERTER, "Clamp",              "clamp" };
 		case NodeType::COLOR_RAMP:
 			return NodeTypeInfo{ type, NodeCategory::CONVERTER, "Color Ramp",         "color_ramp" };
 		case NodeType::COMBINE_HSV:

@@ -9,6 +9,7 @@ namespace csg {
 		// Color
 		MIX_RGB_TYPE,
 		// Converter
+		CLAMP_TYPE,
 		MAP_RANGE_TYPE,
 		MATH_TYPE,
 		VECTOR_MATH_TYPE,
@@ -67,6 +68,12 @@ namespace csg {
 		SATURATION,
 		COLOR,
 		VALUE,
+		COUNT
+	};
+
+	enum class ClampType {
+		MINMAX,
+		RANGE,
 		COUNT
 	};
 

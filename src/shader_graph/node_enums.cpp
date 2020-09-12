@@ -28,6 +28,8 @@ boost::optional<csg::NodeEnumInfo> csg::NodeEnumInfo::from(const NodeMetaEnum me
 	case NodeMetaEnum::MIX_RGB_TYPE:
 		return NodeEnumInfo{ meta_enum, get_count<MixRGBType>() };
 	// Converter
+	case NodeMetaEnum::CLAMP_TYPE:
+		return NodeEnumInfo{ meta_enum, get_count<ClampType>() };
 	case NodeMetaEnum::MAP_RANGE_TYPE:
 		return NodeEnumInfo{ meta_enum, get_count<MapRangeType>() };
 	case NodeMetaEnum::MATH_TYPE:
@@ -158,14 +160,29 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 	//////
 	// Converter
 	//////
+	case NodeMetaEnum::CLAMP_TYPE:
+	{
+		const auto opt_enum{ as_enum<ClampType>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(ClampType::MINMAX, "Min Max", "minmax");
+				CASE_PAIR(ClampType::RANGE,  "Range",   "range");
+			default:
+				return std::make_pair("[Unknown Type]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Type]", "ERROR");
+		}
+	}
 	case NodeMetaEnum::MAP_RANGE_TYPE:
 	{
 		const auto opt_enum{ as_enum<MapRangeType>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(MapRangeType::LINEAR, "Linear", "linear");
-				CASE_PAIR(MapRangeType::STEPPED, "Stepped", "stepped");
-				CASE_PAIR(MapRangeType::SMOOTH_STEP, "Smooth Step", "smooth_step");
+				CASE_PAIR(MapRangeType::LINEAR,        "Linear",        "linear");
+				CASE_PAIR(MapRangeType::STEPPED,       "Stepped",       "stepped");
+				CASE_PAIR(MapRangeType::SMOOTH_STEP,   "Smooth Step",   "smooth_step");
 				CASE_PAIR(MapRangeType::SMOOTHER_STEP, "Smoother Step", "smoother_step");
 			default:
 				return std::make_pair("[Unknown Type]", "ERROR");

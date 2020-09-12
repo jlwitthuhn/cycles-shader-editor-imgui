@@ -70,6 +70,7 @@ namespace csg {
 		// Color
 		EnumSlotValue(MixRGBType initial) :                     EnumSlotValue(NodeMetaEnum::MIX_RGB_TYPE, initial) {}
 		// Converter
+		EnumSlotValue(ClampType initial) :                      EnumSlotValue(NodeMetaEnum::CLAMP_TYPE, initial) {}
 		EnumSlotValue(MapRangeType initial) :                   EnumSlotValue(NodeMetaEnum::MAP_RANGE_TYPE, initial) {}
 		EnumSlotValue(MathType initial) :                       EnumSlotValue(NodeMetaEnum::MATH_TYPE, initial) {}
 		EnumSlotValue(VectorMathType initial) :                 EnumSlotValue(NodeMetaEnum::VECTOR_MATH_TYPE, initial) {}
