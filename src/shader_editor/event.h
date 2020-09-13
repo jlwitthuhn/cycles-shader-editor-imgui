@@ -16,6 +16,7 @@
 
 #include "shader_core/config.h"
 #include "shader_core/rect.h"
+#include "shader_core/stack_vector.h"
 #include "shader_core/util_enum.h"
 #include "shader_core/vector.h"
 #include "shader_graph/curves.h"
@@ -457,39 +458,21 @@ namespace cse {
 	template <> ModalRampColorPickShowDetails InterfaceEvent::InterfaceEventDetails::as() const;
 
 	/**
-	 * @brief Iterator used by InterfaceEventArray. 
-	 */
-	class InterfaceEventArrayIterator {
-	public:
-		InterfaceEventArrayIterator(const boost::optional<InterfaceEvent>* ptr) : ptr{ ptr } {}
-
-		inline InterfaceEvent operator*() const { return **ptr; }
-		inline void operator++() { ptr++; }
-		inline bool operator!=(const InterfaceEventArrayIterator& other) const { return ptr != other.ptr; }
-
-	private:
-		const boost::optional<InterfaceEvent>* ptr;
-	};
-
-	/**
 	 * @brief Utility class to allow easy creation of a fixed-size stack-allocated collection of InterfaceEvents
 	 */
 	class InterfaceEventArray {
 	public:
 		static std::atomic_size_t max_used;
 
-		void push(InterfaceEvent event);
-		void push(InterfaceEventArray event_array);
+		void push(const InterfaceEvent& new_event);
+		void push(const InterfaceEventArray& array);
 
-		void clear();
-
-		InterfaceEventArrayIterator begin() const { return InterfaceEventArrayIterator{ data.data() }; }
-		InterfaceEventArrayIterator end() const { return InterfaceEventArrayIterator{ data.data() + occupied }; }
+		csc::StackVectorIterator<InterfaceEvent> begin() const { return storage.begin(); }
+		csc::StackVectorIterator<InterfaceEvent> end() const { return storage.end(); }
 
 	private:
 		void update_usage_info();
 
-		size_t occupied{ 0 };
-		std::array<boost::optional<InterfaceEvent>, INTERFACE_EVENT_ARRAY_SIZE> data;
+		csc::StackVector<InterfaceEvent, 6> storage;
 	};
 }

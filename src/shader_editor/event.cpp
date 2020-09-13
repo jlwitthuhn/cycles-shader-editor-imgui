@@ -429,37 +429,28 @@ template <> cse::ModalRampColorPickShowDetails cse::InterfaceEvent::InterfaceEve
 	return modal_ramp_color_pick_show;
 }
 
-void cse::InterfaceEventArray::push(const InterfaceEvent event)
+void cse::InterfaceEventArray::push(const InterfaceEvent& new_event)
 {
-	if (occupied >= data.size()) {
-		assert(false);
-	}
-	data[occupied] = event;
-	occupied++;
+	storage.push(new_event);
 	update_usage_info();
 }
 
-void cse::InterfaceEventArray::push(const InterfaceEventArray event_array)
+void cse::InterfaceEventArray::push(const InterfaceEventArray& array)
 {
-	for (const InterfaceEvent event : event_array) {
-		push(event);
+	for (const InterfaceEvent& this_event : array) {
+		push(this_event);
 	}
-}
-
-void cse::InterfaceEventArray::clear()
-{
-	data.fill(boost::none);
-	occupied = 0;
 }
 
 std::atomic_size_t cse::InterfaceEventArray::max_used{ static_cast<size_t>(0) };
 
 void cse::InterfaceEventArray::update_usage_info()
 {
-	while (occupied > max_used.load()) {
+	const size_t vec_size{ storage.size() };
+	while (vec_size > max_used.load()) {
 		size_t current = max_used.load();
-		if (occupied > current) {
-			max_used.compare_exchange_strong(current, occupied);
+		if (vec_size > current) {
+			max_used.compare_exchange_strong(current, vec_size);
 		}
 	}
 }
