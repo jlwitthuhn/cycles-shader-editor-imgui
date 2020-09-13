@@ -73,7 +73,6 @@ namespace cse {
 		SELECT_NONE,
 		SELECT_INVERSE,
 		// Node list window
-		SELECT_NODE_CATEGORY,
 		SELECT_NODE_TYPE,
 		SELECT_NODE_TYPE_NONE,
 		// Param editor window

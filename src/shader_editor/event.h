@@ -116,7 +116,6 @@ namespace cse {
 	typedef SimpleDetails<CurveEditorTab,    InterfaceEventType::CURVE_EDIT_SET_TAB>      CurveEditorTabDetails;
 	typedef SimpleDetails<SelectMode,        InterfaceEventType::BOX_SELECT_END>          SelectModeDetails;
 	typedef SimpleDetails<SubwindowId,       InterfaceEventType::SUBWINDOW_IS_HOVERED>    SubwindowIdDetails;
-	typedef SimpleDetails<csg::NodeCategory, InterfaceEventType::SELECT_NODE_CATEGORY>    NodeCategoryDetails;
 	typedef SimpleDetails<csg::NodeType,     InterfaceEventType::SELECT_NODE_TYPE>        NodeTypeDetails;
 	typedef SimpleDetails<csg::SlotId,
 		InterfaceEventType::CONNECTION_BEGIN,
@@ -319,7 +318,6 @@ namespace cse {
 		InterfaceEvent(InterfaceEventType type, const CurveEditorTabDetails& curve_tab_details);
 		InterfaceEvent(InterfaceEventType type, const SelectModeDetails& select_mode_details, boost::optional<SubwindowId> target);
 		InterfaceEvent(InterfaceEventType type, const SubwindowIdDetails& subwindow_is_hovered_details, boost::optional<SubwindowId> target);
-		InterfaceEvent(InterfaceEventType type, const NodeCategoryDetails& node_category_details);
 		InterfaceEvent(InterfaceEventType type, const NodeTypeDetails& node_type_details);
 		InterfaceEvent(InterfaceEventType type, const SlotIdDetails& slot_id_details, boost::optional<SubwindowId> target);
 		InterfaceEvent(InterfaceEventType type, const Float3Details& float3_details, boost::optional<SubwindowId> target);
@@ -363,7 +361,6 @@ namespace cse {
 			InterfaceEventDetails(const CurveEditorTabDetails& details) : curve_editor_tab{ details } {}
 			InterfaceEventDetails(const SelectModeDetails& details) : select_mode{ details } {}
 			InterfaceEventDetails(const SubwindowIdDetails& details) : subwindow_id{ details } {}
-			InterfaceEventDetails(const NodeCategoryDetails& details) : node_category{ details } {}
 			InterfaceEventDetails(const NodeTypeDetails& details) : node_type{ details } {}
 			InterfaceEventDetails(const SlotIdDetails& details) : slot_id{ details } {}
 
@@ -395,7 +392,6 @@ namespace cse {
 			CurveEditorTabDetails curve_editor_tab;
 			SelectModeDetails select_mode;
 			SubwindowIdDetails subwindow_id;
-			NodeCategoryDetails node_category;
 			NodeTypeDetails node_type;
 			SlotIdDetails slot_id;
 
@@ -432,7 +428,6 @@ namespace cse {
 	template <> CurveEditorTabDetails InterfaceEvent::InterfaceEventDetails::as() const;
 	template <> SelectModeDetails InterfaceEvent::InterfaceEventDetails::as() const;
 	template <> SubwindowIdDetails InterfaceEvent::InterfaceEventDetails::as() const;
-	template <> NodeCategoryDetails InterfaceEvent::InterfaceEventDetails::as() const;
 	template <> NodeTypeDetails InterfaceEvent::InterfaceEventDetails::as() const;
 	template <> SlotIdDetails InterfaceEvent::InterfaceEventDetails::as() const;
 

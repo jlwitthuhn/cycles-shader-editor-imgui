@@ -123,14 +123,6 @@ cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const Subwind
 	assert(SubwindowIdDetails::matches(_type));
 }
 
-cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const NodeCategoryDetails& node_category_details) :
-	_type{ type },
-	_target_subwindow{ SubwindowId::NODE_LIST },
-	details{ node_category_details }
-{
-	assert(NodeCategoryDetails::matches(_type));
-}
-
 cse::InterfaceEvent::InterfaceEvent(const InterfaceEventType type, const NodeTypeDetails& node_type_details) :
 	_type{ type },
 	_target_subwindow{ SubwindowId::NODE_LIST },
@@ -317,11 +309,6 @@ template <> cse::SelectModeDetails cse::InterfaceEvent::InterfaceEventDetails::a
 template <> cse::SubwindowIdDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
 {
 	return subwindow_id;
-}
-
-template <> cse::NodeCategoryDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
-{
-	return node_category;
 }
 
 template <> cse::NodeTypeDetails cse::InterfaceEvent::InterfaceEventDetails::as() const
