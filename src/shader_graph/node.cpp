@@ -643,7 +643,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position, const NodeId id) 
 	_id = id;
 }
 
-boost::optional<size_t> csg::Node::slot_index(const SlotDirection dir, const std::string& slot_name) const
+boost::optional<size_t> csg::Node::slot_index(const SlotDirection dir, const boost::string_view& slot_name) const
 {
 	for (size_t i = 0; i < _slots.size(); i++)
 	{
@@ -662,7 +662,7 @@ boost::optional<csg::Slot> csg::Node::slot(const size_t index) const
 	return _slots.at(index);
 }
 
-boost::optional<csg::Slot> csg::Node::slot(const SlotDirection dir, const std::string& slot_name) const
+boost::optional<csg::Slot> csg::Node::slot(const SlotDirection dir, const boost::string_view& slot_name) const
 {
 	const boost::optional<size_t> opt_index{ slot_index(dir, slot_name) };
 	if (opt_index) {
@@ -684,7 +684,7 @@ boost::optional<csg::SlotValue> csg::Node::slot_value(const size_t index) const
 	}
 }
 
-boost::optional <csg::SlotValue> csg::Node::slot_value(const std::string& slot_name) const
+boost::optional <csg::SlotValue> csg::Node::slot_value(const boost::string_view& slot_name) const
 {
 	const boost::optional<size_t> opt_index{ slot_index(csg::SlotDirection::INPUT, slot_name) };
 	if (opt_index) {

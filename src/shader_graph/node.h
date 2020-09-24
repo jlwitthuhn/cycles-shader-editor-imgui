@@ -11,6 +11,7 @@
 #include <vector>
 
 #include <boost/optional.hpp>
+#include <boost/utility/string_view.hpp>
 
 #include "shader_core/vector.h"
 
@@ -32,11 +33,11 @@ namespace csg {
 		NodeType type() const { return _type; }
 		const std::vector<Slot>& slots() const { return _slots; }
 		
-		boost::optional<size_t> slot_index(SlotDirection dir, const std::string& slot_name) const;
+		boost::optional<size_t> slot_index(SlotDirection dir, const boost::string_view& slot_name) const;
 		boost::optional<Slot> slot(size_t index) const;
-		boost::optional<Slot> slot(SlotDirection dir, const std::string& slot_name) const;
+		boost::optional<Slot> slot(SlotDirection dir, const boost::string_view& slot_name) const;
 		boost::optional<SlotValue> slot_value(size_t index) const;
-		boost::optional<SlotValue> slot_value(const std::string& slot_name) const;
+		boost::optional<SlotValue> slot_value(const boost::string_view& slot_name) const;
 		Slot& slot_ref(size_t index) { return _slots[index]; }
 
 		template <typename T> boost::optional<T> slot_value_as(size_t index) const
