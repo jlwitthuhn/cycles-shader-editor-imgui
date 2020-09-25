@@ -75,6 +75,10 @@ boost::optional<csg::NodeEnumInfo> csg::NodeEnumInfo::from(const NodeMetaEnum me
 		return NodeEnumInfo{ meta_enum, get_count<NoiseTexDimensions>() };
 	case NodeMetaEnum::VORONOI_TEX_DIMENSIONS:
 		return NodeEnumInfo{ meta_enum, get_count<VoronoiTexDimensions>() };
+	case NodeMetaEnum::VORONOI_TEX_FEATURE:
+		return NodeEnumInfo{ meta_enum, get_count<VoronoiTexFeature>() };
+	case NodeMetaEnum::VORONOI_TEX_METRIC:
+		return NodeEnumInfo{ meta_enum, get_count<VoronoiTexMetric>() };
 	case NodeMetaEnum::WAVE_TEX_TYPE:
 		return NodeEnumInfo{ meta_enum, get_count<WaveTexType>() };
 	case NodeMetaEnum::WAVE_TEX_DIRECTION:
@@ -565,10 +569,10 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<NoiseTexDimensions>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(NoiseTexDimensions::ONE, "1D", "1D");
-				CASE_PAIR(NoiseTexDimensions::TWO, "2D", "2D");
+				CASE_PAIR(NoiseTexDimensions::ONE,   "1D", "1D");
+				CASE_PAIR(NoiseTexDimensions::TWO,   "2D", "2D");
 				CASE_PAIR(NoiseTexDimensions::THREE, "3D", "3D");
-				CASE_PAIR(NoiseTexDimensions::FOUR, "4D", "4D");
+				CASE_PAIR(NoiseTexDimensions::FOUR,  "4D", "4D");
 			default:
 				return std::make_pair("[Unknown Dimensions]", "ERROR");
 			}
@@ -582,16 +586,51 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<VoronoiTexDimensions>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(VoronoiTexDimensions::ONE, "1D", "1D");
-				CASE_PAIR(VoronoiTexDimensions::TWO, "2D", "2D");
+				CASE_PAIR(VoronoiTexDimensions::ONE,   "1D", "1D");
+				CASE_PAIR(VoronoiTexDimensions::TWO,   "2D", "2D");
 				CASE_PAIR(VoronoiTexDimensions::THREE, "3D", "3D");
-				CASE_PAIR(VoronoiTexDimensions::FOUR, "4D", "4D");
+				CASE_PAIR(VoronoiTexDimensions::FOUR,  "4D", "4D");
 			default:
 				return std::make_pair("[Unknown Dimensions]", "ERROR");
 			}
 		}
 		else {
 			return std::make_pair("[Bad Dimensions]", "ERROR");
+		}
+	}
+	case NodeMetaEnum::VORONOI_TEX_FEATURE:
+	{
+		const auto opt_enum{ as_enum<VoronoiTexFeature>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(VoronoiTexFeature::F1, "F1", "f1");
+				CASE_PAIR(VoronoiTexFeature::F2, "F2", "f2");
+				CASE_PAIR(VoronoiTexFeature::SMOOTH_F1, "Smooth F1", "smooth_f1");
+				CASE_PAIR(VoronoiTexFeature::DISTANCE_TO_EDGE, "Distance to Edge", "distance_to_edge");
+				CASE_PAIR(VoronoiTexFeature::N_SPHERE_RADIUS, "N-Sphere Radius", "n_sphere_radius");
+			default:
+				return std::make_pair("[Unknown Feature]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Feature]", "ERROR");
+		}
+	}
+	case NodeMetaEnum::VORONOI_TEX_METRIC:
+	{
+		const auto opt_enum{ as_enum<VoronoiTexMetric>(option) };
+		if (opt_enum) {
+			switch (*opt_enum) {
+				CASE_PAIR(VoronoiTexMetric::EUCLIDEAN, "Euclidean", "euclidean");
+				CASE_PAIR(VoronoiTexMetric::MANHATTAN, "Manhattan", "manhattan");
+				CASE_PAIR(VoronoiTexMetric::CHEBYCHEV, "Chebychev", "chebychev");
+				CASE_PAIR(VoronoiTexMetric::MINKOWSKI, "Minkowski", "minkowski");
+			default:
+				return std::make_pair("[Unknown Feature]", "ERROR");
+			}
+		}
+		else {
+			return std::make_pair("[Bad Feature]", "ERROR");
 		}
 	}
 	case NodeMetaEnum::WAVE_TEX_TYPE:

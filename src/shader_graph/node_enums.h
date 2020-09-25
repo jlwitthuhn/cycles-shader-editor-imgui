@@ -34,6 +34,8 @@ namespace csg {
 		MUSGRAVE_TEX_TYPE,
 		NOISE_TEX_DIMENSIONS,
 		VORONOI_TEX_DIMENSIONS,
+		VORONOI_TEX_FEATURE,
+		VORONOI_TEX_METRIC,
 		WAVE_TEX_TYPE,
 		WAVE_TEX_DIRECTION,
 		WAVE_TEX_PROFILE,
@@ -291,6 +293,23 @@ namespace csg {
 		COUNT
 	};
 
+	enum class VoronoiTexFeature {
+		F1,
+		F2,
+		SMOOTH_F1,
+		DISTANCE_TO_EDGE,
+		N_SPHERE_RADIUS,
+		COUNT
+	};
+
+	enum class VoronoiTexMetric {
+		EUCLIDEAN,
+		MANHATTAN,
+		CHEBYCHEV,
+		MINKOWSKI,
+		COUNT
+	};
+
 	enum class WaveTexType {
 		BANDS,
 		RINGS,
@@ -388,6 +407,8 @@ namespace csg {
 		static NodeEnumInfo from(MusgraveTexType) { return from_assert(NodeMetaEnum::MUSGRAVE_TEX_TYPE); }
 		static NodeEnumInfo from(NoiseTexDimensions) { return from_assert(NodeMetaEnum::NOISE_TEX_DIMENSIONS); }
 		static NodeEnumInfo from(VoronoiTexDimensions) { return from_assert(NodeMetaEnum::VORONOI_TEX_DIMENSIONS); }
+		static NodeEnumInfo from(VoronoiTexFeature) { return from_assert(NodeMetaEnum::VORONOI_TEX_FEATURE); }
+		static NodeEnumInfo from(VoronoiTexMetric) { return from_assert(NodeMetaEnum::VORONOI_TEX_METRIC); }
 		static NodeEnumInfo from(WaveTexType) { return from_assert(NodeMetaEnum::WAVE_TEX_TYPE); }
 		static NodeEnumInfo from(WaveTexDirection) { return from_assert(NodeMetaEnum::WAVE_TEX_DIRECTION); }
 		static NodeEnumInfo from(WaveTexProfile) { return from_assert(NodeMetaEnum::WAVE_TEX_PROFILE); }

@@ -527,6 +527,8 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "W",          "w",          SlotDirection::OUTPUT, SlotType::FLOAT });
 		_slots.push_back(Slot{ "Radius",     "radius",     SlotDirection::OUTPUT, SlotType::FLOAT });
 		_slots.push_back(Slot{ "Dimensions", "dimensions", EnumSlotValue{ VoronoiTexDimensions::THREE } });
+		_slots.push_back(Slot{ "Feature",    "feature",    EnumSlotValue{ VoronoiTexFeature::F1 } });
+		_slots.push_back(Slot{ "Metric",     "metric",     EnumSlotValue{ VoronoiTexMetric::EUCLIDEAN } });
 		_slots.push_back(Slot{ "Vector",     "vector",     SlotDirection::INPUT, SlotType::VECTOR });
 		_slots.push_back(Slot{ "W",          "w",          FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
 		_slots.push_back(Slot{ "Scale",      "scale",      FloatSlotValue{ 5.0f, -FLT_MAX, FLT_MAX } });
