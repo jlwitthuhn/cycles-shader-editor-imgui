@@ -126,9 +126,9 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 	case NodeType::MATH:
 		_slots.push_back(Slot{ "Value",  "value",  SlotDirection::OUTPUT, SlotType::FLOAT });
 		_slots.push_back(Slot{ "Type",   "type",   EnumSlotValue{ MathType::ADD } });
-		_slots.push_back(Slot{ "Value1", "value1", FloatSlotValue{ 0.0f,  0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Value2", "value2", FloatSlotValue{ 0.0f,  0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Value3", "value3", FloatSlotValue{ 0.0f,  0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Value1", "value1", FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "Value2", "value2", FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "Value3", "value3", FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
 		break;
 	case NodeType::RGB_TO_BW:
 		_slots.push_back(Slot{ "Val",   "val",   SlotDirection::OUTPUT, SlotType::FLOAT });
