@@ -357,7 +357,7 @@ cse::InterfaceEventArray cse::MainWindow::run_gui_windows() const
 			ImGui::Text("Cycles Shader Editor");
 			ImGui::Text("Created by Jeffrey Witthuhn");
 			ImGui::Separator();
-			ImGui::Text("Source code for this editor is available on Github under the GPLv3 license");
+			ImGui::Text("Source code for this editor is available on Github under the GPLv2 (or later) license");
 			ImGui::Text("https://github.com/jlwitthuhn/cycles-shader-editor-imgui/");
 			ImGui::Separator();
 			ImGui::Text("Part of the Cycles for Max plugin");
