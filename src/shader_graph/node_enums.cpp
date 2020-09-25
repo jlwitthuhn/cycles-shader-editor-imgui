@@ -215,7 +215,7 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 				CASE_PAIR(MathType::ARCSINE,      "Arcsine (1)",            "arcsine");
 				CASE_PAIR(MathType::ARCCOSINE,    "Arccosine (1)",          "arccosine");
 				CASE_PAIR(MathType::ARCTANGENT,   "Arctangent (1)",         "arctangent");
-				CASE_PAIR(MathType::ARCTAN2,      "Arctan2 (1)",            "arctan2");
+				CASE_PAIR(MathType::ARCTAN2,      "Arctan2 (2)",            "arctan2");
 				CASE_PAIR(MathType::SINH,         "Hyperbolic Sine (1)",    "sinh");
 				CASE_PAIR(MathType::COSH,         "Hyperbolic Cosine (1)",  "cosh");
 				CASE_PAIR(MathType::TANH,         "Hyperbolic Tangent (1)", "tanh");
