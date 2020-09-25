@@ -14,7 +14,7 @@ cse::NodeListSubwindow::NodeListSubwindow()
 cse::InterfaceEventArray cse::NodeListSubwindow::run() const
 {
 	InterfaceEventArray events;
-	ImGui::SetNextWindowSizeConstraints(ImVec2{ -1.f, 0.f }, ImVec2{ -1.f, 600.f });
+	ImGui::SetNextWindowSizeConstraints(ImVec2{ 160.f, 0.f }, ImVec2{ 300.f, 600.f });
 	if (ImGui::Begin("Nodes", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
 		constexpr float WINDOW_WIDTH{ 180.0f };
 		for (const auto this_category : csg::NodeCategoryList{}) {
