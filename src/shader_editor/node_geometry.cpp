@@ -15,7 +15,7 @@ cse::NodeGeometry::NodeGeometry(const csg::Node& node) :
 	// Add extra width for some specific nodes
 	switch (node.type()) {
 	case csg::NodeType::PRINCIPLED_BSDF:
-		_size = _size + csc::Float2{ 30.0f, 0.0f };
+		_size = _size + csc::Float2{ 40.0f, 0.0f };
 		break;
 	case csg::NodeType::PRINCIPLED_HAIR:
 		_size = _size + csc::Float2{ 50.0f, 0.0f };
