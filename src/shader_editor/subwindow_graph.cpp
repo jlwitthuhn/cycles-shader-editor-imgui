@@ -22,6 +22,7 @@
 #include "shader_graph/slot.h"
 #include "shader_graph/slot_id.h"
 
+#include "alt_slot_names.h"
 #include "event.h"
 #include "graph_display.h"
 #include "node_geometry.h"
@@ -636,6 +637,8 @@ void cse::GraphSubwindow::draw_nodes(ImDrawList* const draw_list) const
 				// Label
 				{
 					const csc::Float2 label_pos{ next_slot_begin + csc::Float2{ 8.0f, 4.0f } };
+					const boost::string_view slot_disp_name_view{ get_alt_slot_name(*node, slot.disp_name()) };
+					const char* const slot_disp_name{ slot_disp_name_view.data() };
 					std::array<char, 96> label_text;
 					label_text.fill('\0');
 					if (slot.value) {
@@ -643,16 +646,16 @@ void cse::GraphSubwindow::draw_nodes(ImDrawList* const draw_list) const
 							const auto bool_value{ slot.value->as<csg::BoolSlotValue>() };
 							assert(bool_value.has_value());
 							if (bool_value->get()) {
-								snprintf(label_text.data(), label_text.size() - 1, "%s: True", slot.disp_name());
+								snprintf(label_text.data(), label_text.size() - 1, "%s: True", slot_disp_name);
 							}
 							else {
-								snprintf(label_text.data(), label_text.size() - 1, "%s: False", slot.disp_name());
+								snprintf(label_text.data(), label_text.size() - 1, "%s: False", slot_disp_name);
 							}
 						}
 						else if (slot.type() == csg::SlotType::COLOR) {
 							const auto color_value = slot.value->as<csg::ColorSlotValue>();
 							assert(color_value.has_value());
-							snprintf(label_text.data(), label_text.size() - 1, "%s: ", slot.disp_name());
+							snprintf(label_text.data(), label_text.size() - 1, "%s: ", slot_disp_name);
 							const ImVec2 text_size{ ImGui::CalcTextSize(label_text.data()) };
 							const csc::Float2 color_rect_offset{ label_pos + csc::Float2{ text_size.x, 0.0f } };
 							const csc::Float2 color_rect_size{ 24.0f, 14.0f };
@@ -665,7 +668,7 @@ void cse::GraphSubwindow::draw_nodes(ImDrawList* const draw_list) const
 							ImGui::DrawList::AddRectFilled(draw_list, inner_rect, inner_color);
 						}
 						else if (slot.type() == csg::SlotType::ENUM) {
-							snprintf(label_text.data(), label_text.size() - 1, "%s: [Enum]", slot.disp_name());
+							snprintf(label_text.data(), label_text.size() - 1, "%s: [Enum]", slot_disp_name);
 						}
 						else if (slot.type() == csg::SlotType::FLOAT) {
 							const auto float_value = slot.value->as<csg::FloatSlotValue>();
@@ -676,31 +679,31 @@ void cse::GraphSubwindow::draw_nodes(ImDrawList* const draw_list) const
 							pattern_text.fill('\0');
 							snprintf(pattern_text.data(), pattern_text.size() - 1, "%%s: %%.%zuf", float_value->precision());
 							// pattern_text will look like "%s: %.2f"
-							snprintf(label_text.data(), label_text.size() - 1, pattern_text.data(), slot.disp_name(), float_value->get());
+							snprintf(label_text.data(), label_text.size() - 1, pattern_text.data(), slot_disp_name, float_value->get());
 						}
 						else if (slot.type() == csg::SlotType::INT) {
 							const auto int_value{ slot.value->as<csg::IntSlotValue>() };
 							assert(int_value.has_value());
-							snprintf(label_text.data(), label_text.size() - 1, "%s: %d", slot.disp_name(), int_value->get());
+							snprintf(label_text.data(), label_text.size() - 1, "%s: %d", slot_disp_name, int_value->get());
 						}
 						else if (slot.type() == csg::SlotType::VECTOR) {
-							snprintf(label_text.data(), label_text.size() - 1, "%s: [Vec]", slot.disp_name());
+							snprintf(label_text.data(), label_text.size() - 1, "%s: [Vec]", slot_disp_name);
 						}
 						else if (slot.type() == csg::SlotType::CURVE_RGB) {
-							snprintf(label_text.data(), label_text.size() - 1, "%s: [Curves]", slot.disp_name());
+							snprintf(label_text.data(), label_text.size() - 1, "%s: [Curves]", slot_disp_name);
 						}
 						else if (slot.type() == csg::SlotType::CURVE_VECTOR) {
-							snprintf(label_text.data(), label_text.size() - 1, "%s: [Curves]", slot.disp_name());
+							snprintf(label_text.data(), label_text.size() - 1, "%s: [Curves]", slot_disp_name);
 						}
 						else if (slot.type() == csg::SlotType::COLOR_RAMP) {
-							snprintf(label_text.data(), label_text.size() - 1, "%s: [Ramp]", slot.disp_name());
+							snprintf(label_text.data(), label_text.size() - 1, "%s: [Ramp]", slot_disp_name);
 						}
 						else {
-							snprintf(label_text.data(), label_text.size() - 1, "%s: ?", slot.disp_name());
+							snprintf(label_text.data(), label_text.size() - 1, "%s: ?", slot_disp_name);
 						}
 					}
 					else {
-						snprintf(label_text.data(), label_text.size() - 1, "%s", slot.disp_name());
+						snprintf(label_text.data(), label_text.size() - 1, "%s", slot_disp_name);
 					}
 					ImGui::DrawList::AddText(draw_list, label_pos, COLOR_NODE_TEXT, label_text.data());
 				}
