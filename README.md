@@ -23,4 +23,4 @@ Libraries you will need are:
 
 ## License
 
-This project is available under the GPLv3 license. The full text of the license is available in [LICENSE](LICENSE)
+This project is available under the GPLv2 (or later) license. The full text of the license is available in [LICENSE](LICENSE)
