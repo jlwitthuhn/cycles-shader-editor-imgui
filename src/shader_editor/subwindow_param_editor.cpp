@@ -69,6 +69,7 @@ cse::InterfaceEventArray cse::ParamEditorSubwindow::run() const
 		return result;
 	}
 
+	ImGui::SetNextWindowSizeConstraints(ImVec2{ 0.f, 0.f }, ImVec2{ 1000.f, 600.f });
 	if (ImGui::Begin("Parameter Editor", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
 		ImGui::Text("Node Type: %s", type_info.disp_name());
 		ImGui::Text("Param Name: %s", opt_slot->disp_name());
