@@ -236,7 +236,7 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 				CASE_PAIR(MathType::CEIL,         "Ceil (1)",               "ceil");
 				CASE_PAIR(MathType::FRACTION,     "Fraction (1)",           "fraction");
 				CASE_PAIR(MathType::SQRT,         "Square Root (1)",        "sqrt");
-				CASE_PAIR(MathType::INV_SQRT,     "Inverse Sqrt (1)",       "inv_sqrt");
+				CASE_PAIR(MathType::INV_SQRT,     "Inverse Sqrt (1)",       "inverse_sqrt");
 				CASE_PAIR(MathType::SIGN,         "Sign (1)",               "sign");
 				CASE_PAIR(MathType::EXPONENT,     "Exponent (1)",           "exponent");
 				CASE_PAIR(MathType::RADIANS,      "To Radians (1)",         "radians");
