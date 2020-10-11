@@ -193,8 +193,8 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 			switch (*opt_enum) {
 				CASE_PAIR(MapRangeType::LINEAR,        "Linear",        "linear");
 				CASE_PAIR(MapRangeType::STEPPED,       "Stepped",       "stepped");
-				CASE_PAIR(MapRangeType::SMOOTH_STEP,   "Smooth Step",   "smooth_step");
-				CASE_PAIR(MapRangeType::SMOOTHER_STEP, "Smoother Step", "smoother_step");
+				CASE_PAIR(MapRangeType::SMOOTH_STEP,   "Smooth Step",   "smoothstep");
+				CASE_PAIR(MapRangeType::SMOOTHER_STEP, "Smoother Step", "smootherstep");
 			default:
 				return std::make_pair("[Unknown Type]", "ERROR");
 			}
