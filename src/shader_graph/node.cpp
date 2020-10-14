@@ -210,7 +210,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Parametric",         "parametric",         SlotDirection::OUTPUT, SlotType::VECTOR });
 		_slots.push_back(Slot{ "Backfacing",         "backfacing",         SlotDirection::OUTPUT, SlotType::VECTOR });
 		_slots.push_back(Slot{ "Pointiness",         "pointiness",         SlotDirection::OUTPUT, SlotType::FLOAT });
-		_slots.push_back(Slot{ "Random per Island",  "random_per_island",  SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Random Per Island",  "random_per_island",  SlotDirection::OUTPUT, SlotType::FLOAT });
 		break;
 	case NodeType::LAYER_WEIGHT:
 		_slots.push_back(Slot{ "Fresnel", "fresnel", SlotDirection::OUTPUT, SlotType::FLOAT });
