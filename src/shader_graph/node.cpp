@@ -265,7 +265,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 	case NodeType::WIREFRAME:
 		_slots.push_back(Slot{ "Fac",            "fac",              SlotDirection::OUTPUT, SlotType::FLOAT });
 		_slots.push_back(Slot{ "Use Pixel Size", "use_pixel_size",   BoolSlotValue{ false } });
-		_slots.push_back(Slot{ "Value",          "value",            FloatSlotValue{ 0.1f,  0.0f, FLT_MAX } });
+		_slots.push_back(Slot{ "Size",           "size",             FloatSlotValue{ 0.1f,  0.0f, FLT_MAX } });
 		break;
 		//////
 		// Shader
