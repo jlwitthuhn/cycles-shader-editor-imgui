@@ -344,7 +344,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Specular Tint",          "specular_tint",          FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
 		_slots.push_back(Slot{ "Roughness",              "roughness",              FloatSlotValue{ 0.5f, 0.0f, 1.0f } });
 		_slots.push_back(Slot{ "Anisotropic",            "anisotropic",            FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Rotation",               "anisotropic_rotation",   FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Anisotropic Rotation",   "anisotropic_rotation",   FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
 		_slots.push_back(Slot{ "Sheen",                  "sheen",                  FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
 		_slots.push_back(Slot{ "Sheen Tint",             "sheen_tint",             FloatSlotValue{ 0.5f, 0.0f, 1.0f } });
 		_slots.push_back(Slot{ "Clearcoat",              "clearcoat",              FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
