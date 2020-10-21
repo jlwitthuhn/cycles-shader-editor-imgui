@@ -125,10 +125,21 @@ boost::optional<csg::NodeEnumOptionInfo> csg::NodeEnumOptionInfo::from(NodeMetaE
 	return NodeEnumOptionInfo{ meta_enum, option };
 }
 
-// Tiny macro to make it easier to copy paste all these definitions
-#define CASE_PAIR(ENUM, S1, S2) case ENUM: return std::make_pair(S1, S2);
+struct NameHolder {
+	NameHolder(const char* disp_name, const char* internal_name, const char* alt_name = nullptr) :
+		disp_name{ disp_name }, internal_name{ internal_name }, alt_name{ alt_name }
+	{}
 
-static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum meta_enum, size_t option)
+	const char* const disp_name;
+	const char* const internal_name;
+	const char* const alt_name;
+};
+
+// Tiny macro to make it easier to copy paste all these definitions
+#define CASE_NAMES(ENUM, DISP, INT) case ENUM: return NameHolder{ DISP, INT };
+#define CASE_NAMES_ALT(ENUM, DISP, INT, ALT) case ENUM: return NameHolder{ DISP, INT, ALT };
+
+static NameHolder get_option_names(csg::NodeMetaEnum meta_enum, size_t option)
 {
 	using namespace csg;
 
@@ -142,30 +153,30 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<MixRGBType>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(MixRGBType::MIX,          "Mix",          "mix");
-				CASE_PAIR(MixRGBType::DARKEN,       "Darken",       "darken");
-				CASE_PAIR(MixRGBType::MULTIPLY,     "Multiply",     "multiply");
-				CASE_PAIR(MixRGBType::BURN,         "Burn",         "burn");
-				CASE_PAIR(MixRGBType::LIGHTEN,      "Lighten",      "lighten");
-				CASE_PAIR(MixRGBType::SCREEN,       "Screen",       "screen");
-				CASE_PAIR(MixRGBType::DODGE,        "Dodge",        "dodge");
-				CASE_PAIR(MixRGBType::ADD,          "Add",          "add");
-				CASE_PAIR(MixRGBType::OVERLAY,      "Overlay",      "overlay");
-				CASE_PAIR(MixRGBType::SOFT_LIGHT,   "Soft Light",   "soft_light");
-				CASE_PAIR(MixRGBType::LINEAR_LIGHT, "Linear Light", "linear_light");
-				CASE_PAIR(MixRGBType::DIFFERENCE,   "Difference",   "difference");
-				CASE_PAIR(MixRGBType::SUBTRACT,     "Subtract",     "subtract");
-				CASE_PAIR(MixRGBType::DIVIDE,       "Divide",       "divide");
-				CASE_PAIR(MixRGBType::HUE,          "Hue",          "hue");
-				CASE_PAIR(MixRGBType::SATURATION,   "Saturation",   "saturation");
-				CASE_PAIR(MixRGBType::COLOR,        "Color",        "color");
-				CASE_PAIR(MixRGBType::VALUE,        "Value",        "value");
+				CASE_NAMES(MixRGBType::MIX,          "Mix",          "mix");
+				CASE_NAMES(MixRGBType::DARKEN,       "Darken",       "darken");
+				CASE_NAMES(MixRGBType::MULTIPLY,     "Multiply",     "multiply");
+				CASE_NAMES(MixRGBType::BURN,         "Burn",         "burn");
+				CASE_NAMES(MixRGBType::LIGHTEN,      "Lighten",      "lighten");
+				CASE_NAMES(MixRGBType::SCREEN,       "Screen",       "screen");
+				CASE_NAMES(MixRGBType::DODGE,        "Dodge",        "dodge");
+				CASE_NAMES(MixRGBType::ADD,          "Add",          "add");
+				CASE_NAMES(MixRGBType::OVERLAY,      "Overlay",      "overlay");
+				CASE_NAMES(MixRGBType::SOFT_LIGHT,   "Soft Light",   "soft_light");
+				CASE_NAMES(MixRGBType::LINEAR_LIGHT, "Linear Light", "linear_light");
+				CASE_NAMES(MixRGBType::DIFFERENCE,   "Difference",   "difference");
+				CASE_NAMES(MixRGBType::SUBTRACT,     "Subtract",     "subtract");
+				CASE_NAMES(MixRGBType::DIVIDE,       "Divide",       "divide");
+				CASE_NAMES(MixRGBType::HUE,          "Hue",          "hue");
+				CASE_NAMES(MixRGBType::SATURATION,   "Saturation",   "saturation");
+				CASE_NAMES(MixRGBType::COLOR,        "Color",        "color");
+				CASE_NAMES(MixRGBType::VALUE,        "Value",        "value");
 			default:
-				return std::make_pair("[Unknown Type]", "ERROR");
+				return NameHolder{ "[Unknown Type]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Type]", "ERROR");
+			return NameHolder{ "[Bad Type]", "ERROR" };
 		}
 	}
 	//////
@@ -176,14 +187,14 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<ClampType>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(ClampType::MINMAX, "Min Max", "minmax");
-				CASE_PAIR(ClampType::RANGE,  "Range",   "range");
+				CASE_NAMES(ClampType::MINMAX, "Min Max", "minmax");
+				CASE_NAMES(ClampType::RANGE,  "Range",   "range");
 			default:
-				return std::make_pair("[Unknown Type]", "ERROR");
+				return NameHolder{ "[Unknown Type]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Type]", "ERROR");
+			return NameHolder{ "[Bad Type]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::MAP_RANGE_TYPE:
@@ -191,16 +202,16 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<MapRangeType>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(MapRangeType::LINEAR,        "Linear",        "linear");
-				CASE_PAIR(MapRangeType::STEPPED,       "Stepped",       "stepped");
-				CASE_PAIR(MapRangeType::SMOOTH_STEP,   "Smooth Step",   "smoothstep");
-				CASE_PAIR(MapRangeType::SMOOTHER_STEP, "Smoother Step", "smootherstep");
+				CASE_NAMES(MapRangeType::LINEAR,        "Linear",        "linear");
+				CASE_NAMES(MapRangeType::STEPPED,       "Stepped",       "stepped");
+				CASE_NAMES(MapRangeType::SMOOTH_STEP,   "Smooth Step",   "smoothstep");
+				CASE_NAMES(MapRangeType::SMOOTHER_STEP, "Smoother Step", "smootherstep");
 			default:
-				return std::make_pair("[Unknown Type]", "ERROR");
+				return NameHolder{ "[Unknown Type]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Type]", "ERROR");
+			return NameHolder{ "[Bad Type]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::MATH_TYPE:
@@ -208,52 +219,52 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<MathType>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(MathType::ADD,          "Add (2)",                "add");
-				CASE_PAIR(MathType::SUBTRACT,     "Subtract (2)",           "subtract");
-				CASE_PAIR(MathType::MULTIPLY,     "Multiply (2)",           "multiply");
-				CASE_PAIR(MathType::DIVIDE,       "Divide (2)",             "divide");
-				CASE_PAIR(MathType::MULTIPLY_ADD, "Multiply Add (2)",       "multiply_add");
-				CASE_PAIR(MathType::SINE,         "Sine (1)",               "sine");
-				CASE_PAIR(MathType::COSINE,       "Cosine (1)",             "cosine");
-				CASE_PAIR(MathType::TANGENT,      "Tangent (1)",            "tangent");
-				CASE_PAIR(MathType::ARCSINE,      "Arcsine (1)",            "arcsine");
-				CASE_PAIR(MathType::ARCCOSINE,    "Arccosine (1)",          "arccosine");
-				CASE_PAIR(MathType::ARCTANGENT,   "Arctangent (1)",         "arctangent");
-				CASE_PAIR(MathType::ARCTAN2,      "Arctan2 (2)",            "arctan2");
-				CASE_PAIR(MathType::SINH,         "Hyperbolic Sine (1)",    "sinh");
-				CASE_PAIR(MathType::COSH,         "Hyperbolic Cosine (1)",  "cosh");
-				CASE_PAIR(MathType::TANH,         "Hyperbolic Tangent (1)", "tanh");
-				CASE_PAIR(MathType::POWER,        "Power (2)",              "power");
-				CASE_PAIR(MathType::LOGARITHM,    "Logarithm (2)",          "logarithm");
-				CASE_PAIR(MathType::MINIMUM,      "Maximum (2)",            "maximum");
-				CASE_PAIR(MathType::MAXIMUM,      "Minimum (2)",            "minimum");
-				CASE_PAIR(MathType::LESS_THAN,    "Less Than (2)",          "less_than");
-				CASE_PAIR(MathType::GREATER_THAN, "Greater Than (2)",       "greater_than");
-				CASE_PAIR(MathType::MODULO,       "Modulo (2)",             "modulo");
-				CASE_PAIR(MathType::ABSOLUTE,     "Absolute (1)",           "absolute");
-				CASE_PAIR(MathType::ROUND,        "Round (1)",              "round");
-				CASE_PAIR(MathType::FLOOR,        "Floor (1)",              "floor");
-				CASE_PAIR(MathType::CEIL,         "Ceil (1)",               "ceil");
-				CASE_PAIR(MathType::FRACTION,     "Fraction (1)",           "fraction");
-				CASE_PAIR(MathType::SQRT,         "Square Root (1)",        "sqrt");
-				CASE_PAIR(MathType::INV_SQRT,     "Inverse Sqrt (1)",       "inverse_sqrt");
-				CASE_PAIR(MathType::SIGN,         "Sign (1)",               "sign");
-				CASE_PAIR(MathType::EXPONENT,     "Exponent (1)",           "exponent");
-				CASE_PAIR(MathType::RADIANS,      "To Radians (1)",         "radians");
-				CASE_PAIR(MathType::DEGREES,      "To Degrees (1)",         "degrees");
-				CASE_PAIR(MathType::TRUNC,        "Truncate (1)",           "truncate");
-				CASE_PAIR(MathType::SNAP,         "Snap (2)",               "snap");
-				CASE_PAIR(MathType::WRAP,         "Wrap (3)",               "wrap");
-				CASE_PAIR(MathType::COMPARE,      "Compare (3)",            "compare");
-				CASE_PAIR(MathType::PINGPONG,     "Ping Pong (3)",          "pingpong");
-				CASE_PAIR(MathType::SMOOTH_MIN,   "Smooth Min (3)",         "smooth_min");
-				CASE_PAIR(MathType::SMOOTH_MAX,   "Smooth Max (3)",         "smooth_max");
+				CASE_NAMES(MathType::ADD,          "Add (2)",                "add");
+				CASE_NAMES(MathType::SUBTRACT,     "Subtract (2)",           "subtract");
+				CASE_NAMES(MathType::MULTIPLY,     "Multiply (2)",           "multiply");
+				CASE_NAMES(MathType::DIVIDE,       "Divide (2)",             "divide");
+				CASE_NAMES(MathType::MULTIPLY_ADD, "Multiply Add (2)",       "multiply_add");
+				CASE_NAMES(MathType::SINE,         "Sine (1)",               "sine");
+				CASE_NAMES(MathType::COSINE,       "Cosine (1)",             "cosine");
+				CASE_NAMES(MathType::TANGENT,      "Tangent (1)",            "tangent");
+				CASE_NAMES(MathType::ARCSINE,      "Arcsine (1)",            "arcsine");
+				CASE_NAMES(MathType::ARCCOSINE,    "Arccosine (1)",          "arccosine");
+				CASE_NAMES(MathType::ARCTANGENT,   "Arctangent (1)",         "arctangent");
+				CASE_NAMES(MathType::ARCTAN2,      "Arctan2 (2)",            "arctan2");
+				CASE_NAMES(MathType::SINH,         "Hyperbolic Sine (1)",    "sinh");
+				CASE_NAMES(MathType::COSH,         "Hyperbolic Cosine (1)",  "cosh");
+				CASE_NAMES(MathType::TANH,         "Hyperbolic Tangent (1)", "tanh");
+				CASE_NAMES(MathType::POWER,        "Power (2)",              "power");
+				CASE_NAMES(MathType::LOGARITHM,    "Logarithm (2)",          "logarithm");
+				CASE_NAMES(MathType::MINIMUM,      "Maximum (2)",            "maximum");
+				CASE_NAMES(MathType::MAXIMUM,      "Minimum (2)",            "minimum");
+				CASE_NAMES(MathType::LESS_THAN,    "Less Than (2)",          "less_than");
+				CASE_NAMES(MathType::GREATER_THAN, "Greater Than (2)",       "greater_than");
+				CASE_NAMES(MathType::MODULO,       "Modulo (2)",             "modulo");
+				CASE_NAMES(MathType::ABSOLUTE,     "Absolute (1)",           "absolute");
+				CASE_NAMES(MathType::ROUND,        "Round (1)",              "round");
+				CASE_NAMES(MathType::FLOOR,        "Floor (1)",              "floor");
+				CASE_NAMES(MathType::CEIL,         "Ceil (1)",               "ceil");
+				CASE_NAMES(MathType::FRACTION,     "Fraction (1)",           "fraction");
+				CASE_NAMES(MathType::SQRT,         "Square Root (1)",        "sqrt");
+				CASE_NAMES(MathType::INV_SQRT,     "Inverse Sqrt (1)",       "inverse_sqrt");
+				CASE_NAMES(MathType::SIGN,         "Sign (1)",               "sign");
+				CASE_NAMES(MathType::EXPONENT,     "Exponent (1)",           "exponent");
+				CASE_NAMES(MathType::RADIANS,      "To Radians (1)",         "radians");
+				CASE_NAMES(MathType::DEGREES,      "To Degrees (1)",         "degrees");
+				CASE_NAMES(MathType::TRUNC,        "Truncate (1)",           "truncate");
+				CASE_NAMES(MathType::SNAP,         "Snap (2)",               "snap");
+				CASE_NAMES(MathType::WRAP,         "Wrap (3)",               "wrap");
+				CASE_NAMES(MathType::COMPARE,      "Compare (3)",            "compare");
+				CASE_NAMES(MathType::PINGPONG,     "Ping Pong (3)",          "pingpong");
+				CASE_NAMES(MathType::SMOOTH_MIN,   "Smooth Min (3)",         "smooth_min");
+				CASE_NAMES(MathType::SMOOTH_MAX,   "Smooth Max (3)",         "smooth_max");
 			default:
-				return std::make_pair("[Unknown Type]", "ERROR");
+				return NameHolder{ "[Unknown Type]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Type]", "ERROR");
+			return NameHolder{ "[Bad Type]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::VECTOR_MATH_TYPE:
@@ -261,36 +272,36 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<VectorMathType>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(VectorMathType::ADD,           "Add (2)",           "add");
-				CASE_PAIR(VectorMathType::SUBTRACT,      "Subtract (2)",      "subtract");
-				CASE_PAIR(VectorMathType::MULTIPLY,      "Multiply (2)",      "multiply");
-				CASE_PAIR(VectorMathType::DIVIDE,        "Divide (2)",        "divide");
-				CASE_PAIR(VectorMathType::CROSS_PRODUCT, "Cross Product (2)", "cross_product");
-				CASE_PAIR(VectorMathType::PROJECT,       "Project (2)",       "project");
-				CASE_PAIR(VectorMathType::REFLECT,       "Reflect (2)",       "reflect");
-				CASE_PAIR(VectorMathType::DOT_PRODUCT,   "Dot Product (2)",   "dot_product");
-				CASE_PAIR(VectorMathType::DISTANCE,      "Distance (2)",      "distance");
-				CASE_PAIR(VectorMathType::LENGTH,        "Length (1)",        "length");
-				CASE_PAIR(VectorMathType::SCALE,         "Scale (1)",         "scale");
-				CASE_PAIR(VectorMathType::NORMALIZE,     "Normalize (1)",     "normalize");
-				CASE_PAIR(VectorMathType::SNAP,          "Snap (2)",          "snap");
-				CASE_PAIR(VectorMathType::FLOOR,         "Floor (1)",         "floor");
-				CASE_PAIR(VectorMathType::CEIL,          "Ceil (1)",          "ceil");
-				CASE_PAIR(VectorMathType::MODULO,        "Modulo (2)",        "modulo");
-				CASE_PAIR(VectorMathType::FRACTION,      "Fraction (1)",      "fraction");
-				CASE_PAIR(VectorMathType::ABSOLUTE,      "Absolute (1)",      "absolute");
-				CASE_PAIR(VectorMathType::MINIMUM,       "Minimum (2)",       "minimum");
-				CASE_PAIR(VectorMathType::MAXIMUM,       "Maximum (2)",       "maximum");
-				CASE_PAIR(VectorMathType::WRAP,          "Wrap (3)",          "wrap");
-				CASE_PAIR(VectorMathType::SINE,          "Sine (1)",          "sine");
-				CASE_PAIR(VectorMathType::COSINE,        "Cosine (1)",        "cosine");
-				CASE_PAIR(VectorMathType::TANGENT,       "Tangent (1)",       "tangent");
+				CASE_NAMES(VectorMathType::ADD,           "Add (2)",           "add");
+				CASE_NAMES(VectorMathType::SUBTRACT,      "Subtract (2)",      "subtract");
+				CASE_NAMES(VectorMathType::MULTIPLY,      "Multiply (2)",      "multiply");
+				CASE_NAMES(VectorMathType::DIVIDE,        "Divide (2)",        "divide");
+				CASE_NAMES(VectorMathType::CROSS_PRODUCT, "Cross Product (2)", "cross_product");
+				CASE_NAMES(VectorMathType::PROJECT,       "Project (2)",       "project");
+				CASE_NAMES(VectorMathType::REFLECT,       "Reflect (2)",       "reflect");
+				CASE_NAMES(VectorMathType::DOT_PRODUCT,   "Dot Product (2)",   "dot_product");
+				CASE_NAMES(VectorMathType::DISTANCE,      "Distance (2)",      "distance");
+				CASE_NAMES(VectorMathType::LENGTH,        "Length (1)",        "length");
+				CASE_NAMES(VectorMathType::SCALE,         "Scale (1)",         "scale");
+				CASE_NAMES(VectorMathType::NORMALIZE,     "Normalize (1)",     "normalize");
+				CASE_NAMES(VectorMathType::SNAP,          "Snap (2)",          "snap");
+				CASE_NAMES(VectorMathType::FLOOR,         "Floor (1)",         "floor");
+				CASE_NAMES(VectorMathType::CEIL,          "Ceil (1)",          "ceil");
+				CASE_NAMES(VectorMathType::MODULO,        "Modulo (2)",        "modulo");
+				CASE_NAMES(VectorMathType::FRACTION,      "Fraction (1)",      "fraction");
+				CASE_NAMES(VectorMathType::ABSOLUTE,      "Absolute (1)",      "absolute");
+				CASE_NAMES(VectorMathType::MINIMUM,       "Minimum (2)",       "minimum");
+				CASE_NAMES(VectorMathType::MAXIMUM,       "Maximum (2)",       "maximum");
+				CASE_NAMES(VectorMathType::WRAP,          "Wrap (3)",          "wrap");
+				CASE_NAMES(VectorMathType::SINE,          "Sine (1)",          "sine");
+				CASE_NAMES(VectorMathType::COSINE,        "Cosine (1)",        "cosine");
+				CASE_NAMES(VectorMathType::TANGENT,       "Tangent (1)",       "tangent");
 			default:
-				return std::make_pair("[Unknown Type]", "ERROR");
+				return NameHolder{ "[Unknown Type]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Type]", "ERROR");
+			return NameHolder{ "[Bad Type]", "ERROR" };
 		}
 	}
 	//////
@@ -301,14 +312,14 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<TangentDirection>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(TangentDirection::RADIAL, "Radial", "radial");
-				CASE_PAIR(TangentDirection::UV_MAP, "UV Map", "uv_map");
+				CASE_NAMES(TangentDirection::RADIAL, "Radial", "radial");
+				CASE_NAMES(TangentDirection::UV_MAP, "UV Map", "uv_map");
 			default:
-				return std::make_pair("[Unknown Direction]", "ERROR");
+				return NameHolder{ "[Unknown Direction]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Direction]", "ERROR");
+			return NameHolder{ "[Bad Direction]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::TANGENT_AXIS:
@@ -316,15 +327,15 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<TangentAxis>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(TangentAxis::X, "X", "x");
-				CASE_PAIR(TangentAxis::Y, "Y", "y");
-				CASE_PAIR(TangentAxis::Z, "Z", "z");
+				CASE_NAMES(TangentAxis::X, "X", "x");
+				CASE_NAMES(TangentAxis::Y, "Y", "y");
+				CASE_NAMES(TangentAxis::Z, "Z", "z");
 			default:
-				return std::make_pair("[Unknown Axis]", "ERROR");
+				return NameHolder{ "[Unknown Axis]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Axis]", "ERROR");
+			return NameHolder{ "[Bad Axis]", "ERROR" };
 		}
 	}
 	//////
@@ -335,16 +346,16 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<AnisotropicDistribution>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(AnisotropicDistribution::ASHIKHMIN_SHIRLEY, "Ashikhmin-Shirley", "ashikhmin_shirley");
-				CASE_PAIR(AnisotropicDistribution::BECKMANN,          "Beckmann",          "beckmann");
-				CASE_PAIR(AnisotropicDistribution::GGX,               "GGX",               "ggx");
-				CASE_PAIR(AnisotropicDistribution::MULTISCATTER_GGX,  "Multiscatter GGX",  "multiscatter_ggx");
+				CASE_NAMES(AnisotropicDistribution::ASHIKHMIN_SHIRLEY, "Ashikhmin-Shirley", "ashikhmin_shirley");
+				CASE_NAMES(AnisotropicDistribution::BECKMANN,          "Beckmann",          "beckmann");
+				CASE_NAMES(AnisotropicDistribution::GGX,               "GGX",               "ggx");
+				CASE_NAMES_ALT(AnisotropicDistribution::MULTISCATTER_GGX, "Multiscatter GGX", "multi_ggx", "multiscatter_ggx");
 			default:
-				return std::make_pair("[Unknown Distribution]", "ERROR");
+				return NameHolder{ "[Unknown Distribution]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Distribution]", "ERROR");
+			return NameHolder{ "[Bad Distribution]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::GLASS_DISTRIBUTION:
@@ -352,16 +363,16 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<GlassDistribution>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(GlassDistribution::GGX,              "GGX",              "ggx");
-				CASE_PAIR(GlassDistribution::MULTISCATTER_GGX, "Multiscatter GGX", "multiscatter_ggx");
-				CASE_PAIR(GlassDistribution::BECKMANN,         "Beckmann",         "beckmann");
-				CASE_PAIR(GlassDistribution::SHARP,            "Sharp",            "sharp");
+				CASE_NAMES(GlassDistribution::GGX,              "GGX",              "ggx");
+				CASE_NAMES(GlassDistribution::BECKMANN,         "Beckmann",         "beckmann");
+				CASE_NAMES(GlassDistribution::SHARP,            "Sharp",            "sharp");
+				CASE_NAMES_ALT(GlassDistribution::MULTISCATTER_GGX, "Multiscatter GGX", "multi_ggx", "multiscatter_ggx");
 			default:
-				return std::make_pair("[Unknown Distribution]", "ERROR");
+				return NameHolder{ "[Unknown Distribution]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Distribution]", "ERROR");
+			return NameHolder{ "[Bad Distribution]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::GLOSSY_DISTRIBUTION:
@@ -369,17 +380,17 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<GlossyDistribution>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(GlossyDistribution::ASHIKHMIN_SHIRLEY, "Ashikhmin-Shirley", "ashikhmin_shirley");
-				CASE_PAIR(GlossyDistribution::BECKMANN,          "Beckmann",          "beckmann");
-				CASE_PAIR(GlossyDistribution::GGX,               "GGX",               "ggx");
-				CASE_PAIR(GlossyDistribution::MULTISCATTER_GGX,  "Multiscatter GGX",  "multiscatter_ggx");
-				CASE_PAIR(GlossyDistribution::SHARP,             "Sharp",             "sharp");
+				CASE_NAMES(GlossyDistribution::ASHIKHMIN_SHIRLEY, "Ashikhmin-Shirley", "ashikhmin_shirley");
+				CASE_NAMES(GlossyDistribution::BECKMANN,          "Beckmann",          "beckmann");
+				CASE_NAMES(GlossyDistribution::GGX,               "GGX",               "ggx");
+				CASE_NAMES(GlossyDistribution::SHARP,             "Sharp",             "sharp");
+				CASE_NAMES_ALT(GlossyDistribution::MULTISCATTER_GGX, "Multiscatter GGX", "multi_ggx", "multiscatter_ggx");
 			default:
-				return std::make_pair("[Unknown Distribution]", "ERROR");
+				return NameHolder{ "[Unknown Distribution]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Distribution]", "ERROR");
+			return NameHolder{ "[Bad Distribution]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::HAIR_COMPONENT:
@@ -387,14 +398,14 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<HairComponent>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(HairComponent::REFLECTION,   "Reflection",   "reflection");
-				CASE_PAIR(HairComponent::TRANSMISSION, "Transmission", "transmission");
+				CASE_NAMES(HairComponent::REFLECTION,   "Reflection",   "reflection");
+				CASE_NAMES(HairComponent::TRANSMISSION, "Transmission", "transmission");
 			default:
-				return std::make_pair("[Unknown Distribution]", "ERROR");
+				return NameHolder{ "[Unknown Distribution]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Distribution]", "ERROR");
+			return NameHolder{ "[Bad Distribution]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::PRINCIPLED_BSDF_DISTRIBUTION:
@@ -402,14 +413,14 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<PrincipledBSDFDistribution>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(PrincipledBSDFDistribution::GGX,              "GGX",              "ggx");
-				CASE_PAIR(PrincipledBSDFDistribution::MULTISCATTER_GGX, "Multiscatter GGX", "multiscatter_ggx");
+				CASE_NAMES(PrincipledBSDFDistribution::GGX,              "GGX",              "ggx");
+				CASE_NAMES_ALT(PrincipledBSDFDistribution::MULTISCATTER_GGX, "Multiscatter GGX", "multi_ggx", "multiscatter_ggx");
 			default:
-				return std::make_pair("[Unknown Distribution]", "ERROR");
+				return NameHolder{ "[Unknown Distribution]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Distribution]", "ERROR");
+			return NameHolder{ "[Bad Distribution]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::PRINCIPLED_BSDF_SSS:
@@ -417,14 +428,14 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<PrincipledBSDFSubsurfaceMethod>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(PrincipledBSDFSubsurfaceMethod::BURLEY,      "Burley",      "burley");
-				CASE_PAIR(PrincipledBSDFSubsurfaceMethod::RANDOM_WALK, "Random Walk", "random_walk");
+				CASE_NAMES(PrincipledBSDFSubsurfaceMethod::BURLEY,      "Burley",      "burley");
+				CASE_NAMES(PrincipledBSDFSubsurfaceMethod::RANDOM_WALK, "Random Walk", "random_walk");
 			default:
-				return std::make_pair("[Unknown Method]", "ERROR");
+				return NameHolder{ "[Unknown Method]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Method]", "ERROR");
+			return NameHolder{ "[Bad Method]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::PRINCIPLED_HAIR_COLORING:
@@ -432,15 +443,15 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<PrincipledHairColoring>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(PrincipledHairColoring::ABSORPTION_COEFFICIENT, "Absorption coefficient", "absorption_coefficient");
-				CASE_PAIR(PrincipledHairColoring::MELANIN_CONCENTRATION,  "Melanin concentration",  "melanin_concentration");
-				CASE_PAIR(PrincipledHairColoring::DIRECT_COLORING,        "Direct coloring",        "direct_coloring");
+				CASE_NAMES_ALT(PrincipledHairColoring::ABSORPTION_COEFFICIENT, "Absorption coefficient", "absorption", "absorption_coefficient");
+				CASE_NAMES_ALT(PrincipledHairColoring::MELANIN_CONCENTRATION,  "Melanin concentration",  "melanin",    "melanin_concentration");
+				CASE_NAMES_ALT(PrincipledHairColoring::DIRECT_COLORING,        "Direct coloring",        "color",      "direct_coloring");
 			default:
-				return std::make_pair("[Unknown Coloring]", "ERROR");
+				return NameHolder{ "[Unknown Coloring]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Coloring]", "ERROR");
+			return NameHolder{ "[Bad Coloring]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::REFRACTION_DISTRIBUTION:
@@ -448,15 +459,15 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<RefractionDistribution>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(RefractionDistribution::BECKMANN, "Beckmann", "beckmann");
-				CASE_PAIR(RefractionDistribution::GGX,      "GGX",      "ggx");
-				CASE_PAIR(RefractionDistribution::SHARP,    "Sharp",    "sharp");
+				CASE_NAMES(RefractionDistribution::BECKMANN, "Beckmann", "beckmann");
+				CASE_NAMES(RefractionDistribution::GGX,      "GGX",      "ggx");
+				CASE_NAMES(RefractionDistribution::SHARP,    "Sharp",    "sharp");
 			default:
-				return std::make_pair("[Unknown Distribution]", "ERROR");
+				return NameHolder{ "[Unknown Distribution]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Distribution]", "ERROR");
+			return NameHolder{ "[Bad Distribution]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::SSS_FALLOFF:
@@ -464,16 +475,16 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<SubsurfaceScatterFalloff>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(SubsurfaceScatterFalloff::BURLEY,      "Burley",      "burley");
-				CASE_PAIR(SubsurfaceScatterFalloff::CUBIC,       "Cubic",       "cubic");
-				CASE_PAIR(SubsurfaceScatterFalloff::GAUSSIAN,    "Gaussian",    "gaussian");
-				CASE_PAIR(SubsurfaceScatterFalloff::RANDOM_WALK, "Random Walk", "random_walk");
+				CASE_NAMES(SubsurfaceScatterFalloff::BURLEY,      "Burley",      "burley");
+				CASE_NAMES(SubsurfaceScatterFalloff::CUBIC,       "Cubic",       "cubic");
+				CASE_NAMES(SubsurfaceScatterFalloff::GAUSSIAN,    "Gaussian",    "gaussian");
+				CASE_NAMES(SubsurfaceScatterFalloff::RANDOM_WALK, "Random Walk", "random_walk");
 			default:
-				return std::make_pair("[Unknown Falloff]", "ERROR");
+				return NameHolder{ "[Unknown Falloff]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Falloff]", "ERROR");
+			return NameHolder{ "[Bad Falloff]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::TOON_COMPONENT:
@@ -481,14 +492,14 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<ToonComponent>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(ToonComponent::DIFFUSE, "Diffuse", "diffuse");
-				CASE_PAIR(ToonComponent::GLOSSY,  "Glossy",  "glossy");
+				CASE_NAMES(ToonComponent::DIFFUSE, "Diffuse", "diffuse");
+				CASE_NAMES(ToonComponent::GLOSSY,  "Glossy",  "glossy");
 			default:
-				return std::make_pair("[Unknown Component]", "ERROR");
+				return NameHolder{ "[Unknown Component]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Component]", "ERROR");
+			return NameHolder{ "[Bad Component]", "ERROR" };
 		}
 	}
 	//////
@@ -499,14 +510,14 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<MaxTexmapPrecision>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(MaxTexmapPrecision::UCHAR, "8-bit/Channel Char",   "uchar");
-				CASE_PAIR(MaxTexmapPrecision::FLOAT, "32-bit/Channel Float", "float");
+				CASE_NAMES(MaxTexmapPrecision::UCHAR, "8-bit/Channel Char",   "uchar");
+				CASE_NAMES(MaxTexmapPrecision::FLOAT, "32-bit/Channel Float", "float");
 			default:
-				return std::make_pair("[Unknown Precision]", "ERROR");
+				return NameHolder{ "[Unknown Precision]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Precision]", "ERROR");
+			return NameHolder{ "[Bad Precision]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::GRADIENT_TEX_TYPE:
@@ -514,19 +525,19 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<GradientTexType>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(GradientTexType::LINEAR,           "Linear",           "linear");
-				CASE_PAIR(GradientTexType::QUADRATIC,        "Quadratic",        "quadratic");
-				CASE_PAIR(GradientTexType::EASING,           "Easing",           "easing");
-				CASE_PAIR(GradientTexType::DIAGONAL,         "Diagonal",         "diagonal");
-				CASE_PAIR(GradientTexType::RADIAL,           "Radial",           "radial");
-				CASE_PAIR(GradientTexType::QUADRATIC_SPHERE, "Quadratic Shpere", "quadratic_sphere");
-				CASE_PAIR(GradientTexType::SPHERICAL,        "Shperical",        "spherical");
+				CASE_NAMES(GradientTexType::LINEAR,           "Linear",           "linear");
+				CASE_NAMES(GradientTexType::QUADRATIC,        "Quadratic",        "quadratic");
+				CASE_NAMES(GradientTexType::EASING,           "Easing",           "easing");
+				CASE_NAMES(GradientTexType::DIAGONAL,         "Diagonal",         "diagonal");
+				CASE_NAMES(GradientTexType::RADIAL,           "Radial",           "radial");
+				CASE_NAMES(GradientTexType::QUADRATIC_SPHERE, "Quadratic Shpere", "quadratic_sphere");
+				CASE_NAMES(GradientTexType::SPHERICAL,        "Shperical",        "spherical");
 			default:
-				return std::make_pair("[Unknown Type]", "ERROR");
+				return NameHolder{ "[Unknown Type]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Type]", "ERROR");
+			return NameHolder{ "[Bad Type]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::MUSGRAVE_TEX_DIMENSIONS:
@@ -534,16 +545,16 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<MusgraveTexDimensions>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(MusgraveTexDimensions::ONE,   "1D", "1D");
-				CASE_PAIR(MusgraveTexDimensions::TWO,   "2D", "2D");
-				CASE_PAIR(MusgraveTexDimensions::THREE, "3D", "3D");
-				CASE_PAIR(MusgraveTexDimensions::FOUR,  "4D", "4D");
+				CASE_NAMES(MusgraveTexDimensions::ONE,   "1D", "1D");
+				CASE_NAMES(MusgraveTexDimensions::TWO,   "2D", "2D");
+				CASE_NAMES(MusgraveTexDimensions::THREE, "3D", "3D");
+				CASE_NAMES(MusgraveTexDimensions::FOUR,  "4D", "4D");
 			default:
-				return std::make_pair("[Unknown Dimensions]", "ERROR");
+				return NameHolder{ "[Unknown Dimensions]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Dimensions]", "ERROR");
+			return NameHolder{ "[Bad Dimensions]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::MUSGRAVE_TEX_TYPE:
@@ -551,17 +562,17 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<MusgraveTexType>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(MusgraveTexType::MULTIFRACTAL,        "Multifractal",        "multifractal");
-				CASE_PAIR(MusgraveTexType::RIDGED_MULTIFRACTAL, "Ridged Multifractal", "ridged_multifractal");
-				CASE_PAIR(MusgraveTexType::HYBRID_MULTIFRACTAL, "Hyvrid Multifractal", "hybrid_multifractal");
-				CASE_PAIR(MusgraveTexType::FBM,                 "fBM",                 "fbm");
-				CASE_PAIR(MusgraveTexType::HETERO_TERRAIN,      "Hetero Terrain",      "hetero_terrain");
+				CASE_NAMES(MusgraveTexType::MULTIFRACTAL,        "Multifractal",        "multifractal");
+				CASE_NAMES(MusgraveTexType::RIDGED_MULTIFRACTAL, "Ridged Multifractal", "ridged_multifractal");
+				CASE_NAMES(MusgraveTexType::HYBRID_MULTIFRACTAL, "Hyvrid Multifractal", "hybrid_multifractal");
+				CASE_NAMES(MusgraveTexType::FBM,                 "fBM",                 "fbm");
+				CASE_NAMES(MusgraveTexType::HETERO_TERRAIN,      "Hetero Terrain",      "hetero_terrain");
 			default:
-				return std::make_pair("[Unknown Type]", "ERROR");
+				return NameHolder{ "[Unknown Type]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Type]", "ERROR");
+			return NameHolder{ "[Bad Type]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::NOISE_TEX_DIMENSIONS:
@@ -569,16 +580,16 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<NoiseTexDimensions>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(NoiseTexDimensions::ONE,   "1D", "1D");
-				CASE_PAIR(NoiseTexDimensions::TWO,   "2D", "2D");
-				CASE_PAIR(NoiseTexDimensions::THREE, "3D", "3D");
-				CASE_PAIR(NoiseTexDimensions::FOUR,  "4D", "4D");
+				CASE_NAMES(NoiseTexDimensions::ONE,   "1D", "1D");
+				CASE_NAMES(NoiseTexDimensions::TWO,   "2D", "2D");
+				CASE_NAMES(NoiseTexDimensions::THREE, "3D", "3D");
+				CASE_NAMES(NoiseTexDimensions::FOUR,  "4D", "4D");
 			default:
-				return std::make_pair("[Unknown Dimensions]", "ERROR");
+				return NameHolder{ "[Unknown Dimensions]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Dimensions]", "ERROR");
+			return NameHolder{ "[Bad Dimensions]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::VORONOI_TEX_DIMENSIONS:
@@ -586,16 +597,16 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<VoronoiTexDimensions>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(VoronoiTexDimensions::ONE,   "1D", "1D");
-				CASE_PAIR(VoronoiTexDimensions::TWO,   "2D", "2D");
-				CASE_PAIR(VoronoiTexDimensions::THREE, "3D", "3D");
-				CASE_PAIR(VoronoiTexDimensions::FOUR,  "4D", "4D");
+				CASE_NAMES(VoronoiTexDimensions::ONE,   "1D", "1D");
+				CASE_NAMES(VoronoiTexDimensions::TWO,   "2D", "2D");
+				CASE_NAMES(VoronoiTexDimensions::THREE, "3D", "3D");
+				CASE_NAMES(VoronoiTexDimensions::FOUR,  "4D", "4D");
 			default:
-				return std::make_pair("[Unknown Dimensions]", "ERROR");
+				return NameHolder{ "[Unknown Dimensions]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Dimensions]", "ERROR");
+			return NameHolder{ "[Bad Dimensions]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::VORONOI_TEX_FEATURE:
@@ -603,17 +614,17 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<VoronoiTexFeature>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(VoronoiTexFeature::F1, "F1", "f1");
-				CASE_PAIR(VoronoiTexFeature::F2, "F2", "f2");
-				CASE_PAIR(VoronoiTexFeature::SMOOTH_F1, "Smooth F1", "smooth_f1");
-				CASE_PAIR(VoronoiTexFeature::DISTANCE_TO_EDGE, "Distance to Edge", "distance_to_edge");
-				CASE_PAIR(VoronoiTexFeature::N_SPHERE_RADIUS, "N-Sphere Radius", "n_sphere_radius");
+				CASE_NAMES(VoronoiTexFeature::F1, "F1", "f1");
+				CASE_NAMES(VoronoiTexFeature::F2, "F2", "f2");
+				CASE_NAMES(VoronoiTexFeature::SMOOTH_F1, "Smooth F1", "smooth_f1");
+				CASE_NAMES(VoronoiTexFeature::DISTANCE_TO_EDGE, "Distance to Edge", "distance_to_edge");
+				CASE_NAMES(VoronoiTexFeature::N_SPHERE_RADIUS, "N-Sphere Radius", "n_sphere_radius");
 			default:
-				return std::make_pair("[Unknown Feature]", "ERROR");
+				return NameHolder{ "[Unknown Feature]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Feature]", "ERROR");
+			return NameHolder{ "[Bad Feature]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::VORONOI_TEX_METRIC:
@@ -621,16 +632,16 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<VoronoiTexMetric>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(VoronoiTexMetric::EUCLIDEAN, "Euclidean", "euclidean");
-				CASE_PAIR(VoronoiTexMetric::MANHATTAN, "Manhattan", "manhattan");
-				CASE_PAIR(VoronoiTexMetric::CHEBYCHEV, "Chebychev", "chebychev");
-				CASE_PAIR(VoronoiTexMetric::MINKOWSKI, "Minkowski", "minkowski");
+				CASE_NAMES(VoronoiTexMetric::EUCLIDEAN, "Euclidean", "euclidean");
+				CASE_NAMES(VoronoiTexMetric::MANHATTAN, "Manhattan", "manhattan");
+				CASE_NAMES(VoronoiTexMetric::CHEBYCHEV, "Chebychev", "chebychev");
+				CASE_NAMES(VoronoiTexMetric::MINKOWSKI, "Minkowski", "minkowski");
 			default:
-				return std::make_pair("[Unknown Feature]", "ERROR");
+				return NameHolder{ "[Unknown Feature]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Feature]", "ERROR");
+			return NameHolder{ "[Bad Feature]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::WAVE_TEX_TYPE:
@@ -638,14 +649,14 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<WaveTexType>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(WaveTexType::BANDS, "Bands", "bands");
-				CASE_PAIR(WaveTexType::RINGS, "Rings", "rings");
+				CASE_NAMES(WaveTexType::BANDS, "Bands", "bands");
+				CASE_NAMES(WaveTexType::RINGS, "Rings", "rings");
 			default:
-				return std::make_pair("[Unknown Type]", "ERROR");
+				return NameHolder{ "[Unknown Type]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Type]", "ERROR");
+			return NameHolder{ "[Bad Type]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::WAVE_TEX_DIRECTION:
@@ -653,16 +664,16 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<WaveTexDirection>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(WaveTexDirection::X, "X", "x");
-				CASE_PAIR(WaveTexDirection::Y, "Y", "y");
-				CASE_PAIR(WaveTexDirection::Z, "Z", "z");
-				CASE_PAIR(WaveTexDirection::DIAGONAL, "Diagonal", "diagonal");
+				CASE_NAMES(WaveTexDirection::X, "X", "x");
+				CASE_NAMES(WaveTexDirection::Y, "Y", "y");
+				CASE_NAMES(WaveTexDirection::Z, "Z", "z");
+				CASE_NAMES(WaveTexDirection::DIAGONAL, "Diagonal", "diagonal");
 			default:
-				return std::make_pair("[Unknown Direction]", "ERROR");
+				return NameHolder{ "[Unknown Direction]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Direction]", "ERROR");
+			return NameHolder{ "[Bad Direction]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::WAVE_TEX_PROFILE:
@@ -670,15 +681,15 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<WaveTexProfile>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(WaveTexProfile::SINE,     "Sine",     "sine");
-				CASE_PAIR(WaveTexProfile::SAW,      "Saw",      "saw");
-				CASE_PAIR(WaveTexProfile::TRIANGLE, "Triangle", "triangle");
+				CASE_NAMES(WaveTexProfile::SINE,     "Sine",     "sine");
+				CASE_NAMES(WaveTexProfile::SAW,      "Saw",      "saw");
+				CASE_NAMES(WaveTexProfile::TRIANGLE, "Triangle", "triangle");
 			default:
-				return std::make_pair("[Unknown Profile]", "ERROR");
+				return NameHolder{ "[Unknown Profile]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Profile]", "ERROR");
+			return NameHolder{ "[Bad Profile]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::WHITE_NOISE_TEX_DIMENSIONS:
@@ -686,16 +697,16 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<WhiteNoiseTexDimensions>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(WhiteNoiseTexDimensions::ONE, "1D", "1D");
-				CASE_PAIR(WhiteNoiseTexDimensions::TWO, "2D", "2D");
-				CASE_PAIR(WhiteNoiseTexDimensions::THREE, "3D", "3D");
-				CASE_PAIR(WhiteNoiseTexDimensions::FOUR, "4D", "4D");
+				CASE_NAMES(WhiteNoiseTexDimensions::ONE, "1D", "1D");
+				CASE_NAMES(WhiteNoiseTexDimensions::TWO, "2D", "2D");
+				CASE_NAMES(WhiteNoiseTexDimensions::THREE, "3D", "3D");
+				CASE_NAMES(WhiteNoiseTexDimensions::FOUR, "4D", "4D");
 			default:
-				return std::make_pair("[Unknown Dimensions]", "ERROR");
+				return NameHolder{ "[Unknown Dimensions]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Dimensions]", "ERROR");
+			return NameHolder{ "[Bad Dimensions]", "ERROR" };
 		}
 	}
 	//////
@@ -706,14 +717,14 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<DisplacementSpace>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(DisplacementSpace::OBJECT, "Object", "object");
-				CASE_PAIR(DisplacementSpace::WORLD,  "World",  "world");
+				CASE_NAMES(DisplacementSpace::OBJECT, "Object", "object");
+				CASE_NAMES(DisplacementSpace::WORLD,  "World",  "world");
 			default:
-				return std::make_pair("[Unknown Space]", "ERROR");
+				return NameHolder{ "[Unknown Space]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Space]", "ERROR");
+			return NameHolder{ "[Bad Space]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::VECTOR_MAPPING_TYPE:
@@ -721,16 +732,16 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<VectorMappingType>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(VectorMappingType::POINT,   "Point",   "point");
-				CASE_PAIR(VectorMappingType::TEXTURE, "Texture", "texture");
-				CASE_PAIR(VectorMappingType::VECTOR,  "Vector",  "vector");
-				CASE_PAIR(VectorMappingType::NORMAL,  "Normal",  "normal");
+				CASE_NAMES(VectorMappingType::POINT,   "Point",   "point");
+				CASE_NAMES(VectorMappingType::TEXTURE, "Texture", "texture");
+				CASE_NAMES(VectorMappingType::VECTOR,  "Vector",  "vector");
+				CASE_NAMES(VectorMappingType::NORMAL,  "Normal",  "normal");
 			default:
-				return std::make_pair("[Unknown Type]", "ERROR");
+				return NameHolder{ "[Unknown Type]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Type]", "ERROR");
+			return NameHolder{ "[Bad Type]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::NORMAL_MAP_SPACE:
@@ -738,15 +749,15 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<NormalMapSpace>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(NormalMapSpace::TANGENT, "Tangent", "tangent");
-				CASE_PAIR(NormalMapSpace::OBJECT,  "Object",  "object");
-				CASE_PAIR(NormalMapSpace::WORLD,   "World",   "world");
+				CASE_NAMES(NormalMapSpace::TANGENT, "Tangent", "tangent");
+				CASE_NAMES(NormalMapSpace::OBJECT,  "Object",  "object");
+				CASE_NAMES(NormalMapSpace::WORLD,   "World",   "world");
 			default:
-				return std::make_pair("[Unknown Space]", "ERROR");
+				return NameHolder{ "[Unknown Space]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Space]", "ERROR");
+			return NameHolder{ "[Bad Space]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::VECTOR_DISPLACEMENT_SPACE:
@@ -754,15 +765,15 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<VectorDisplacementSpace>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(VectorDisplacementSpace::TANGENT, "Tangent", "tangent");
-				CASE_PAIR(VectorDisplacementSpace::OBJECT,  "Object",  "object");
-				CASE_PAIR(VectorDisplacementSpace::WORLD,   "World",   "world");
+				CASE_NAMES(VectorDisplacementSpace::TANGENT, "Tangent", "tangent");
+				CASE_NAMES(VectorDisplacementSpace::OBJECT,  "Object",  "object");
+				CASE_NAMES(VectorDisplacementSpace::WORLD,   "World",   "world");
 			default:
-				return std::make_pair("[Unknown Space]", "ERROR");
+				return NameHolder{ "[Unknown Space]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Space]", "ERROR");
+			return NameHolder{ "[Bad Space]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::VECTOR_TRANSFORM_TYPE:
@@ -770,15 +781,15 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<VectorTransformType>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(VectorTransformType::POINT,  "Point",  "point");
-				CASE_PAIR(VectorTransformType::VECTOR, "Vector", "vector");
-				CASE_PAIR(VectorTransformType::NORMAL, "Normal", "normal");
+				CASE_NAMES(VectorTransformType::POINT,  "Point",  "point");
+				CASE_NAMES(VectorTransformType::VECTOR, "Vector", "vector");
+				CASE_NAMES(VectorTransformType::NORMAL, "Normal", "normal");
 			default:
-				return std::make_pair("[Unknown Type]", "ERROR");
+				return NameHolder{ "[Unknown Type]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Type]", "ERROR");
+			return NameHolder{ "[Bad Type]", "ERROR" };
 		}
 	}
 	case NodeMetaEnum::VECTOR_TRANSFORM_SPACE:
@@ -786,15 +797,15 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<VectorTransformSpace>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(VectorTransformSpace::CAMERA, "Camera", "camera");
-				CASE_PAIR(VectorTransformSpace::OBJECT, "Object", "object");
-				CASE_PAIR(VectorTransformSpace::WORLD,  "World",  "world");
+				CASE_NAMES(VectorTransformSpace::CAMERA, "Camera", "camera");
+				CASE_NAMES(VectorTransformSpace::OBJECT, "Object", "object");
+				CASE_NAMES(VectorTransformSpace::WORLD,  "World",  "world");
 			default:
-				return std::make_pair("[Unknown Space]", "ERROR");
+				return NameHolder{ "[Unknown Space]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad Space]", "ERROR");
+			return NameHolder{ "[Bad Space]", "ERROR" };
 		}
 	}
 	/*
@@ -803,28 +814,33 @@ static std::pair<const char*, const char*> get_option_names(csg::NodeMetaEnum me
 		const auto opt_enum{ as_enum<EnumName>(option) };
 		if (opt_enum) {
 			switch (*opt_enum) {
-				CASE_PAIR(Enum::OPTION1, "Option1", "option1");
-				CASE_PAIR(Enum::OPTION2, "Option2", "option2");
+				CASE_NAMES(Enum::OPTION1, "Option1", "option1");
+				CASE_NAMES(Enum::OPTION2, "Option2", "option2");
 			default:
-				return std::make_pair("[Unknown]", "ERROR");
+				return NameHolder{ "[Unknown]", "ERROR" };
 			}
 		}
 		else {
-			return std::make_pair("[Bad]", "ERROR");
+			return NameHolder{ "[Bad]", "ERROR" };
 		}
 	}
 	*/
 	default:
-		return std::make_pair("[Enum Error]", "ERROR");
+		return NameHolder{ "[Enum Error]", "ERROR" };
 	}
 }
 
 const char* csg::NodeEnumOptionInfo::display_name() const
 {
-	return get_option_names(_meta_enum, _option).first;
+	return get_option_names(_meta_enum, _option).disp_name;
 }
 
 const char* csg::NodeEnumOptionInfo::internal_name() const
 {
-	return get_option_names(_meta_enum, _option).second;
+	return get_option_names(_meta_enum, _option).internal_name;
+}
+
+const char* csg::NodeEnumOptionInfo::alt_name() const
+{
+	return get_option_names(_meta_enum, _option).alt_name;
 }

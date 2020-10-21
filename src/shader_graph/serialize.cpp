@@ -706,6 +706,12 @@ boost::optional<csg::Graph> csg::deserialize_graph(const std::string& graph_stri
 								assert(NodeEnumOptionInfo::from(meta_enum, i).has_value());
 								const NodeEnumOptionInfo option_info{ NodeEnumOptionInfo::from(meta_enum, i).value() };
 								if (input_value == option_info.internal_name()) {
+									// Match the regular internal name
+									result.set_enum(slot_id, i);
+									break;
+								}
+								else if (option_info.alt_name() && input_value == option_info.alt_name()) {
+									// Match the alternate name if it exists
 									result.set_enum(slot_id, i);
 									break;
 								}

@@ -437,6 +437,7 @@ namespace csg {
 
 		const char* display_name() const;
 		const char* internal_name() const;
+		const char* alt_name() const;
 
 	private:
 		NodeEnumOptionInfo(NodeMetaEnum meta_enum, size_t option) : _meta_enum{ meta_enum }, _option{ option } {}
