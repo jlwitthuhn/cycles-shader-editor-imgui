@@ -372,7 +372,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Radial Roughness",       "radial_roughness",       FloatSlotValue{ 0.3f, 0.0f, 1.0f } });
 		_slots.push_back(Slot{ "Coat",                   "coat",                   FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
 		_slots.push_back(Slot{ "IOR",                    "ior",                    FloatSlotValue{ 1.55f, 0.0f, 1000.0f } });
-		_slots.push_back(Slot{ "Offset (rad)",           "offset",                 FloatSlotValue{ 2 * MY_PI / 180.0f, MY_PI / -2.0f , MY_PI / 2.0f } });
+		_slots.push_back(Slot{ "Offset",                 "offset",                 FloatSlotValue{ 2 * MY_PI / 180.0f, MY_PI / -2.0f , MY_PI / 2.0f } });
 		_slots.push_back(Slot{ "Random Roughness",       "random_roughness",       FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
 		_slots.push_back(Slot{ "Random Color",           "random_color",           FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
 		_slots.push_back(Slot{ "Random",                 "random",                 FloatSlotValue{ 0.0f, 0.0f, FLT_MAX } });
