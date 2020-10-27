@@ -457,22 +457,22 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Vector",    "vector",    SlotDirection::INPUT, SlotType::VECTOR });
 		break;
 	case NodeType::BRICK_TEX:
-		_slots.push_back(Slot{ "Color",               "color",               SlotDirection::OUTPUT, SlotType::COLOR });
-		_slots.push_back(Slot{ "Fac",                 "fac",                 SlotDirection::OUTPUT, SlotType::FLOAT });
-		_slots.push_back(Slot{ "Offset",              "offset",              FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Off. Frequency",      "offset_frequency",    IntSlotValue{ 2, 1, 99 } });
-		_slots.push_back(Slot{ "Squash",              "squash",              FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Squash Frequency",    "squash_frequency",    IntSlotValue{ 2, 1, 99 } });
-		_slots.push_back(Slot{ "Vector",              "vector",              SlotDirection::INPUT, SlotType::VECTOR });
-		_slots.push_back(Slot{ "Color1",              "color1",              ColorSlotValue{ csc::Float3{ 0.9f, 0.9f, 0.9f} } });
-		_slots.push_back(Slot{ "Color2",              "color2",              ColorSlotValue{ csc::Float3{ 0.4f, 0.4f, 0.4f} } });
-		_slots.push_back(Slot{ "Mortar",              "mortar",              ColorSlotValue{ csc::Float3{ 0.4f, 0.4f, 0.4f} } });
-		_slots.push_back(Slot{ "Scale",               "scale",               FloatSlotValue{ 5.0f, -FLT_MAX, FLT_MAX } });
-		_slots.push_back(Slot{ "Mortar Size",         "mortar_size",         FloatSlotValue{ 0.08f, 0.0f, 0.25f } });
-		_slots.push_back(Slot{ "Mortar Smooth",       "mortar_smooth",       FloatSlotValue{ 0.1f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Bias",                "bias",                FloatSlotValue{ 0.0f, -1.0f, 1.0f } });
-		_slots.push_back(Slot{ "Brick Width",         "brick_width",         FloatSlotValue{ 0.5f, 0.0f, 1.0f } });
-		_slots.push_back(Slot{ "Row Height",          "row_height",          FloatSlotValue{ 0.25f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Color",            "color",               SlotDirection::OUTPUT, SlotType::COLOR });
+		_slots.push_back(Slot{ "Fac",              "fac",                 SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Offset",           "offset",              FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Offset Frequency", "offset_frequency",    IntSlotValue{ 2, 1, 99 } });
+		_slots.push_back(Slot{ "Squash",           "squash",              FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
+		_slots.push_back(Slot{ "Squash Frequency", "squash_frequency",    IntSlotValue{ 2, 1, 99 } });
+		_slots.push_back(Slot{ "Vector",           "vector",              SlotDirection::INPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Color1",           "color1",              ColorSlotValue{ csc::Float3{ 0.9f, 0.9f, 0.9f} } });
+		_slots.push_back(Slot{ "Color2",           "color2",              ColorSlotValue{ csc::Float3{ 0.4f, 0.4f, 0.4f} } });
+		_slots.push_back(Slot{ "Mortar",           "mortar",              ColorSlotValue{ csc::Float3{ 0.4f, 0.4f, 0.4f} } });
+		_slots.push_back(Slot{ "Scale",            "scale",               FloatSlotValue{ 5.0f, -FLT_MAX, FLT_MAX } });
+		_slots.push_back(Slot{ "Mortar Size",      "mortar_size",         FloatSlotValue{ 0.08f, 0.0f, 5.0f } });
+		_slots.push_back(Slot{ "Mortar Smooth",    "mortar_smooth",       FloatSlotValue{ 0.1f, 0.0f, 10.0f } });
+		_slots.push_back(Slot{ "Bias",             "bias",                FloatSlotValue{ 0.0f, -10.0f, 10.0f } });
+		_slots.push_back(Slot{ "Brick Width",      "brick_width",         FloatSlotValue{ 0.5f, 0.0f, 10.0f } });
+		_slots.push_back(Slot{ "Row Height",       "row_height",          FloatSlotValue{ 0.25f, 0.0f, 10.0f } });
 		break;
 	case NodeType::CHECKER_TEX:
 		_slots.push_back(Slot{ "Color",  "color",  SlotDirection::OUTPUT, SlotType::COLOR });
