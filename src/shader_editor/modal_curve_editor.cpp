@@ -91,10 +91,10 @@ cse::InterfaceEventArray cse::ModalCurveEditor::run() const
 			ImGui::Text("Bounds:");
 			const std::array<float, 2> bounds_min{ current_curve.min().x, current_curve.min().y };
 			std::array<float, 2> bounds_min_mut{ bounds_min };
-			ImGui::InputFloat2("Min", bounds_min_mut.data(), 2, ImGuiInputTextFlags_EnterReturnsTrue);
+			ImGui::InputFloat2("Min", bounds_min_mut.data(), "%.2f", ImGuiInputTextFlags_EnterReturnsTrue);
 			const std::array<float, 2> bounds_max{ current_curve.max().x, current_curve.max().y };
 			std::array<float, 2> bounds_max_mut{ bounds_max };
-			ImGui::InputFloat2("Max", bounds_max_mut.data(), 2, ImGuiInputTextFlags_EnterReturnsTrue);
+			ImGui::InputFloat2("Max", bounds_max_mut.data(), "%.2f", ImGuiInputTextFlags_EnterReturnsTrue);
 
 			if (bounds_min != bounds_min_mut || bounds_max != bounds_max_mut) {
 				const csc::FloatRect bounds_rect{ csc::Float2{ bounds_min_mut[0], bounds_min_mut[1] }, csc::Float2{ bounds_max_mut[0], bounds_max_mut[1] } };
@@ -115,10 +115,10 @@ cse::InterfaceEventArray cse::ModalCurveEditor::run() const
 			ImGui::Text("Point Position:");
 			const float point_x{ control_point.pos.x };
 			float point_x_mut{ point_x };
-			ImGui::InputFloat("X", &point_x_mut, 0.1f, 0.5f, 2, ImGuiInputTextFlags_EnterReturnsTrue);
+			ImGui::InputFloat("X", &point_x_mut, 0.1f, 0.5f, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue);
 			const float point_y{ control_point.pos.y };
 			float point_y_mut{ point_y };
-			ImGui::InputFloat("Y", &point_y_mut, 0.1f, 0.5f, 2, ImGuiInputTextFlags_EnterReturnsTrue);
+			ImGui::InputFloat("Y", &point_y_mut, 0.1f, 0.5f, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue);
 
 			if (point_x != point_x_mut || point_y != point_y_mut) {
 				const csc::Float2 new_pos{ point_x_mut, point_y_mut };
