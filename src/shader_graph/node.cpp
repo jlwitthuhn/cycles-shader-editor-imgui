@@ -128,6 +128,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 	case NodeType::MATH:
 		_slots.push_back(Slot{ "Value",     "value",     SlotDirection::OUTPUT, SlotType::FLOAT });
 		_slots.push_back(Slot{ "Math Type", "math_type", EnumSlotValue{ MathType::ADD } });
+		_slots.push_back(Slot{ "Clamp",     "use_clamp", BoolSlotValue{ false } });
 		_slots.push_back(Slot{ "Value1",    "value1",    FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
 		_slots.push_back(Slot{ "Value2",    "value2",    FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
 		_slots.push_back(Slot{ "Value3",    "value3",    FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX } });
@@ -212,7 +213,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "True Normal",        "true_normal",        SlotDirection::OUTPUT, SlotType::VECTOR });
 		_slots.push_back(Slot{ "Incoming",           "incoming",           SlotDirection::OUTPUT, SlotType::VECTOR });
 		_slots.push_back(Slot{ "Parametric",         "parametric",         SlotDirection::OUTPUT, SlotType::VECTOR });
-		_slots.push_back(Slot{ "Backfacing",         "backfacing",         SlotDirection::OUTPUT, SlotType::VECTOR });
+		_slots.push_back(Slot{ "Backfacing",         "backfacing",         SlotDirection::OUTPUT, SlotType::FLOAT });
 		_slots.push_back(Slot{ "Pointiness",         "pointiness",         SlotDirection::OUTPUT, SlotType::FLOAT });
 		_slots.push_back(Slot{ "Random Per Island",  "random_per_island",  SlotDirection::OUTPUT, SlotType::FLOAT });
 		break;
@@ -357,6 +358,7 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Transmission",           "transmission",           FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
 		_slots.push_back(Slot{ "Transmission Roughness", "transmission_roughness", FloatSlotValue{ 0.0f, 0.0f, 1.0f } });
 		_slots.push_back(Slot{ "Emission",               "emission",               ColorSlotValue{ csc::Float3{ 0.0f, 0.0f, 0.0f } } });
+		_slots.push_back(Slot{ "Emission Strength",      "emission_strength",      FloatSlotValue{ 1.0f, 0.0f, 10000.0f } });
 		_slots.push_back(Slot{ "Alpha",                  "alpha",                  FloatSlotValue{ 1.0f, 0.0f, 1.0f } });
 		_slots.push_back(Slot{ "Normal",                 "normal",                 SlotDirection::INPUT, SlotType::VECTOR });
 		_slots.push_back(Slot{ "Clearcoat Normal",       "clearcoat_normal",       SlotDirection::INPUT, SlotType::VECTOR });
