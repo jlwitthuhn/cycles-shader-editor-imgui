@@ -8,6 +8,7 @@
 #include <cstddef>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <boost/optional.hpp>
@@ -77,5 +78,6 @@ namespace csg {
 		NodeId _id;
 		NodeType _type;
 		std::vector<Slot> _slots;
+		std::vector<std::pair<const char*, const char*>> _slot_aliases;
 	};
 }
