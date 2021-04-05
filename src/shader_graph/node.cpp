@@ -83,11 +83,12 @@ csg::Node::Node(const NodeType type, const csc::Int2 position) : position{ posit
 		_slots.push_back(Slot{ "Temperature", "temperature", FloatSlotValue{ 1500.0f, 800.0f, 20000.0f } });
 		break;
 	case NodeType::CLAMP:
-		_slots.push_back(Slot{ "Result", "result", SlotDirection::OUTPUT, SlotType::FLOAT });
-		_slots.push_back(Slot{ "Type",   "type",   EnumSlotValue{ ClampType::MINMAX } });
-		_slots.push_back(Slot{ "Value",  "value",  FloatSlotValue{ 1.0f, -FLT_MAX, FLT_MAX} });
-		_slots.push_back(Slot{ "Min",    "min",    FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX} });
-		_slots.push_back(Slot{ "Max",    "max",    FloatSlotValue{ 1.0f, -FLT_MAX, FLT_MAX} });
+		_slots.push_back(Slot{ "Result", "result",     SlotDirection::OUTPUT, SlotType::FLOAT });
+		_slots.push_back(Slot{ "Type",   "clamp_type", EnumSlotValue{ ClampType::MINMAX } });
+		_slots.push_back(Slot{ "Value",  "value",      FloatSlotValue{ 1.0f, -FLT_MAX, FLT_MAX} });
+		_slots.push_back(Slot{ "Min",    "min",        FloatSlotValue{ 0.0f, -FLT_MAX, FLT_MAX} });
+		_slots.push_back(Slot{ "Max",    "max",        FloatSlotValue{ 1.0f, -FLT_MAX, FLT_MAX} });
+		_slot_aliases.push_back(std::make_pair("type", "clamp_type"));
 		break;
 	case NodeType::COLOR_RAMP:
 		_slots.push_back(Slot{ "Color",  "color",  SlotDirection::OUTPUT, SlotType::COLOR });
